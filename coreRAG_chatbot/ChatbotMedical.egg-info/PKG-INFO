@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: ChatbotMedical
+Version: 0.1
+Summary: A chatbot for medical news
+Author: Theanh13012004
+Author-email: theanhtran13012004@gmail.com
+Dynamic: author
+Dynamic: author-email
+Dynamic: summary

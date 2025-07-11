@@ -1,0 +1,8 @@
+setup.py
+ChatbotMedical.egg-info/PKG-INFO
+ChatbotMedical.egg-info/SOURCES.txt
+ChatbotMedical.egg-info/dependency_links.txt
+ChatbotMedical.egg-info/top_level.txt
+src/__init__.py
+src/helper.py
+src/prompt.py
