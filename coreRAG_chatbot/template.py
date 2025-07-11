@@ -12,6 +12,7 @@ list_dir = [
     "src/prompt.py",
     ".env",
     "setup.py",
+    "store_index.py",
     "app.py",
     "research/trials.ipynb",
 
