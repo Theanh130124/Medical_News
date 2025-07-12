@@ -47,3 +47,17 @@ def download_hugging_face_embeddings():
         model_name="dangvantuan/vietnamese-embedding"
     )
     return embeddings
+
+
+#Kiểm trả file train chưa
+def is_file_trained(file_name,trained_files_log):
+    if not os.path.exists(trained_files_log):   # Nếu file log chưa tồn tại
+        return False 
+    with open(trained_files_log, 'r') as f:
+        trained_files = f.read().splitlines()  #lấy ds các tên file đã train
+    return file_name in trained_files  #Xem file_name có trong đó không
+
+#Đánh dấu file đã train 
+def mark_file_trained(file_name , trained_files_log):
+    with open(trained_files_log, 'a') as f: # mở file append
+        f.write(f"{file_name}\n")  #ghi tên file vào log khi đã train xong 
