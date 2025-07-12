@@ -1,56 +1,77 @@
-from src.helper import load_word_files , download_hugging_face_embeddings , text_split , preprocess_data 
+from src.helper import *
 from pinecone.grpc import PineconeGRPC as Pinecone
 from langchain.schema import Document
 from pinecone import ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
 from dotenv import load_dotenv
 import os 
+from configs import *
 
 
 load_dotenv()
 
 
-PINECONE_API_KEY=os.environ.get('PINECONE_API_KEY')
-os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY 
-
 #Tải model embeddings vietnamess 
 embeddings = download_hugging_face_embeddings()
 
-#Gọi để gán dữ liệu
-extracted_data = load_word_files(data='DataChatbot/')
+pc = Pinecone(api_key=PINECONE_API_KEY)
 
-#Tiền xử lý dữ liệu
-cleaned_data = []
-for doc in extracted_data:
-    cleaned_content = preprocess_data(doc.page_content)
-    cleaned_doc = Document(
-        page_content=cleaned_content,
-        metadata=doc.metadata 
+
+
+def train_new_files():
+    #Gọi để gán dữ liệu
+    all_docs = load_word_files(data=DATA_FOLDER) 
+    new_docs = []
+
+    #Tiền xử lý dữ liệu
+    for doc in all_docs:
+        file_name = doc.metadata.get("source", "unknown.docx") #nếu metadata không có thì sẽ tên là unknown.docx -> langchain tự gán (tại vì sẽ không biết tên file sắp train)
+        if not is_file_trained(file_name, TRAINED_LOG):  #chưa đc train
+            print(f"Phát hiện có file mới và training: {file_name}")
+            cleaned_content = preprocess_data(doc.page_content)  #tiền xử lý dữ liệu
+            cleaned_doc = Document(
+                page_content=cleaned_content,
+                metadata=doc.metadata
+            )
+            new_docs.append(cleaned_doc)
+            #đánh dấu đã train 
+            mark_file_trained(file_name, TRAINED_LOG)
+        else:
+            print(f"File đã được train trước đó: {file_name}")
+    if not new_docs:
+        return "Không có file mới nào để train"
+            
+    #Tạo chunk 
+    text_chunks = text_split(new_docs)
+    #Tạo db
+    if not pc.describe_index(INDEX_NAME):
+        pc.create_index(
+            name=INDEX_NAME,
+            dimension=768,
+            metric="cosine",
+            spec=ServerlessSpec(cloud="aws", region="us-east-1")
+        )
+    PineconeVectorStore.from_documents(
+        documents=text_chunks,
+        index_name=INDEX_NAME,
+        embedding=embeddings
     )
-    cleaned_data.append(cleaned_doc)
-
-#Tạo chunk 
-text_chunks = text_split(cleaned_data)
-
-
-pc = Pinecone(api_key=PINECONE_API_KEY) 
-index_name = "medical-chatbot"
-
-pc.create_index(
-    name=index_name,  #ten db
-    dimension=768,   #Số chiều vector theo docs 
-    metric="cosine",   #So sánh theo vector theo cosin 
-    spec=ServerlessSpec(
-        cloud="aws",
-        region="us-east-1"
-    )
-)
-
-docsearch = PineconeVectorStore.from_documents(
+    docsearch = PineconeVectorStore.from_documents(
     documents=text_chunks, # data đã clean và tách chunk
-    index_name=index_name, 
+    index_name=INDEX_NAME, 
     embedding=embeddings, #mô hình dangvantuan/vietnamese-embedding
 )
+
+
+
+
+
+
+
+
+
+
+
 
 
 
