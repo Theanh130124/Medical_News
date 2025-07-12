@@ -2,7 +2,6 @@ from langchain.document_loaders import DirectoryLoader , UnstructuredWordDocumen
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 import re
-from dotenv import load_dotenv
 import os
 
 
