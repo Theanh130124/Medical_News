@@ -8,8 +8,6 @@ import os
 from configs import *
 
 
-load_dotenv()
-
 
 #Tải model embeddings vietnamess 
 embeddings = download_hugging_face_embeddings()

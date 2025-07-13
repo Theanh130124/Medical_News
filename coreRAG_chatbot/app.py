@@ -7,9 +7,6 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from configs import *
-
-#from langchain_openai import ChatOpenAI
-
 from langchain_core.prompts import ChatPromptTemplate
 from src.prompt import *
 from store_index import *
