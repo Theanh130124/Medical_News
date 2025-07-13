@@ -1,6 +1,6 @@
-from langchain.document_loaders import DirectoryLoader , UnstructuredWordDocumentLoader 
+from langchain_community.document_loaders import DirectoryLoader, UnstructuredWordDocumentLoader #Đã update 
+from langchain_huggingface import HuggingFaceEmbeddings # Đã update
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
 import re
 import os
 
@@ -52,11 +52,11 @@ def download_hugging_face_embeddings():
 def is_file_trained(file_name,trained_files_log):
     if not os.path.exists(trained_files_log):   # Nếu file log chưa tồn tại
         return False 
-    with open(trained_files_log, 'r') as f:
+    with open(trained_files_log, 'r' ,encoding='utf-8') as f:
         trained_files = f.read().splitlines()  #lấy ds các tên file đã train
     return file_name in trained_files  #Xem file_name có trong đó không
 
 #Đánh dấu file đã train 
 def mark_file_trained(file_name , trained_files_log):
-    with open(trained_files_log, 'a') as f: # mở file append
+    with open(trained_files_log, 'a', encoding='utf-8') as f: # mở file append
         f.write(f"{file_name}\n")  #ghi tên file vào log khi đã train xong 
