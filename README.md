@@ -35,3 +35,15 @@ python app.py
 
 
 
+
+
+<h1>BE - SPRINGBOOT - SETUP</h1>
+
+
+```
+
+- run container spring-mysql - từ image mysql-lastest 
+
+
+```
+
