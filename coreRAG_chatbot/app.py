@@ -6,10 +6,11 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
+from configs import *
 from langchain_core.prompts import ChatPromptTemplate
 from src.prompt import *
 from store_index import *
-from configs import *
+
 
 
 app = Flask(__name__)
@@ -17,7 +18,10 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 
 
+
 embeddings = download_hugging_face_embeddings()
+
+
 
 docsearch = PineconeVectorStore.from_existing_index(
     index_name=INDEX_NAME,  #nếu mà đã chạy tạo db rồi thì thay bằng "chatbot"
