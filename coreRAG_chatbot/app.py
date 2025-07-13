@@ -20,7 +20,7 @@ scheduler.init_app(app)
 embeddings = download_hugging_face_embeddings()
 
 docsearch = PineconeVectorStore.from_existing_index(
-    index_name=index_name,  #nếu mà đã chạy tạo db rồi thì thay bằng "chatbot"
+    index_name=INDEX_NAME,  #nếu mà đã chạy tạo db rồi thì thay bằng "chatbot"
     embedding=embeddings
 )
 
@@ -74,3 +74,5 @@ scheduler.start()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
+
+
