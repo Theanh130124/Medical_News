@@ -24,6 +24,13 @@ add -e .  in requirements.txt  -> nó tìm tập setup.py và chạy
 python store_index.py -> create db pine lần đầu
 
 python app.py 
+
+
+
+#Chạy cho lần đầu tiên -> python store_index.py
+
+#Chạy mỗi lần để thực hiện gọi đc api -> python app.py 
+
 ```
 
 

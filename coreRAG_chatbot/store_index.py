@@ -21,7 +21,7 @@ pc = Pinecone(api_key=PINECONE_API_KEY)
 def train_new_files():
     #Gọi để gán dữ liệu
     all_docs = load_word_files(data=DATA_FOLDER) 
-    new_docs = []
+    new_docs = [] #dữ liệu sẽ đc check 
 
     #Tiền xử lý dữ liệu
     for doc in all_docs:
@@ -44,7 +44,7 @@ def train_new_files():
     #Tạo chunk 
     text_chunks = text_split(new_docs)
     #Tạo db
-    if not pc.describe_index(INDEX_NAME):
+    if INDEX_NAME not in pc.list_indexes():
         pc.create_index(
             name=INDEX_NAME,
             dimension=768,
@@ -56,11 +56,14 @@ def train_new_files():
         index_name=INDEX_NAME,
         embedding=embeddings
     )
-    docsearch = PineconeVectorStore.from_documents(
-    documents=text_chunks, # data đã clean và tách chunk
-    index_name=INDEX_NAME, 
-    embedding=embeddings, #mô hình dangvantuan/vietnamese-embedding
-)
+
+    
+#Chỉ chạy 1 lần đầu tạo db
+
+if __name__ == "__main__":
+    result = train_new_files()
+    print(result)
+    
 
 
 
