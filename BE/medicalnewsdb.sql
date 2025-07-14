@@ -83,10 +83,30 @@ CREATE TABLE Post (
     user_id CHAR(36) NOT NULL,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
+    visibility ENUM('PUBLIC', 'FRIENDS_ONLY', 'FOLLOWERS_ONLY', 'PRIVATE') DEFAULT 'PUBLIC',
+    type ENUM('NORMAL' ,'SURVEY') DEFAULT 'NORMAL',
     allow_comments BOOLEAN DEFAULT TRUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+);
+--  Survey Option (lựa chọn A, B, C, D cho bài viết SURVEY)
+CREATE TABLE Survey_Option (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    post_id CHAR(36) NOT NULL,
+    option_text VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES Post(id) ON DELETE CASCADE
+);
+
+--  Survey Vote (1 người có thể chọn nhiều option trên cùng post)
+CREATE TABLE Survey_Vote (
+    user_id CHAR(36) NOT NULL,
+    option_id CHAR(36) NOT NULL,
+    voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, option_id),
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES Survey_Option(id) ON DELETE CASCADE
 );
 
 Create table ImagePost (
@@ -223,5 +243,55 @@ SELECT 'post1_img1.png', p.id FROM Post p WHERE p.title = 'Bài Viết Đầu Ti
 INSERT INTO ImagePost (post_image_url, post_id)
 SELECT 'post1_img2.png', p.id FROM Post p WHERE p.title = 'Bài Viết Đầu Tiên';
 
+
+-- Thêm 1 bài viết khảo sát
+INSERT INTO Post (user_id, title, content, type)
+SELECT id, 'Khảo Sát: Bạn thích loại vaccine nào?', 'Hãy chọn các loại vaccine bạn tin tưởng nhất.', 'SURVEY'
+FROM User WHERE username = 'admin';
+
+-- Lấy post_id của bài khảo sát mới tạo
+SET @survey_post_id = (SELECT id FROM Post WHERE title = 'Khảo Sát: Bạn thích loại vaccine nào?');
+
+-- Thêm các lựa chọn cho khảo sát
+INSERT INTO Survey_Option (post_id, option_text)
+VALUES
+(@survey_post_id, 'Pfizer'),
+(@survey_post_id, 'Moderna'),
+(@survey_post_id, 'AstraZeneca'),
+(@survey_post_id, 'Sinopharm');
+
+-- Lấy id của các option vừa thêm
+SET @option_pfizer = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Pfizer');
+SET @option_moderna = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Moderna');
+SET @option_astrazeneca = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'AstraZeneca');
+SET @option_sinopharm = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Sinopharm');
+
+-- Người dùng vote (cho phép chọn nhiều option)
+-- User: minhtuyet vote cho Pfizer và Moderna
+INSERT INTO Survey_Vote (user_id, option_id)
+SELECT u.id, @option_pfizer FROM User u WHERE u.username = 'minhtuyet';
+INSERT INTO Survey_Vote (user_id, option_id)
+SELECT u.id, @option_moderna FROM User u WHERE u.username = 'minhtuyet';
+
+-- User: theanh vote cho AstraZeneca
+INSERT INTO Survey_Vote (user_id, option_id)
+SELECT u.id, @option_astrazeneca FROM User u WHERE u.username = 'theanh';
+
+-- User: admin vote cho Pfizer và Sinopharm
+INSERT INTO Survey_Vote (user_id, option_id)
+SELECT u.id, @option_pfizer FROM User u WHERE u.username = 'admin';
+INSERT INTO Survey_Vote (user_id, option_id)
+SELECT u.id, @option_sinopharm FROM User u WHERE u.username = 'admin';
+
+
+-- Thêm 1 bài viết chỉ followers thấy
+INSERT INTO Post (user_id, title, content, type, visibility)
+SELECT id, 'Chỉ Followers Thấy', 'Bài viết này chỉ những ai follow mới thấy', 'NORMAL', 'FOLLOWERS_ONLY'
+FROM User WHERE username = 'admin';
+
+-- Thêm 1 bài viết private
+INSERT INTO Post (user_id, title, content, type, visibility)
+SELECT id, 'Chế độ Riêng Tư', 'Chỉ mình tôi xem được bài này.', 'NORMAL', 'PRIVATE'
+FROM User WHERE username = 'admin';
 
 
