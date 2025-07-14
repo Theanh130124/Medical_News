@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.CertificateStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,9 +47,9 @@ public class Certificate {
     private String imageCertificate;
 
     @ColumnDefault("'PENDING'")
-    @Lob
+    @Enumerated(EnumType.STRING) // để lưu Enum String , không có sẽ lưu thứ tự
     @Column(name = "status")
-    private String status;
+    private CertificateStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

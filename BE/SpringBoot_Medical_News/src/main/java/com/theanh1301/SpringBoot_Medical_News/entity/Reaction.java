@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.TypeReaction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,8 +36,9 @@ public class Reaction {
 
     @NotNull
     @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private String type;
+    private TypeReaction type;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

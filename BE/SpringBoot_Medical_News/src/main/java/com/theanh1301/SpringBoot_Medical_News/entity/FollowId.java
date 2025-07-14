@@ -27,18 +27,6 @@ public class FollowId implements Serializable {
     @Column(name = "following_id", nullable = false, length = 36)
     private String followingId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        FollowId entity = (FollowId) o;
-        return Objects.equals(this.followingId, entity.followingId) &&
-                Objects.equals(this.followerId, entity.followerId);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(followingId, followerId);
-    }
 
 }
