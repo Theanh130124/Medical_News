@@ -1,5 +1,7 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
+import com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -39,13 +41,15 @@ public class Post {
 
     @ColumnDefault("'PUBLIC'")
     @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "visibility")
-    private String visibility;
+    private VisibilityPost visibility;
 
     @ColumnDefault("'NORMAL'")
     @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private TypePost type;
 
     @ColumnDefault("1")
     @Column(name = "allow_comments")

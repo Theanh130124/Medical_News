@@ -34,7 +34,7 @@ public class Comment {
     private User user;
 
     @NotNull
-    @Lob
+    @Lob //Cho dữ liệu dài -> Xuống csdl là text
     @Column(name = "content", nullable = false)
     private String content;
 
