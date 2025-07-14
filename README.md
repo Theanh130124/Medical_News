@@ -44,6 +44,11 @@ python app.py
 
 - run container spring-mysql - từ image mysql-lastest 
 
+- create Application -> for .env 
+
+
 
 ```
+
+![1752468675941](image/README/1752468675941.png)
 
