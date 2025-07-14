@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,10 +21,11 @@ public class Role {
     @Column(name = "id", nullable = false, length = 36)
     private String id;
 
+    @ColumnDefault("'USER'")
     @NotNull
     @Lob
     @Column(name = "name", nullable = false)
-    private String name;
+    private RoleName name;
 
     @Size(max = 255)
     @Column(name = "description")
