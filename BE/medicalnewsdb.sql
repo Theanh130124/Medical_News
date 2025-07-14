@@ -83,7 +83,7 @@ CREATE TABLE Post (
     user_id CHAR(36) NOT NULL,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
-    visibility ENUM('PUBLIC', 'FRIENDS_ONLY', 'FOLLOWERS_ONLY', 'PRIVATE') DEFAULT 'PUBLIC',
+    visibility ENUM('PUBLIC', 'FRIENDS_ONLY','PRIVATE') DEFAULT 'PUBLIC',
     type ENUM('NORMAL' ,'SURVEY') DEFAULT 'NORMAL',
     allow_comments BOOLEAN DEFAULT TRUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -284,10 +284,7 @@ INSERT INTO Survey_Vote (user_id, option_id)
 SELECT u.id, @option_sinopharm FROM User u WHERE u.username = 'admin';
 
 
--- Thêm 1 bài viết chỉ followers thấy
-INSERT INTO Post (user_id, title, content, type, visibility)
-SELECT id, 'Chỉ Followers Thấy', 'Bài viết này chỉ những ai follow mới thấy', 'NORMAL', 'FOLLOWERS_ONLY'
-FROM User WHERE username = 'admin';
+
 
 -- Thêm 1 bài viết private
 INSERT INTO Post (user_id, title, content, type, visibility)
