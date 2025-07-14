@@ -28,18 +28,5 @@ public class FriendId implements Serializable {
     @Column(name = "second_user_id", nullable = false, length = 36)
     private String secondUserId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        FriendId entity = (FriendId) o;
-        return Objects.equals(this.secondUserId, entity.secondUserId) &&
-                Objects.equals(this.firstUserId, entity.firstUserId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(secondUserId, firstUserId);
-    }
 
 }
