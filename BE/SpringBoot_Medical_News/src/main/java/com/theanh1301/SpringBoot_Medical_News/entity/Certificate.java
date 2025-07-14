@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,47 +17,48 @@ import java.time.LocalDate;
 @NoArgsConstructor // cần cho JPA
 @AllArgsConstructor //
 @Builder // thay gọn cho set
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Certificate {
     @Id
     @Size(max = 36)
     @ColumnDefault("(uuid())")
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "certificate_number", nullable = false, length = 100)
-    private String certificateNumber;
+    String certificateNumber;
 
     @NotNull
     @Column(name = "issue_date", nullable = false)
-    private LocalDate issueDate;
+    LocalDate issueDate;
 
     @Column(name = "expiry_date")
-    private LocalDate expiryDate;
+    LocalDate expiryDate;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "image_certificate", nullable = false)
-    private String imageCertificate;
+    String imageCertificate;
 
     @ColumnDefault("'PENDING'")
     @Enumerated(EnumType.STRING) // để lưu Enum String , không có sẽ lưu thứ tự
     @Column(name = "status")
-    private CertificateStatus status;
+    CertificateStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
 }

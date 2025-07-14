@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
@@ -16,17 +17,18 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Embeddable
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FriendId implements Serializable {
-    private static final long serialVersionUID = 3290323705609597784L;
+    static final long serialVersionUID = 3290323705609597784L;
     @Size(max = 36)
     @NotNull
     @Column(name = "first_user_id", nullable = false, length = 36)
-    private String firstUserId;
+    String firstUserId;
 
     @Size(max = 36)
     @NotNull
     @Column(name = "second_user_id", nullable = false, length = 36)
-    private String secondUserId;
+    String secondUserId;
 
 
 }
