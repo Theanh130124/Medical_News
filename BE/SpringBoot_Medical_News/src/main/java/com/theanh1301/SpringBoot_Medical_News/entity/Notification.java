@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,34 +15,35 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Notification {
     @Id
     @Size(max = 36)
     @ColumnDefault("(uuid())")
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @NotNull
     @Lob
     @Column(name = "message", nullable = false)
-    private String message;
+    String message;
 
     @ColumnDefault("0")
     @Column(name = "is_read")
-    private Boolean isRead;
+    Boolean isRead;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
 }
