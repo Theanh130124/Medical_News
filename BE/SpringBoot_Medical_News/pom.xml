@@ -72,6 +72,14 @@
 			<optional>true</optional>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct  -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+
 		<!-- Dung oauth2 -> de chan tat ca request(chua duoc chung thuc ) cho api trong spring security vi jwt < oauth2-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -107,6 +115,16 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.6.3</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
