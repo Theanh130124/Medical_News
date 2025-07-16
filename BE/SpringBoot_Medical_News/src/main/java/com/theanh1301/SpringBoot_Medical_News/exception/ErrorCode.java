@@ -1,12 +1,16 @@
 package com.theanh1301.SpringBoot_Medical_News.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
+
+
+@Getter
 public enum ErrorCode {
 
 
-    INVALID_KEY(0001,"Sai sót dữ liệu truyền vào", HttpStatus.BAD_REQUEST),
+    INVALID_KEY(1000,"Sai sót dữ liệu truyền vào", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9999, "Chưa xác định ngoại lệ", HttpStatus.INTERNAL_SERVER_ERROR), //là error khác các error ở đây
     //Phần validate trong dto
     USER_EXISTS(1001, "Tên tài khoản đã tồn tại",HttpStatus.BAD_REQUEST),
@@ -18,9 +22,9 @@ public enum ErrorCode {
     INVALID_DOB(1007 ,"Bạn phải trên {min} tuổi ",HttpStatus.BAD_REQUEST);
 
 
-    private int code;
-    private String msg;
-    private HttpStatusCode statusCode;
+    private final int code;
+    private final String msg;
+    private final HttpStatusCode statusCode;
 
     ErrorCode(int code, String msg, HttpStatusCode statusCode) {
         this.code = code;
@@ -28,16 +32,4 @@ public enum ErrorCode {
         this.statusCode = statusCode;
     }
 
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public HttpStatusCode getStatusCode() {
-        return statusCode;
-    }
 }
