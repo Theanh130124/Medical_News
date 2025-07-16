@@ -8,6 +8,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.AuthenticationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.IntrospectRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.LogoutRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.RefreshTokenRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.AuthenticationResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
@@ -95,7 +96,7 @@ public class AuthenticationService {
             //Thêm tiền tố ROLE_ và permission mình để trống (để dễ phân biệt)
             stringJoiner.add("ROLE_" + role.getName()); // add role và scope
 
-        if (!CollectionUtils.isEmpty(role.getRolePermissions())) {
+        if (role.getRolePermissions() != null && !CollectionUtils.isEmpty(role.getRolePermissions())) {
             role.getRolePermissions().forEach(rolePermission ->
             {
                 Permission permission = rolePermission.getPermission();
@@ -135,7 +136,7 @@ public class AuthenticationService {
             jwsObject.sign(new MACSigner(SINGER_KEY.getBytes()));
             return jwsObject.serialize();
         }catch (JOSEException e){
-            log.error("Không thể tạo token lỗi:"+e);
+            log.error("Không thể tạo token lỗi:",e);
             throw new RuntimeException(e);
         }
 
@@ -200,6 +201,19 @@ public class AuthenticationService {
 
 
 
-    public void logout()
+    public void logout(LogoutRequest request) throws JOSEException, ParseException {
+        try{
+            var signToken = verifyToken(request.getToken(), false);
+            //lấy jwtTokenID
+            String jit = signToken.getJWTClaimsSet().getJWTID();
+            Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+            InvalidatedToken invalidatedToken =  InvalidatedToken.builder()
+                    .id(jit).expiryDate(expiryTime).build();
+            invalidatedTokenRepository.save(invalidatedToken);
+
+        }catch (AppException e){
+            log.info("Token trong logout có lỗi",e);
+        }
+    }
 
 }
