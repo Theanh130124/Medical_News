@@ -1,15 +1,14 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -32,5 +31,9 @@ public class Role {
     @Size(max = 255)
     @Column(name = "description")
     String description;
+
+    //Tự thêm -> để lấy permission
+    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    Set<RolePermission> rolePermissions;
 
 }
