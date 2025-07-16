@@ -1,14 +1,20 @@
 package com.theanh1301.SpringBoot_Medical_News.service;
 
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.AuthenticationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.IntrospectRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.RefreshTokenRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.AuthenticationResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.InvalidatedToken;
+import com.theanh1301.SpringBoot_Medical_News.entity.Permission;
+import com.theanh1301.SpringBoot_Medical_News.entity.Role;
+import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.repository.InvalidatedTokenRepository;
@@ -20,13 +26,17 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
+import java.util.UUID;
 
 @Slf4j //tạo ra biến log
 @Service
@@ -67,7 +77,6 @@ public class AuthenticationService {
         if(!verifiedJWT && expityTime.after(new Date())) {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
-
         //Nếu logout có id trong bảng invalid -> 401
         if(invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
@@ -76,6 +85,63 @@ public class AuthenticationService {
         return signedJWT;
 
     }
+
+    //build cho scope của token(jwt) chúa role và permission  -> muốn xem scope lên service xem luôn (khoongg xem ở current_user đc
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" "); //ngăn cách nhau bởi dấu cách
+        Role role = user.getRole();
+        if (role != null) // Không empty -> lấy role ra
+
+            //Thêm tiền tố ROLE_ và permission mình để trống (để dễ phân biệt)
+            stringJoiner.add("ROLE_" + role.getName()); // add role và scope
+
+        if (!CollectionUtils.isEmpty(role.getRolePermissions())) {
+            role.getRolePermissions().forEach(rolePermission ->
+            {
+                Permission permission = rolePermission.getPermission();
+                if (permission != null) {
+                    stringJoiner.add(permission.getName()); // Add permisson vào scope
+                }
+
+            });
+
+        }
+        return stringJoiner.toString();
+    }
+
+
+
+
+    //Tạo ra token của JWT
+    private String generateToken(User user){
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        //build payload
+        JWTClaimsSet jwtclaimsSet = new JWTClaimsSet.Builder()
+                .subject(user.getUsername()) //user đăng nhập vào
+                .issuer("devtheanh.com")
+                .issueTime(new Date()) // thời gian đăng ký
+                .expirationTime(new Date(Instant.now().plus(EXPIRED_TOKEN, ChronoUnit.MINUTES).toEpochMilli())) // thời hạn token sau 1 giờ
+                .claim("scope", buildScope(user)) //builder ROLE và PERMISSION vào scope
+                .jwtID(UUID.randomUUID().toString())
+                .build();
+
+
+        Payload payload = new Payload(jwtclaimsSet.toJSONObject());
+        JWSObject jwsObject = new JWSObject(header,payload);
+
+        //Ký token
+        try{
+            jwsObject.sign(new MACSigner(SINGER_KEY.getBytes()));
+            return jwsObject.serialize();
+        }catch (JOSEException e){
+            log.error("Không thể tạo token lỗi:"+e);
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 
 
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
@@ -91,7 +157,7 @@ public class AuthenticationService {
     }
 
 
-    // Đăng nhập tạo token
+    // Đăng nhập và tạo token
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findById(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
@@ -100,9 +166,40 @@ public class AuthenticationService {
         if(!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        var token =
+        var token = generateToken(user);
+
+
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();//trả token và đăng nhập oke
     }
 
 
+    //refresh lại token
+    public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws JOSEException, ParseException {
+
+        var singedJWT = verifyToken(request.getToken(),true); // là refresh nên để là true
+        String jit = singedJWT.getJWTClaimsSet().getJWTID();
+        Date expiryTime = singedJWT.getJWTClaimsSet().getExpirationTime(); // ngày hết hạn
+
+
+
+        //Lưu vào bảng invalid -> để vô hiệu hóa token này
+
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expiryDate(expiryTime).build();
+        invalidatedTokenRepository.save(invalidatedToken);
+
+
+        //Tạo token mới dựa vào username(không cần pass vì vừa mới xác thực token ở trên)
+        var username = singedJWT.getJWTClaimsSet().getSubject();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        var token = generateToken(user);
+
+
+        return AuthenticationResponse.builder().token(token).authenticated(true).build(); // trả ra token và OKE
+
+    }
+
+
+
+    public void logout()
 
 }
