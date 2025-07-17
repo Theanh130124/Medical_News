@@ -20,7 +20,7 @@ public class DobValidator implements ConstraintValidator<DobConstraint, LocalDat
             return true; //không có giá trị nào côi hợp lệ
         }
         //So sánh vs ngày hiện tại
-        long age = ChronoUnit.YEARS.between(LocalDate.now(), localDate);
+        long age = ChronoUnit.YEARS.between( localDate , LocalDate.now());
 
         return age >= min; // >= true , < false
     }
