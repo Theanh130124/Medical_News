@@ -13,8 +13,6 @@ public class DobValidator implements ConstraintValidator<DobConstraint, LocalDat
 
     private int min;
 
-
-
     //Ktra data có đúng không
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
