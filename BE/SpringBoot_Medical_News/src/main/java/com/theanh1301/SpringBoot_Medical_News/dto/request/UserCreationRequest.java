@@ -3,7 +3,9 @@ package com.theanh1301.SpringBoot_Medical_News.dto.request;
 
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.validator.DobConstraint;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,9 +30,11 @@ public class UserCreationRequest
     String firstName;
     String lastName;
 
-    @Size(min=10 , max=10, message="PHONENUMBER_INVALID")
+    @Pattern(regexp="^\\d{10}$", message="PHONENUMBER_INVALID")
     String phoneNumber;
 
+    //Tên message -> trong @Size là phải có trong exception của mình
+    //-> Vì GlobalExceptionHanlder sẽ lấy thông tin min max dựa và tên message
     @Size(min=10 , message ="ADDRESS_INVALID")
     String address;
     Gender gender;
@@ -45,5 +49,6 @@ public class UserCreationRequest
     @DobConstraint(min=18 , message ="INVALID_DOB")
     LocalDate dateOfBirth;
 
-    Role role;
+    //request chỉ cần truyền tên role
+    RoleName role;
 }
