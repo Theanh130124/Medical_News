@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
 
-
     INVALID_KEY(1000,"Sai sót dữ liệu truyền vào", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9998, "Chưa xác định ngoại lệ", HttpStatus.INTERNAL_SERVER_ERROR), //là error khác các error ở đây
     //Phần validate trong dto
