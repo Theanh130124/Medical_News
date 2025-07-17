@@ -4,31 +4,40 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Embeddable // Định nghĩa nguyên class để gán key chứa 2 fields cho bên Folllow
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
+@Embeddable
 public class FollowId implements Serializable {
-    static final long serialVersionUID = 7879678862635999708L;
+    private static final long serialVersionUID = 7879678862635999708L;
     @Size(max = 36)
     @NotNull
     @Column(name = "follower_id", nullable = false, length = 36)
-    String followerId;
+    private String followerId;
 
     @Size(max = 36)
     @NotNull
     @Column(name = "following_id", nullable = false, length = 36)
-    String followingId;
+    private String followingId;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        FollowId entity = (FollowId) o;
+        return Objects.equals(this.followingId, entity.followingId) &&
+                Objects.equals(this.followerId, entity.followerId);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(followingId, followerId);
+    }
 
 }

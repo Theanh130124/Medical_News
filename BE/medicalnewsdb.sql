@@ -1,31 +1,35 @@
 -- Xóa cơ sở dữ liệu (nếu tồn tại)
 DROP DATABASE IF EXISTS medicalnewsdb;
- -- Tạo csdl 
- CREATE DATABASE medicalnewsdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-use medicalnewsdb ;
--- 1. Role
-CREATE TABLE Role (
+
+-- Tạo CSDL
+CREATE DATABASE medicalnewsdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE medicalnewsdb;
+
+-- 1. role
+CREATE TABLE role (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
     name ENUM('ADMIN', 'DOCTOR', 'USER') NOT NULL UNIQUE,
     description VARCHAR(255)
 );
--- 2. Permission
-CREATE TABLE Permission (
+
+-- 2. permission
+CREATE TABLE permission (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
     name VARCHAR(50) UNIQUE NOT NULL,
     description VARCHAR(255)
 );
--- 3. Role-Permission (Many-to-Many)  -> 1 role có nhiều permission vd chỉnh sửa bài viết , xóa -> và quyền xóa bài viết cũng có thể thuộc nhiều role , như user, admin ...  
-CREATE TABLE Role_Permission (
+
+-- 3. role_permission (Many-to-Many)
+CREATE TABLE role_permission (
     role_id CHAR(36) NOT NULL,
     permission_id CHAR(36) NOT NULL,
     PRIMARY KEY (role_id, permission_id),
-    FOREIGN KEY (role_id) REFERENCES Role(id) ON DELETE CASCADE, -- Xóa bảng tham chiếu đến thì bị xóa theo (tham chiếu đên bảng role ) -> xóa role có id thì các role_id trong bảng này bị xóa theo
-    FOREIGN KEY (permission_id) REFERENCES Permission(id) ON DELETE CASCADE
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE,
+    FOREIGN KEY (permission_id) REFERENCES permission(id) ON DELETE CASCADE
 );
 
--- 4. Users   -> mật khẩu bằng OTP ? --> 1 user có permisson thì sao ?  -> thêm cả updated_at
-CREATE TABLE User (
+-- 4. user
+CREATE TABLE user (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
     role_id CHAR(36) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -33,7 +37,7 @@ CREATE TABLE User (
     last_name VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20) NOT NULL UNIQUE,
     address TEXT NOT NULL,
-	gender ENUM('MALE', 'FEMALE', 'OTHER') NULL COMMENT 'Giới tính (Nam, Nữ, Khác), có thể NULL',
+    gender ENUM('MALE', 'FEMALE', 'OTHER') NULL COMMENT 'Giới tính (Nam, Nữ, Khác), có thể NULL',
     date_of_birth DATE NULL COMMENT 'Ngày sinh, có thể NULL',
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -43,30 +47,35 @@ CREATE TABLE User (
     is_active BOOLEAN DEFAULT TRUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (role_id) REFERENCES Role(id)
+    FOREIGN KEY (role_id) REFERENCES role(id)
 );
-CREATE TABLE Follow (
+
+-- 5. follow
+CREATE TABLE follow (
     follower_id CHAR(36) NOT NULL,
     following_id CHAR(36) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (follower_id, following_id),
-    FOREIGN KEY (follower_id) REFERENCES User(id) ON DELETE CASCADE,
-    FOREIGN KEY (following_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (follower_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (following_id) REFERENCES user(id) ON DELETE CASCADE
 );
-CREATE TABLE Friends (
+
+-- 6. friends
+CREATE TABLE friends (
     first_user_id CHAR(36) NOT NULL,
     second_user_id CHAR(36) NOT NULL,
     status ENUM('PENDING', 'ACCEPTED', 'REJECTED') DEFAULT 'PENDING',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (first_user_id , second_user_id),
-    FOREIGN KEY (first_user_id) REFERENCES User(id) ON DELETE CASCADE,
-    FOREIGN KEY (second_user_id) REFERENCES User(id) ON DELETE CASCADE
+    PRIMARY KEY (first_user_id, second_user_id),
+    FOREIGN KEY (first_user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (second_user_id) REFERENCES user(id) ON DELETE CASCADE
 );
--- 5. Chứng chỉ hành nghề (Doctor Only)  ->  Có thêm hình ảnh
-CREATE TABLE Certificate (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+
+-- 7. certificate
+CREATE TABLE certificate (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     user_id CHAR(36) NOT NULL,
     certificate_number VARCHAR(100) UNIQUE NOT NULL,
     issue_date DATE NOT NULL,
@@ -75,98 +84,112 @@ CREATE TABLE Certificate (
     status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
--- 6. Posts
-CREATE TABLE Post (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+
+-- 8. post
+CREATE TABLE post (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     user_id CHAR(36) NOT NULL,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
-    visibility ENUM('PUBLIC', 'FRIENDS_ONLY','PRIVATE') DEFAULT 'PUBLIC',
-    type ENUM('NORMAL' ,'SURVEY') DEFAULT 'NORMAL',
+    visibility ENUM('PUBLIC', 'FRIENDS_ONLY', 'PRIVATE') DEFAULT 'PUBLIC',
+    type ENUM('NORMAL', 'SURVEY') DEFAULT 'NORMAL',
     allow_comments BOOLEAN DEFAULT TRUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
---  Survey Option (lựa chọn A, B, C, D cho bài viết SURVEY)
-CREATE TABLE Survey_Option (
+
+-- 9. survey_option
+CREATE TABLE survey_option (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     post_id CHAR(36) NOT NULL,
     option_text VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES Post(id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
---  Survey Vote (1 người có thể chọn nhiều option trên cùng post)
-CREATE TABLE Survey_Vote (
+-- 10. survey_vote
+CREATE TABLE survey_vote (
     user_id CHAR(36) NOT NULL,
     option_id CHAR(36) NOT NULL,
     voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, option_id),
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
-    FOREIGN KEY (option_id) REFERENCES Survey_Option(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES survey_option(id) ON DELETE CASCADE
 );
 
-Create table ImagePost (
-	id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
-    post_image_url VARCHAR(255) NOT NULL ,
-    post_id char(36) NOT NULL , 
-    FOREIGN KEY (post_id) REFERENCES Post(id) on delete cascade
+-- 11. imagepost
+CREATE TABLE imagepost (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    post_image_url VARCHAR(255) NOT NULL,
+    post_id CHAR(36) NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
-CREATE TABLE Comment (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+-- 12. comment
+CREATE TABLE comment (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     post_id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES Post(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-CREATE TABLE Reaction (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+
+-- 13. reaction
+CREATE TABLE reaction (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     user_id CHAR(36) NOT NULL,
     post_id CHAR(36) NOT NULL,
     type ENUM('LIKE', 'HAHA', 'LOVE', 'SAD', 'ANGRY') NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (user_id, post_id), -- 1 user chỉ 1 reaction/bài
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES Post(id) ON DELETE CASCADE
+    UNIQUE (user_id, post_id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
--- 13. Notifications
-CREATE TABLE Notification (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+
+-- 14. notification
+CREATE TABLE notification (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     user_id CHAR(36) NOT NULL,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-CREATE TABLE Search_history (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()), -- UUID
+
+-- 15. invalidatedtoken
+CREATE TABLE invalidatedtoken (
+    id CHAR(36) PRIMARY KEY,
+    expiry_time DATETIME NOT NULL
+);
+
+-- 16. search_history
+CREATE TABLE search_history (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     user_id CHAR(36) NOT NULL,
     keyword VARCHAR(255) NOT NULL,
     searched_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
--- giới hạn lại việc lưu tìm kiếm 
+-- Giới hạn lại việc lưu tìm kiếm
 DELIMITER //
-
 CREATE TRIGGER limit_search_history
-AFTER INSERT ON Search_history
+AFTER INSERT ON search_history
 FOR EACH ROW
 BEGIN
-    DELETE FROM Search_history
+    DELETE FROM search_history
     WHERE user_id = NEW.user_id
     AND id NOT IN (
         SELECT id FROM (
             SELECT id
-            FROM Search_history
+            FROM search_history
             WHERE user_id = NEW.user_id
             ORDER BY searched_at DESC
             LIMIT 20
@@ -175,85 +198,86 @@ BEGIN
 END;
 //
 DELIMITER ;
-                
 
+-- Tạo index B-tree
+ALTER TABLE search_history
+ADD INDEX idx_user_search (user_id, searched_at DESC);
 
--- build B-tree -> giúp tìm kiếm theo trường user_id đã có index sẳn , mà không cần quét các trường còn lại (username , firstname ... )
-alter table Search_history 
-ADD INDEX idx_user_search (user_id, searched_at DESC);  
+-- ---------------------------
+-- INSERT dữ liệu mẫu
+-- ---------------------------
 
-
-
--- insert data
-
-
-INSERT INTO Role (name, description) VALUES 
+-- Role
+INSERT INTO role (name, description) VALUES 
 ('ADMIN', 'Administrator role'),
 ('DOCTOR', 'Doctor role'),
 ('USER', 'Normal user role');
 
-
-INSERT INTO Permission (name, description) VALUES 
+-- Permission
+INSERT INTO permission (name, description) VALUES 
 ('CREATE_POST', 'Create new posts'),
 ('EDIT_POST', 'Edit existing posts'),
 ('DELETE_POST', 'Delete posts'); 
 
-INSERT INTO Role_Permission (role_id, permission_id)
+-- Role Permission mapping
+INSERT INTO role_permission (role_id, permission_id)
 SELECT r.id, p.id
-FROM Role r JOIN Permission p
+FROM role r JOIN permission p
 WHERE r.name = 'ADMIN'; -- ADMIN có toàn quyền
 
-INSERT INTO Role_Permission (role_id, permission_id)
+INSERT INTO role_permission (role_id, permission_id)
 SELECT r.id, p.id
-FROM Role r JOIN Permission p
+FROM role r JOIN permission p
 WHERE r.name = 'DOCTOR' AND p.name IN ('CREATE_POST');
 
-
-
-INSERT INTO User (role_id, username, first_name, last_name, phone_number, address, gender, date_of_birth, email, password, avatar)
+-- Users
+INSERT INTO user (role_id, username, first_name, last_name, phone_number, address, gender, date_of_birth, email, password, avatar)
 VALUES 
-((SELECT id FROM Role WHERE name = 'ADMIN'), 'admin', 'Admin', '1', '0933033801', '123 Admin St', 'MALE', '1990-01-01', 'admin123@gmail.com', 'hashedpassword', 'avatar1.png'),
-((SELECT id FROM Role WHERE name = 'DOCTOR'), 'theanh', 'Trần', 'Thế Anh', '0911328970', '420 Lê Văn Thọ , Phường 16 , Quận Gò Vấp , TPHCM', 'MALE', '2004-01-03', 'doctor123@gmail.com', 'hashedpassword', 'avatar2.png'),
-((SELECT id FROM Role WHERE name = 'USER'), 'minhtuyet', 'Nguyễn', 'Thị Minh Tuyết', '0522194804', '768/11 Lê Văn Lương , Xã Nhơn Đức , Huyện Nhà Bè , TPHCM', 'FEMALE', '2000-10-10', 'user123@gmail.com', 'hashedpassword', 'avatar3.png');
+((SELECT id FROM role WHERE name = 'ADMIN'), 'admin', 'Admin', '1', '0933033801', '123 Admin St', 'MALE', '1990-01-01', 'admin123@gmail.com', 'hashedpassword', 'avatar1.png'),
+((SELECT id FROM role WHERE name = 'DOCTOR'), 'theanh', 'Trần', 'Thế Anh', '0911328970', '420 Lê Văn Thọ, Gò Vấp, TPHCM', 'MALE', '2004-01-03', 'doctor123@gmail.com', 'hashedpassword', 'avatar2.png'),
+((SELECT id FROM role WHERE name = 'USER'), 'minhtuyet', 'Nguyễn', 'Minh Tuyết', '0522194804', 'Nhơn Đức, Nhà Bè, TPHCM', 'FEMALE', '2000-10-10', 'user123@gmail.com', 'hashedpassword', 'avatar3.png');
 
 
 
-INSERT INTO Post (user_id, title, content) 
+
+
+
+INSERT INTO post (user_id, title, content) 
 SELECT id, 'Bài Viết Đầu Tiên', 'Đây là nội dung của bài viết đầu tiên'
-FROM User WHERE username = 'admin';
+FROM user WHERE username = 'admin';
 
 
-INSERT INTO Comment (post_id, user_id, content) 
+INSERT INTO comment (post_id, user_id, content) 
 SELECT p.id, u.id, 'Đây là bình luận đầu tiên.'
-FROM Post p
-JOIN User u ON u.username = 'minhtuyet'
+FROM post p
+JOIN user u ON u.username = 'minhtuyet'
 WHERE p.title = 'Bài Viết Đầu Tiên';
 
 
 
-INSERT INTO Reaction (user_id, post_id, type)
+INSERT INTO reaction (user_id, post_id, type)
 SELECT u.id, p.id, 'LIKE'
-FROM User u
-JOIN Post p
+FROM user u
+JOIN post p
 WHERE u.username = 'minhtuyet' AND p.title = 'Bài Viết Đầu Tiên';
 
 
-INSERT INTO ImagePost (post_image_url, post_id)
-SELECT 'post1_img1.png', p.id FROM Post p WHERE p.title = 'Bài Viết Đầu Tiên';
-INSERT INTO ImagePost (post_image_url, post_id)
-SELECT 'post1_img2.png', p.id FROM Post p WHERE p.title = 'Bài Viết Đầu Tiên';
+INSERT INTO imagepost (post_image_url, post_id)
+SELECT 'post1_img1.png', p.id FROM post p WHERE p.title = 'Bài Viết Đầu Tiên';
+INSERT INTO imagepost (post_image_url, post_id)
+SELECT 'post1_img2.png', p.id FROM post p WHERE p.title = 'Bài Viết Đầu Tiên';
 
 
 -- Thêm 1 bài viết khảo sát
-INSERT INTO Post (user_id, title, content, type)
+INSERT INTO post (user_id, title, content, type)
 SELECT id, 'Khảo Sát: Bạn thích loại vaccine nào?', 'Hãy chọn các loại vaccine bạn tin tưởng nhất.', 'SURVEY'
-FROM User WHERE username = 'admin';
+FROM user WHERE username = 'admin';
 
 -- Lấy post_id của bài khảo sát mới tạo
-SET @survey_post_id = (SELECT id FROM Post WHERE title = 'Khảo Sát: Bạn thích loại vaccine nào?');
+SET @survey_post_id = (SELECT id FROM post WHERE title = 'Khảo Sát: Bạn thích loại vaccine nào?');
 
 -- Thêm các lựa chọn cho khảo sát
-INSERT INTO Survey_Option (post_id, option_text)
+INSERT INTO survey_option (post_id, option_text)
 VALUES
 (@survey_post_id, 'Pfizer'),
 (@survey_post_id, 'Moderna'),
@@ -261,34 +285,34 @@ VALUES
 (@survey_post_id, 'Sinopharm');
 
 -- Lấy id của các option vừa thêm
-SET @option_pfizer = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Pfizer');
-SET @option_moderna = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Moderna');
-SET @option_astrazeneca = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'AstraZeneca');
-SET @option_sinopharm = (SELECT id FROM Survey_Option WHERE post_id = @survey_post_id AND option_text = 'Sinopharm');
+SET @option_pfizer = (SELECT id FROM survey_option WHERE post_id = @survey_post_id AND option_text = 'Pfizer');
+SET @option_moderna = (SELECT id FROM survey_option WHERE post_id = @survey_post_id AND option_text = 'Moderna');
+SET @option_astrazeneca = (SELECT id FROM survey_option WHERE post_id = @survey_post_id AND option_text = 'AstraZeneca');
+SET @option_sinopharm = (SELECT id FROM survey_option WHERE post_id = @survey_post_id AND option_text = 'Sinopharm');
 
 -- Người dùng vote (cho phép chọn nhiều option)
 -- User: minhtuyet vote cho Pfizer và Moderna
-INSERT INTO Survey_Vote (user_id, option_id)
-SELECT u.id, @option_pfizer FROM User u WHERE u.username = 'minhtuyet';
-INSERT INTO Survey_Vote (user_id, option_id)
-SELECT u.id, @option_moderna FROM User u WHERE u.username = 'minhtuyet';
+INSERT INTO survey_vote (user_id, option_id)
+SELECT u.id, @option_pfizer FROM user u WHERE u.username = 'minhtuyet';
+INSERT INTO survey_vote (user_id, option_id)
+SELECT u.id, @option_moderna FROM user u WHERE u.username = 'minhtuyet';
 
 -- User: theanh vote cho AstraZeneca
-INSERT INTO Survey_Vote (user_id, option_id)
-SELECT u.id, @option_astrazeneca FROM User u WHERE u.username = 'theanh';
+INSERT INTO survey_vote (user_id, option_id)
+SELECT u.id, @option_astrazeneca FROM user u WHERE u.username = 'theanh';
 
 -- User: admin vote cho Pfizer và Sinopharm
-INSERT INTO Survey_Vote (user_id, option_id)
-SELECT u.id, @option_pfizer FROM User u WHERE u.username = 'admin';
-INSERT INTO Survey_Vote (user_id, option_id)
-SELECT u.id, @option_sinopharm FROM User u WHERE u.username = 'admin';
+INSERT INTO survey_vote (user_id, option_id)
+SELECT u.id, @option_pfizer FROM user u WHERE u.username = 'admin';
+INSERT INTO survey_vote (user_id, option_id)
+SELECT u.id, @option_sinopharm FROM user u WHERE u.username = 'admin';
 
 
 
 
 -- Thêm 1 bài viết private
-INSERT INTO Post (user_id, title, content, type, visibility)
+INSERT INTO post (user_id, title, content, type, visibility)
 SELECT id, 'Chế độ Riêng Tư', 'Chỉ mình tôi xem được bài này.', 'NORMAL', 'PRIVATE'
-FROM User WHERE username = 'admin';
+FROM user WHERE username = 'admin';
 
 

@@ -1,33 +1,32 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Permission {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "name", nullable = false, length = 50)
-    String name;
+    private String name;
 
     @Size(max = 255)
     @Column(name = "description")
-    String description;
+    private String description;
 
 }

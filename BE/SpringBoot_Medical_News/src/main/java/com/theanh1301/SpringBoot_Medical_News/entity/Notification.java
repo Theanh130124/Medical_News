@@ -11,39 +11,40 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Notification {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @NotNull
     @Lob
     @Column(name = "message", nullable = false)
-    String message;
+    private String message;
 
     @ColumnDefault("0")
     @Column(name = "is_read")
-    Boolean isRead;
+    private Boolean isRead;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    Instant updatedAt;
+    private Instant updatedAt;
 
 }

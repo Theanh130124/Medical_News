@@ -40,7 +40,7 @@ public class UserService {
 
         User user = userMapper.toUser(request);//map các trường user vào request
 
-        Role role = roleRepository.findByName(request.getRole().name())
+        Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
         user.setRole(role);
