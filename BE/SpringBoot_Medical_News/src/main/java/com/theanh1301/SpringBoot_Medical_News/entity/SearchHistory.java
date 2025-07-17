@@ -11,32 +11,33 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 @Table(name = "Search_history")
 public class SearchHistory {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "keyword", nullable = false)
-    String keyword;
+    private String keyword;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "searched_at")
-    Instant searchedAt;
+    private Instant searchedAt;
 
 }

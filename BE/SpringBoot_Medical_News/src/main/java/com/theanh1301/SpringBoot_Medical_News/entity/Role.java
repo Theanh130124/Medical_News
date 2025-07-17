@@ -10,27 +10,27 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Role {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
-    @ColumnDefault("'USER'")
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false)
-    RoleName name;
+    private RoleName name;
 
     @Size(max = 255)
     @Column(name = "description")
-    String description;
+    private String description;
 
     //Tự thêm -> để lấy permission
     @OneToMany(mappedBy = "role",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
