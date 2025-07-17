@@ -10,40 +10,41 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 @Table(name = "Friends")
 public class Friend {
     @EmbeddedId
-    FriendId id;
+    private FriendId id;
 
     @MapsId("firstUserId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "first_user_id", nullable = false)
-    User firstUser;
+    private User firstUser;
 
     @MapsId("secondUserId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "second_user_id", nullable = false)
-    User secondUser;
+    private User secondUser;
 
     @ColumnDefault("'PENDING'")
-    @Lob
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    FriendStatus status;
+    @Column(name = "status")
+    private FriendStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    Instant updatedAt;
+    private Instant updatedAt;
 
 }

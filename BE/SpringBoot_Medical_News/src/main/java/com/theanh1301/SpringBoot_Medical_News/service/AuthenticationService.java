@@ -185,7 +185,7 @@ public class AuthenticationService {
 
         //Lưu vào bảng invalid -> để vô hiệu hóa token này
 
-        InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expiryDate(expiryTime).build();
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
         invalidatedTokenRepository.save(invalidatedToken);
 
 
@@ -208,7 +208,7 @@ public class AuthenticationService {
             String jit = signToken.getJWTClaimsSet().getJWTID();
             Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
             InvalidatedToken invalidatedToken =  InvalidatedToken.builder()
-                    .id(jit).expiryDate(expiryTime).build();
+                    .id(jit).expiryTime(expiryTime).build();
             invalidatedTokenRepository.save(invalidatedToken);
 
         }catch (AppException e){

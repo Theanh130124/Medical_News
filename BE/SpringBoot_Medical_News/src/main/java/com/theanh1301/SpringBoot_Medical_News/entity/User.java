@@ -11,89 +11,89 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.Instant;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class User {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
-    Role role;
+    private Role role;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "username", nullable = false, length = 50)
-    String username;
+    private String username;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "first_name", nullable = false, length = 100)
-    String firstName;
+    private String firstName;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "last_name", nullable = false, length = 100)
-    String lastName;
+    private String lastName;
 
     @Size(max = 20)
     @NotNull
     @Column(name = "phone_number", nullable = false, length = 20)
-    String phoneNumber;
+    private String phoneNumber;
 
     @NotNull
     @Lob
     @Column(name = "address", nullable = false)
-    String address;
+    private String address;
 
-    @Lob
-    @ColumnDefault("'MALE'")
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    Gender gender;
+    private Gender gender;
 
     @Column(name = "date_of_birth")
-    LocalDate dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "email", nullable = false, length = 100)
-    String email;
+    private String email;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "password", nullable = false)
-    String password;
+    private String password;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "avatar", nullable = false)
-    String avatar;
+    private String avatar;
 
     @Size(max = 255)
     @Column(name = "cover_image")
-    String coverImage;
+    private String coverImage;
 
     @Lob
     @Column(name = "bio")
-    String bio;
+    private String bio;
 
     @ColumnDefault("1")
     @Column(name = "is_active")
-    Boolean isActive;
+    private Boolean isActive;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    Instant updatedAt;
+    private Instant updatedAt;
 
 }

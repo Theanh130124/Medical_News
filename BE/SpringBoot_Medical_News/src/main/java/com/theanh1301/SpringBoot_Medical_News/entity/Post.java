@@ -13,56 +13,55 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Post {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "title", nullable = false)
-    String title;
+    private String title;
 
     @NotNull
     @Lob
     @Column(name = "content", nullable = false)
-    String content;
+    private String content;
 
     @ColumnDefault("'PUBLIC'")
-    @Lob
     @Enumerated(EnumType.STRING)
     @Column(name = "visibility")
-    VisibilityPost visibility;
+    private VisibilityPost visibility;
 
     @ColumnDefault("'NORMAL'")
-    @Lob
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    TypePost type;
+    private TypePost type;
 
     @ColumnDefault("1")
     @Column(name = "allow_comments")
-    Boolean allowComments;
+    private Boolean allowComments;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    Instant updatedAt;
+    private Instant updatedAt;
 
 }

@@ -13,52 +13,53 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.Instant;
 import java.time.LocalDate;
 
-@Data  // -> thay @Entity , get ,set , tostring....
-@NoArgsConstructor // cần cho JPA
-@AllArgsConstructor //
-@Builder // thay gọn cho set
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Certificate {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "certificate_number", nullable = false, length = 100)
-    String certificateNumber;
+    private String certificateNumber;
 
     @NotNull
     @Column(name = "issue_date", nullable = false)
-    LocalDate issueDate;
+    private LocalDate issueDate;
 
     @Column(name = "expiry_date")
-    LocalDate expiryDate;
+    private LocalDate expiryDate;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "image_certificate", nullable = false)
-    String imageCertificate;
+    private String imageCertificate;
 
     @ColumnDefault("'PENDING'")
-    @Enumerated(EnumType.STRING) // để lưu Enum String , không có sẽ lưu thứ tự
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    CertificateStatus status;
+    private CertificateStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    Instant updatedAt;
+    private Instant updatedAt;
 
 }

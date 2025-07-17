@@ -9,30 +9,32 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 @Table(name = "Survey_Vote")
 public class SurveyVote {
     @EmbeddedId
-    SurveyVoteId id;
+    private SurveyVoteId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @MapsId("optionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "option_id", nullable = false)
-    SurveyOption option;
+    private SurveyOption option;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "voted_at")
-    Instant votedAt;
+    private Instant votedAt;
 
 }

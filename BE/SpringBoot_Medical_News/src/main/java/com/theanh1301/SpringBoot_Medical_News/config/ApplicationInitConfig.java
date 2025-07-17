@@ -33,7 +33,7 @@ public class ApplicationInitConfig {
     ApplicationRunner applicationRunner(UserRepository userRepository,RoleRepository roleRepository) {
         return args -> {
 
-            Role adminRole = roleRepository.findByName(RoleName.ADMIN.toString()) //hoặc .name()
+            Role adminRole = roleRepository.findByName(RoleName.ADMIN)
                     .orElseGet(() -> {
                         Role role = Role.builder()
                                 .name(RoleName.ADMIN)
