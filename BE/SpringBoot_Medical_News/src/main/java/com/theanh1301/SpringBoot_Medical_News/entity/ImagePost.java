@@ -9,27 +9,28 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class ImagePost {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "post_image_url", nullable = false)
-    String postImageUrl;
+    private String postImageUrl;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "post_id", nullable = false)
-    Post post;
+    private Post post;
 
 }

@@ -11,33 +11,33 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 @Table(name = "Survey_Option")
-
 public class SurveyOption {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "post_id", nullable = false)
-    Post post;
+    private Post post;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "option_text", nullable = false)
-    String optionText;
+    private String optionText;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
 }

@@ -12,38 +12,38 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Entity
 public class Reaction {
     @Id
-    @Size(max = 36)
-    @ColumnDefault("(uuid())")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    String id;
+    private String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "post_id", nullable = false)
-    Post post;
+    private Post post;
 
     @NotNull
-    @Lob
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    TypeReaction type;
+    private TypeReaction type;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    Instant createdAt;
+    private Instant createdAt;
 
 }
