@@ -86,7 +86,7 @@ public class AuthenticationService {
         return signedJWT;
 
     }
-
+    //Trong scope thì vẫn còn ROLE_ADMIN , CREATE_POST ...  , trong grantedAuthority -> không có tiền tố ROLE_
     //build cho scope của token(jwt) chúa role và permission  -> muốn xem scope lên service xem luôn (khoongg xem ở current_user đc
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" "); //ngăn cách nhau bởi dấu cách
