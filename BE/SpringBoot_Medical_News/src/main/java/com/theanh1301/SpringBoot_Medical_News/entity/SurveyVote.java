@@ -37,4 +37,6 @@ public class SurveyVote {
     @Column(name = "voted_at")
     private Instant votedAt;
 
+
+
 }

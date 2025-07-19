@@ -40,4 +40,7 @@ public class SearchHistory {
     @Column(name = "searched_at")
     private Instant searchedAt;
 
+
+
+
 }

@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -28,5 +30,9 @@ public class Permission {
     @Size(max = 255)
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "permissions")
+    Set<Role> roles;
+
 
 }

@@ -96,4 +96,16 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
+
 }
