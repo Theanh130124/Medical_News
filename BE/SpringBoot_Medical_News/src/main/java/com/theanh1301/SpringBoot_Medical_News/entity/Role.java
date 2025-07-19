@@ -33,7 +33,13 @@ public class Role {
     private String description;
 
     //Tự thêm -> để lấy permission
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    Set<RolePermission> rolePermissions;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    Set<Permission> permissions;
+
 
 }
