@@ -96,10 +96,10 @@ public class AuthenticationService {
             //Thêm tiền tố ROLE_ và permission mình để trống (để dễ phân biệt)
             stringJoiner.add("ROLE_" + role.getName()); // add role và scope
 
-        if (role.getRolePermissions() != null && !CollectionUtils.isEmpty(role.getRolePermissions())) {
-            role.getRolePermissions().forEach(rolePermission ->
+        if (role.getPermissions() != null && !CollectionUtils.isEmpty(role.getPermissions())) {
+            role.getPermissions().forEach(rolePermission ->
             {
-                Permission permission = rolePermission.getPermission();
+                Permission permission = rolePermission;
                 if (permission != null) {
                     stringJoiner.add(permission.getName()); // Add permisson vào scope
                 }
