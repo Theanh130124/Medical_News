@@ -18,7 +18,7 @@ import java.time.Instant;
 @Entity
 public class Follow {
     @EmbeddedId
-    private FollowId id;
+    private FollowId id;// dùng FollowId là key (có kết hợp 2 key)
 
     @MapsId("followerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

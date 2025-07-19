@@ -35,9 +35,12 @@ public class UserService {
         if(userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTS);
         }
-
-
-
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new AppException(ErrorCode.EMAIL_EXISTS);
+        }
+        if(userRepository.existsByPhoneNumber(request.getPhoneNumber())){
+            throw new AppException(ErrorCode.PHONENUMBER_EXIST);
+        }
         User user = userMapper.toUser(request);//map các trường user vào request
 
         Role role = roleRepository.findByName(request.getRole())
