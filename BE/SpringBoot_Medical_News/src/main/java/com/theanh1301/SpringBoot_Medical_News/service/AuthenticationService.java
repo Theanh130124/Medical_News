@@ -200,7 +200,7 @@ public class AuthenticationService {
     }
 
 
-
+    //Logout save token vào trong invalidatedToken
     public void logout(LogoutRequest request) throws JOSEException, ParseException {
         try{
             var signToken = verifyToken(request.getToken(), false);

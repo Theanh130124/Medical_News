@@ -20,9 +20,12 @@ public enum ErrorCode {
     UNAUTHORIZED(1006,"Không có quyền thực hiện",HttpStatus.FORBIDDEN),
     INVALID_DOB(1007 ,"Bạn phải trên {min} tuổi ",HttpStatus.BAD_REQUEST),
     ROLE_NOT_FOUND(1008 , "Role chưa được tạo",HttpStatus.BAD_REQUEST), //gửi sai tên role
-    PHONENUMBER_INVALID(1009 ,"Số điện thoại không hợp lệ, phải có đúng {min} chữ số" , HttpStatus.BAD_REQUEST),
+    PHONENUMBER_INVALID(1009 ,"Số điện thoại không hợp lệ, phải có đúng 10 chữ số" , HttpStatus.BAD_REQUEST),
+    PHONENUMBER_EXIST(1013 , "Số điện thoại đã tồn tài", HttpStatus.BAD_REQUEST),
     ADDRESS_INVALID(1010,"Địa chỉ nơi ở quá ngắn , phải dài 10 ký tự",HttpStatus.BAD_REQUEST ),
-    EMAIL_INVALID(1011,"Địa chỉ email quá ngắn , phải dài hơn {min} ký tự",HttpStatus.BAD_REQUEST);
+    EMAIL_INVALID(1011,"Địa chỉ email quá ngắn , phải dài hơn {min} ký tự",HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTS(1012,"Địa chỉ email đã tồn tài",HttpStatus.BAD_REQUEST );
+
 
     private final int code;
     private final String msg;

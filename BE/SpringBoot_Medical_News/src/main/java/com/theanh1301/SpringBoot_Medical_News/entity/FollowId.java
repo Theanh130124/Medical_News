@@ -11,6 +11,8 @@ import org.hibernate.Hibernate;
 import java.io.Serializable;
 import java.util.Objects;
 
+
+//Kết 2 hợp key với nhau
 @Getter
 @Setter
 @Embeddable
