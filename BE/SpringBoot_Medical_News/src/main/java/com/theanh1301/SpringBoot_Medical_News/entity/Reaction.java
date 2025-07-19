@@ -46,4 +46,12 @@ public class Reaction {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+
+    }
+
+
+
 }
