@@ -43,6 +43,7 @@ public class UserService {
         }
         User user = userMapper.toUser(request);//map các trường user vào request
 
+
         Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
@@ -64,10 +65,10 @@ public class UserService {
 //        }
 //
         //Admin tạo
-        if(role.getName()== RoleName.DOCTOR) {
-            //để gửi chứng chỉ
-            user.setIsActive(false);
-        }
+        user.setIsActive(role.getName() != RoleName.DOCTOR); //false nếu doctor
+
+
+
         userRepository.save(user);
         //Chỉ trả ra các thông tin response
         return userMapper.toUserResponse(user);
