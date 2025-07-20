@@ -160,13 +160,19 @@ public class AuthenticationService {
 
     // Đăng nhập và tạo token
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var user = userRepository.findById(request.getUsername())
+        var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10); //mã hóa pass
+
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword()); // so sánh pass
         if(!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.PASSWORD_FAIL);
         }
+        if(!user.getIsActive())
+        {
+            throw new AppException(ErrorCode.IS_ACTIVEFALSE);
+        }
+
         var token = generateToken(user);
 
 
