@@ -1,6 +1,8 @@
 package com.theanh1301.SpringBoot_Medical_News.config;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -44,6 +46,21 @@ public class SecurityConfig {
     @Value("${jwt.signerKey}")
     @NonFinal
     String jwtSignerKey;
+
+    @Value("${cloudinary.cloud_name}")
+    @NonFinal
+    String cloudName;
+
+    @Value("${cloudinary.api_key}")
+    @NonFinal
+    String apiKey;
+
+    @Value("${cloudinary.api_secret}")
+    @NonFinal
+    String apiSecret;
+
+
+
 
 
 
@@ -92,4 +109,17 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
+
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary
+                = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret,
+                "secure", true));
+        return cloudinary;
+    }
+
 }

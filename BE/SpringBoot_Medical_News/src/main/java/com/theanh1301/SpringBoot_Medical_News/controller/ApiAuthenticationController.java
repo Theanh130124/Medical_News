@@ -5,6 +5,7 @@ import com.nimbusds.jose.JOSEException;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.AuthenticationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.IntrospectRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.LogoutRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.RefreshTokenRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.AuthenticationResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
@@ -44,6 +45,12 @@ public class ApiAuthenticationController {
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException , JOSEException {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder().message("Đăng xuất thành công").build();
+    }
+    //Dùng ghi nhớ mật khẩu (time cố định - 2 tiếng)
+    @PostMapping("/refresh")
+    public ApiResponse<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request) throws ParseException , JOSEException {
+        var res = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(res).build();
     }
 
 
