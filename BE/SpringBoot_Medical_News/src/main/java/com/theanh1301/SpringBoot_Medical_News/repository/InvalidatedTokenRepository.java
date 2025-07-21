@@ -7,6 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface InvalidatedTokenRepository extends JpaRepository<InvalidatedToken,String> {
-
-    Void deleteInvalidatedTokenByExpiryTime(Date expiryTime);
+    //Trả ra SL đã xóa
+    int deleteInvalidatedTokenByExpiryTimeBefore(Date expiryTimeBefore);
 }
