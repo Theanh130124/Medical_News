@@ -109,10 +109,6 @@ public class AuthenticationService {
         }
         return stringJoiner.toString();
     }
-
-
-
-
     //Tạo ra token của JWT
     private String generateToken(User user){
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
@@ -141,9 +137,6 @@ public class AuthenticationService {
         }
 
     }
-
-
-
     //Dùng introspect để decoder
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
@@ -156,8 +149,6 @@ public class AuthenticationService {
         }
         return IntrospectResponse.builder().valid(true).build();
     }
-
-
     // Đăng nhập và tạo token
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername())
@@ -178,8 +169,6 @@ public class AuthenticationService {
 
         return AuthenticationResponse.builder().token(token).authenticated(true).build();//trả token và đăng nhập oke
     }
-
-
     //refresh lại token
     public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws JOSEException, ParseException {
 
@@ -205,8 +194,6 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(token).authenticated(true).build(); // trả ra token và OKE
 
     }
-
-
     //Logout save token vào trong invalidatedToken
     public void logout(LogoutRequest request) throws JOSEException, ParseException {
         try{
