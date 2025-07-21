@@ -24,8 +24,8 @@ public class InvalidatedTokenCleaner {
     @Scheduled(fixedRateString = "${token.cleaner.fixedRate}") // 2 tiếng
     public void cleanExpiredTokens() {
         Date now = new Date();
-        invalidatedTokenRepository.deleteInvalidatedTokenByExpiryTime(now);
-        log.info("Đã xóa token hết hạn khỏi bảng invalidatedToken");
+        int deleted = invalidatedTokenRepository.deleteInvalidatedTokenByExpiryTimeBefore(now);
+        log.info("Đã xóa {} token hết hạn khỏi bảng invalidatedToken" , deleted);
 
     }
 }
