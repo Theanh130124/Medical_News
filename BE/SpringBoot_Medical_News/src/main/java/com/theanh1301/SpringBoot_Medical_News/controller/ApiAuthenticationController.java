@@ -43,7 +43,7 @@ public class ApiAuthenticationController {
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException , JOSEException {
         authenticationService.logout(request);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.<Void>builder().message("Đăng xuất thành công").build();
     }
 
 

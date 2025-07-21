@@ -183,14 +183,15 @@ public class AuthenticationService {
     //refresh lại token
     public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws JOSEException, ParseException {
 
+
+        //Nếu token sai (401 , 403)  thì trên kia xử lý -> đã trả ra token ở đây thì đã hợp lệ
         var singedJWT = verifyToken(request.getToken(),true); // là refresh nên để là true
         String jit = singedJWT.getJWTClaimsSet().getJWTID();
         Date expiryTime = singedJWT.getJWTClaimsSet().getExpirationTime(); // ngày hết hạn
 
 
 
-        //Lưu vào bảng invalid -> để vô hiệu hóa token này
-
+        //Lưu token cũ vào bảng invalid -> để vô hiệu hóa token này
         InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
         invalidatedTokenRepository.save(invalidatedToken);
 
