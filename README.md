@@ -8,7 +8,6 @@ industry project
 
 <h2>Anacoda prompt</h2>
 
-
 ```
 
 conda create -n medichatbot python=3.10 -y
@@ -33,12 +32,7 @@ python app.py
 
 ```
 
-
-
-
-
 <h1>BE - SPRINGBOOT - SETUP</h1>
-
 
 ```
 
@@ -51,4 +45,17 @@ python app.py
 ```
 
 ![1752468675941](image/README/1752468675941.png)
+
+
+
+<h1>Front end -REACTJS(TSX) - SETUP</h1>
+
+
+```
+yarn create react-app medical-news --template typescript
+
+yarn start
+
+```
+
 
