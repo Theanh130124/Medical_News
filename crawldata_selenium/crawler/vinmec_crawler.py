@@ -1,29 +1,31 @@
+import os
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 from datetime import datetime
 
 today = datetime.now().strftime("%Y-%m-%d")
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_CRAWL_DIR = os.path.join(CURRENT_DIR, "data_crawl")
 
-BASE_URL = "https://www.vinmec.com"
-START_URL = BASE_URL + "/vie/tra-cuu-benh/a/"
+BASE_URL = "https://www.vinmec.com/vie/benh/"
+
 
 driver = webdriver.Chrome()
 
 def crawl_vinmec():
     print("Đang truy cập trang tra cứu bệnh...")
-    driver.get("https://www.vinmec.com/vie/benh/")
+    driver.get(BASE_URL)
     time.sleep(3)
 
-    az_links = driver.find_elements(By.CSS_SELECTOR, "div.list_az a")
-    letters = [(link.text.strip(), link.get_attribute("href")) for link in az_links]  # A với link
+    az_links = driver.find_elements(By.CSS_SELECTOR, "div.list_az a") #
+    letters = [(link.text.strip(), link.get_attribute("href")) for link in az_links]  #A. B. C. và https://www.vinmec.com/vie/tra-cuu-benh/a/ , b ...
     print(f"Tìm thấy {len(az_links)} chữ cái A-Z")
 
-    all_data = []
-
+    all_data = [] #Phải lưu -> Vì re-render mất
     for letter, letter_href in letters:  # A-Z
         print(f"Đang xử lý chữ cái: {letter}")
-
         page_num = 1
         while True:
             # Tạo URL trang hiện tại
@@ -36,8 +38,8 @@ def crawl_vinmec():
             time.sleep(2)
 
             try:
-                ul = driver.find_element(By.CSS_SELECTOR, 'ul.list_result_AZ.flex')
-                li_items = ul.find_elements(By.TAG_NAME, 'li')
+                ul = driver.find_element(By.CSS_SELECTOR, 'ul.list_result_AZ.flex') #Danh sách bênh theo chữ cái
+                li_items = ul.find_elements(By.TAG_NAME, 'li') #Từng bệnh
 
                 if not li_items:
                     print(f"Không còn bệnh ở trang {page_num} của chữ {letter}")
@@ -63,8 +65,16 @@ def crawl_vinmec():
                         detail_text = ""
                         for item in detail_sections:
                             title = item.find_element(By.CLASS_NAME, 'title_detail_sick').text.strip()
-                            content = item.find_element(By.CLASS_NAME, 'body').text.strip()
-                            detail_text += f"{title}\n{content}\n\n"
+                            body_element = item.find_element(By.CLASS_NAME, 'body')
+
+                            #Bỏ phần xem thêm
+                            paragraphs = body_element.find_elements(By.XPATH, "./p | ./ul | ./ol | ./div")
+                            body_content = ""
+                            for para in paragraphs:
+                                if "Xem thêm" in para.text:
+                                    break  # Dừng lại nếu gặp "Xem thêm"
+                                body_content += para.text.strip() + "\n"
+                            detail_text += f"{title}\n{body_content}\n\n"
                     except:
                         detail_text = "Không tìm thấy nội dung."
 
@@ -88,8 +98,9 @@ def crawl_vinmec():
 if __name__ == "__main__":
     data = crawl_vinmec()
     file_name = f"Data_baiviet_benh_vinmec_{today}.txt"
+    file_path = os.path.join(DATA_CRAWL_DIR, file_name)
 
-    with open(file_name, "w", encoding="utf-8") as f:
+    with open(file_path, "w", encoding="utf-8") as f:
         for item in data:
             f.write(f"{item['letter']}: {item['name']}\n{item['detail']}\n{'='*80}\n")
     print(f"Crawl xong và lưu dữ liệu vào {file_name}")
