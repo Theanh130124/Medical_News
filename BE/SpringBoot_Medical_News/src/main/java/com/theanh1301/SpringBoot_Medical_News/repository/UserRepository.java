@@ -12,5 +12,4 @@ public interface UserRepository extends JpaRepository<User,String> {
     boolean existsByPhoneNumber(String phone);
     Optional<User> findByUsername(String username); //Phải tự xử lý trường hợp null
 
-
 }
