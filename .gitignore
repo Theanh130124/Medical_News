@@ -1,3 +1,5 @@
 coreRAG_chatbot/.env
 BE/SpringBoot_Medical_News/.env
 crawldata_selenium/venv
+crawldata_selenium/crawler/data_crawl 
+
