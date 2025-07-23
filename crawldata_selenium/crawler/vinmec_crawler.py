@@ -1,22 +1,16 @@
-import os
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-from datetime import datetime
 
-today = datetime.now().strftime("%Y-%m-%d")
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_CRAWL_DIR = os.path.join(CURRENT_DIR, "data_crawl")
+from crawler.config import *
 
-BASE_URL = "https://www.vinmec.com/vie/benh/"
 
 
 driver = webdriver.Chrome()
 
 def crawl_vinmec():
     print("Đang truy cập trang tra cứu bệnh...")
-    driver.get(BASE_URL)
+    driver.get(BASE_VINMEC_URL)
     time.sleep(3)
 
     az_links = driver.find_elements(By.CSS_SELECTOR, "div.list_az a") #
