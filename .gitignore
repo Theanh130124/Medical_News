@@ -1,5 +1,7 @@
 coreRAG_chatbot/.env
+coreRAG_chatbot/research/trials.ipynb
 BE/SpringBoot_Medical_News/.env
 crawldata_selenium/venv
 crawldata_selenium/crawler/data_crawl 
+
 
