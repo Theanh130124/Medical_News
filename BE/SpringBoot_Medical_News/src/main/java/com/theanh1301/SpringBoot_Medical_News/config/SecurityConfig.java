@@ -10,7 +10,7 @@ import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,12 +39,14 @@ public class SecurityConfig {
 
 
     //Field final được gán thi Spring không injection
-    final String[] PUBLIC_ENDPOINTS = {
+     String[] PUBLIC_ENDPOINTS = {
             "/api/users",
             "/api/auth/login",
             "/api/auth/logout",
             "/api/auth/introspect",
             "/api/auth/refresh"};
+
+
 
 
     @Value("${jwt.signerKey}")
@@ -71,9 +73,10 @@ public class SecurityConfig {
     CustomJwtDecoder customJwtDecoder;
 
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors(cors -> cors.configurationSource(corsConfigurationSource())).
-                authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+        httpSecurity.securityMatcher("/api/**").cors(cors -> cors.configurationSource(corsConfigurationSource())).
+                authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated());
         //cung cap token hop le vao header(cai nay xu ly ktra)
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
@@ -85,6 +88,28 @@ public class SecurityConfig {
 
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        return httpSecurity.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain formLoginFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login").permitAll()
+                        .requestMatchers("/stats").hasAnyAuthority("ADMIN", "DOCTOR")
+                .anyRequest().authenticated()
+        ).formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/" , true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+        ).logout(logout -> logout.logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
+
         return httpSecurity.build();
     }
 
@@ -117,13 +142,11 @@ public class SecurityConfig {
 
     @Bean
     public Cloudinary cloudinary() {
-        Cloudinary cloudinary
-                = new Cloudinary(ObjectUtils.asMap(
+        return new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", cloudName,
                 "api_key", apiKey,
                 "api_secret", apiSecret,
                 "secure", true));
-        return cloudinary;
     }
 
 
