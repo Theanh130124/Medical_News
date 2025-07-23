@@ -74,6 +74,9 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    public User getUserByUsername(String username){
+        return userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+    }
 
 
 
