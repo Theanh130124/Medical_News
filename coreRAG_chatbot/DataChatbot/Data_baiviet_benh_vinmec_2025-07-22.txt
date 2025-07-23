@@ -2599,3 +2599,301 @@ Thật khó khăn khi biết rằng con mình bị loạn dưỡng cơ Duchenne.
 Đứng và đi càng nhiều càng tốt. Đứng thẳng sẽ giữ cho con trẻ xương khỏe mạnh và cột sống thẳng.
 Ăn uống đúng cách. Không có chế độ ăn uống đặc biệt cho trẻ em bị loạn dưỡng cơ Duchenne, nhưng thực phẩm lành mạnh có thể ngăn ngừa các vấn đề về cân nặng hoặc giúp trị táo bón. Phụ huynh nên xin ý kiến của chuyên gia dinh dưỡng để đảm bảo trẻ ăn cân bằng các chất dinh dưỡng và đủ lượng calo mỗi ngày.
 Tập thể dục và uốn dẻo có thể giữ cho trẻ có cơ bắp khỏe mạnh và các khớp xương cảm thấy tốt hơn. Kỹ thuật viên vật lý trị liệu có thể dạy cho trẻ cách tập thể dục an toàn mà không cần quá sức.
+
+================================================================================
+B: Bệnh lỵ: Nguyên nhân, triệu chứng, chẩn đoán và điều trị
+Tổng quan bệnh Bệnh lỵ
+Kiết lỵ hay còn gọi là bệnh lỵ là một bệnh nhiễm trùng đường ruột gây ra tiêu chảy nghiêm trọng, ngoài phân lỏng còn kèm theo máu. Trong một số trường hợp, chất nhầy có thể được tìm thấy trong phân kéo dài từ 3 đến 7 ngày.
+Bệnh kiết lỵ thường lây lan do vệ sinh kém. Ví dụ, nếu một người mắc bệnh kiết lỵ không rửa tay sau khi đi vệ sinh, bất cứ điều gì họ chạm vào đều có nguy cơ.
+Nhiễm trùng cũng lây lan qua tiếp xúc với thực phẩm hoặc nước đã bị nhiễm phân. Rửa tay cẩn thận và vệ sinh đúng cách có thể giúp ngăn ngừa bệnh lỵ và tránh không lây lan.
+Biến chứng của bệnh lỵ rất ít, nhưng nếu có thì có thể nghiêm trọng như:
+Mất nước: Tiêu chảy và nôn mửa thường xuyên nhanh chóng dẫn đến mất nước. Có thể dẫn tới tử vong sớm ở trẻ sơ sinh và trẻ nhỏ.
+Áp xe gan: Nếu amip lan đến gan và hình thành ổ áp xe.
+Viêm khớp sau nhiễm trùng
+Hội chứng huyết tán tăng urê máu (Hemolytic uremic syndrome): Shigella dysenteriae có thể khiến các tế bào hồng cầu chặn lối vào thận, dẫn đến thiếu máu, số lượng tiểu cầu thấp và suy thận.
+Bệnh nhân cũng có thể có các cơn co giật sau khi nhiễm trùng.
+
+
+Nguyên nhân bệnh Bệnh lỵ
+Theo Tổ chức Y tế Thế giới (WHO) có hai loại bệnh lỵ chính.
+Bệnh lỵ trực khuẩn, hay shigellosis
+Loại này gây ra các triệu chứng nghiêm trọng nhất, được gây ra bởi trực khuẩn Shigella.
+Bệnh lỵ amip, hay bệnh amip
+Loại này gây ra bởi một loại amip có tên là Entamoeba histolytica (E. histolytica). Các amip đứng cạnh nhau để tạo thành nang và những nang được đào thải ra khỏi cơ thể theo phân ra ngoài.
+Ở những khu vực vệ sinh kém, amip có thể làm ô nhiễm thực phẩm, nước và lây nhiễm cho người khác, vì chúng có thể tồn tại trong thời gian dài bên ngoài cơ thể.
+
+
+Triệu chứng bệnh Bệnh lỵ
+Các triệu chứng của bệnh lỵ từ nhẹ đến nặng, gồm:
+Dau bụng nhẹ
+Chuột rút
+Tiêu chảy
+Chúng thường xuất hiện từ 1 đến 3 ngày sau khi bị nhiễm trùng và bệnh nhân hồi phục trong vòng một tuần.
+Triệu chứng của bệnh lỵ trực khuẩn
+Các triệu chứng có xu hướng xuất hiện trong vòng 1 đến 3 ngày sau khi bị nhiễm trùng. Thông thường có cơn đau dạ dày và tiêu chảy nhẹ, nhưng không có máu hoặc chất nhầy trong phân. Tiêu chảy có thể thường xuyên để bắt đầu. Ngoài ra có một số triệu chứng như:
+Máu hoặc chất nhầy trong phân
+Sốt
+Buồn nôn
+Nôn
+Triệu chứng của bệnh lỵ amip. Một người mắc bệnh lỵ amip có thể có:
+Đau bụng
+Sốt và ớn lạnh
+Buồn nôn và ói mửa
+Tiêu chảy, có thể kèm theo máu, chất nhầy hoặc mủ
+Đau khi đi đại tiện
+Mệt mỏi
+Nếu amip xuyên qua thành ruột, chúng có thể lan vào máu và lây nhiễm các cơ quan khác.
+Các amip có thể tiếp tục sống trong vật chủ của người sau khi các triệu chứng đã biến mất. Sau đó, các triệu chứng có thể tái phát khi hệ thống miễn dịch của người đó bị yếu.
+
+
+Đường lây truyền bệnh Bệnh lỵ
+Nguyên nhân bệnh lỵ là do vi khuẩn shigella gây viêm toàn bộ đại tràng và trực tràng. Bệnh thường lây truyền qua phân do vệ sinh kém như:
+Thực phẩm bị ô nhiễm
+Nước bị ô nhiễm
+Người bị bệnh không tuân thủ rửa tay
+Bơi trong nước bị ô nhiễm như hồ hoặc hồ
+Tiếp xúc trực tiếp với người bệnh như chạm, ôm hôn
+Bệnh lỵ chủ yếu lây lan ở những người tiếp xúc gần gũi với người bị nhiễm bệnh ở:
+Nhà
+Trong các trung tâm chăm sóc ban ngày
+Trường học
+Nhà dưỡng lão
+
+
+Đối tượng nguy cơ bệnh Bệnh lỵ
+Bệnh lỵ ở trẻ em có tỷ lệ cao nhất, do đó trẻ là đối tượng có nguy cơ cao nhất, nhưng bất cứ ai cũng có thể mắc bệnh ở mọi lứa tuổi. Bệnh kiết lỵ dễ dàng lây lan qua tiếp xúc giữa người với người và thực phẩm, đồ uống bị ô nhiễm.
+
+
+Phòng ngừa bệnh Bệnh lỵ
+Bệnh lý có thể được ngăn ngừa thông qua các thực hành vệ sinh tốt như:
+Rửa tay thường xuyên
+Cẩn thận khi thay tã cho trẻ bị ốm.
+Không nuốt nước khi bơi
+Không uống đồ uống với đá viên
+Hạn chế hoặc không ăn các thực phẩm và đồ uống được bán bởi những người bán hàng rong
+Hạn chế hoặc không ăn trái cây đã bóc sẵn, trừ khi tự bóc chúng.
+Nguồn nước an toàn bao gồm:
+Nước đóng chai
+Nước có ga trong lon hoặc chai
+Nước máy đã được đun sôi
+
+
+Các biện pháp chẩn đoán bệnh Bệnh lỵ
+Ngoài về khám các triệu chứng thực thể, hỏi tiền sử và triệu chứng hiện tại của người bệnh, bác sĩ sẽ chỉ định thực hiện xét nghiệm như cấy phân tươi hoặc phết trực tràng, soi trực tràng để xem  trực tràng có bị tổn thương do lỵ chưa, huyết thanh chẩn đoán, phương pháp miễn dịch huỳnh quang trực tiếp để nhận diện lỵ trực khuẩn, công thức máu.
+
+
+Các biện pháp điều trị bệnh Bệnh lỵ
+Bệnh lỵ nhẹ thường được điều trị bằng nghỉ ngơi và uống nhiều chất lỏng, ngoài ra có thể sử dụng thêm các thuốc không kê đơn nhằm giảm triệu chứng chuột rút và tiêu chảy. Người bệnh nên tránh các loại thuốc làm chậm đường ruột, có thể làm cho tình trạng bệnh càng tồi tệ hơn.
+Bệnh lỵ nặng có thể được điều trị bằng kháng sinh, nhưng vi khuẩn gây ra nó thường kháng thuốc. Nếu bác sĩ kê toa một loại thuốc kháng sinh, sau khi sử dụng nếu người bệnh thấy cải thiện sau vài ngày, hãy cho bác sĩ biết. Chủng vi khuẩn Shigella đó có thể kháng thuốc và bác sĩ có thể cần điều chỉnh kế hoạch điều trị.
+Bệnh lỵ do amip được điều trị bằng metronidazole hoặc tinidazole. Những loại thuốc này tiêu diệt ký sinh trùng.
+
+
+
+================================================================================
+B: Bệnh quai bị: Nguyên nhân, triệu chứng, chẩn đoán và điều trị
+Tổng quan bệnh Bệnh quai bị
+Bệnh quai bị là bệnh gì? Quai bị là bệnh truyền nhiễm cấp tính do virus với biểu hiện đặc trưng là sưng đau tuyến nước bọt. Ngoài ra, bệnh còn có thể gây viêm tuyến sinh dục, viêm màng não, viêm tụy và một số biến chứng khác nếu không điều trị kịp thời. Trẻ em là đối tượng thường xuyên nhiễm quai bị trừ độ tuổi nhũ nhi ( ít hơn 1 tuổi) thì hiếm khi bị, nguyên nhân có thể do vẫn còn kháng thể tốt từ mẹ.
+
+
+Nguyên nhân bệnh Bệnh quai bị
+Bệnh quai bị gây ra do virus quai bị thuộc nhóm Paramyxovirus. Người bệnh thường có khả năng lây nhiễm cao nhất từ hai ngày trước khi các triệu chứng xuất hiện hoặc sáu ngày sau khi các triệu chứng kết thúc.
+
+
+Triệu chứng bệnh Bệnh quai bị
+Phần lớn bệnh quai bị thường khởi phát với triệu chứng sớm là sốt ( trên 39°C) sau đó triệu chứng bệnh quai bị sẽ đặc trưng bởi viêm tuyến nước bọt mang tai với các biểu hiện sau:
+Trẻ có cảm giác đau ở ngoài ống tai ngoài, lan dần ra xung quanh.
+Sau 1-2 ngày, tuyến mang tai sẽ dần sưng to, lan ra vùng trước tai rồi lan xuống dưới hàm ( thấy mất rãnh dưới hàm), da vùng sưng không nóng đỏ. Triệu chứng sưng thường ở cả 2 bên tuyến mang tai.
+Trong thời điểm này, trẻ sẽ cảm thấy đau khi nuốt, nói, nhai hoặc uống nước có tính axit
+Triệu chứng toàn thân kèm theo có thể là: sốt, mệt mỏi, nhức đầu, đau nhức xương khớp, ăn ngủ kém
+Sau 1 tuần, tuyến mang tai giảm đau và nhỏ dần, hết sốt và triệu chứng toàn thân cũng thuyên giảm.
+Bệnh quai bị còn có thể gây ra một số biến chứng ở các cơ quan khác như:
+Viêm tinh hoàn: Ban đầu, bệnh nhân đau ở tinh hoàn sau đó tinh hoàn sưng to gấp 3-4 lần bình thường, đau nhức, da bìu đỏ, đôi khi sưng to cả mào tinh.  Thường biểu hiện sưng chỉ ở một bên tinh hoàn nhưng cũng có thể sưng cả hai bên. Triệu chứng sưng tinh hoàn kéo dài lâu hơn cả bệnh với khoảng 2 tuần mới hết sưng và 2 tháng mới đánh giá được lại teo tinh hoàn.
+Viêm màng não: xuất hiện sốt cao, đau nhức đầu, nôn, rối loạn ý thức, co giật, cứng cổ.
+Viêm tụy cấp: biến chứng gặp ở người lớn nhiều hơn và thường là thể ẩn. Một số triệu chứng có thể gặp là bệnh nhân sốt, đau thượng vị kèm nôn, đầy bụng hoặc ỉa lỏng, chán ăn…
+
+
+Đường lây truyền bệnh Bệnh quai bị
+Bệnh quai bị lây truyền qua đường nào?
+Đường hô hấp là chủ yếu do các bụi nước trong hơi thở người bệnh truyền sang người lành thông qua động tác ho, hắt hơi, khạc nhổ, giao tiếp. Sau đó, người lành hít phải sẽ tồn tại virus bám vào niêm mạc mũi miệng, kết mạc và xâm nhập vào nội tạng qua đường máu.
+
+
+Đối tượng nguy cơ bệnh Bệnh quai bị
+Đối tượng hay mắc quai bị nhất là trẻ em từ 3 tuổi trở lên, chính là độ tuổi trẻ bắt đầu đi học mẫu giáo và tăng nguy cơ mắc phải từ cộng đồng.
+Trong đó, hay gặp nhất là độ tuổi từ 5-9 tuổi và thanh niên.
+Bệnh gặp ở nam nhiều hơn nữ
+Người có hệ thống miễn dịch yếu
+
+
+Phòng ngừa bệnh Bệnh quai bị
+Một số biện pháp để chủ động phòng ngừa bệnh quai bị được khuyến cáo gồm:
+Rửa tay thường xuyên với xà phòng, đảm bảo vệ sinh nhà ở, lớp học, vệ sinh cá nhân sạch sẽ, đặc biệt là đường hô hấp, thường xuyên đeo khẩu trang để tránh viêm nhiễm gây nên bệnh quai bị
+Tiêm vaccine phòng bệnh quai bị, đây là yếu tố rất quan trọng cho những trẻ dậy thì, thiếu niên và người trưởng thành chưa có miễn dịch
+Người bệnh cần cách ly trong khoảng 10 ngày để tránh lây lan cho người khác
+Người nghi ngờ bị bệnh cần đến ngay cơ sở y tế để được khám, tư vấn và xử trí kịp thời, đặc biệt với các trường hợp khó nuốt, khó thở, viêm tinh hoàn
+
+
+Các biện pháp chẩn đoán bệnh Bệnh quai bị
+Chẩn đoán bệnh quai bị dựa vào triệu chứng lâm sàng và xét nghiệm cần thiết để chẩn đoán xác định:
+Về lâm sàng: Triệu chứng đặc trưng là bệnh nhân có sốt, mệt mỏi, đặc biệt là sưng đau một hoặc nhiều tuyến nước bọt mang tai, có thể kèm viêm tinh hoàn, viêm màng não hoặc viêm tụy.
+Về xét nghiệm: Nhìn chung triệu chứng lâm sàng của bệnh quai bị khá điển hình nên xét nghiệm chỉ được sử dụng khi cần thiết như: Miễn dịch gắn men (ELISA) để phát hiện kháng thể quai bị trong máu hoặc miễn dịch huỳnh quang gián tiếp (IFA) phát hiện kháng nguyên, kháng thể đặc hiệu.
+
+
+Các biện pháp điều trị bệnh Bệnh quai bị
+Hiện nay, bệnh quai bị không có thuốc điều trị đặc hiệu nên nguyên tắc điều trị bệnh hiện nay chủ yếu là điều trị triệu chứng và biến chứng:
+Hạn chế vận động tối đa, an thần và chăm sóc tốt bệnh nhân nhất là trong giai đoạn toàn phát
+Điều trị chống viêm tinh hoàn, buồng trứng, viêm tụy, viêm màng não
+Chỉ dùng kháng sinh khi có bội nhiễm vi khuẩn theo đúng chỉ định
+Với các thể nặng có thể dùng globulin miễn dịch kết hợp
+
+
+
+================================================================================
+B: Bệnh Rubella: Nguyên nhân, triệu chứng, chẩn đoán và điều trị
+Tổng quan bệnh Bệnh Rubella
+Rubella là bệnh gì? Rubella là truyền nhiễm cấp tính do nhiễm virus đặc trưng bởi biểu hiện nổi ban đỏ. Bệnh rubella thường không nguy hiểm đối với trẻ em và người trưởng thành, tuy nhiên lại bệnh Rubella đặc biệt nguy hiểm với phụ nữ mang thai trong ba tháng đầu. Khi virus truyền từ mẹ sang con trong giai đoạn này có thể dẫn tới dị tật thai nhi trong tương lai.
+
+
+Nguyên nhân bệnh Bệnh Rubella
+Tác nhân gây bệnh Rubella là virus Rubella thuộc giống Rubivirus, họ Togaviridae. Đây là một loại virus chỉ tồn tại và nhân lên trong cơ thể, sức đề kháng của virus Rubella cũng rất yếu và dễ mất tính gây nhiễm bởi các tác nhân như nhiệt độ, ánh sáng và thuốc sát khuẩn thông thường.
+
+
+Triệu chứng bệnh Bệnh Rubella
+Bệnh nhân có thể không có triệu chứng nào khi mắc bệnh Rubella, thường sau 2-3 tuần phơi nhiễm thì triệu chứng bệnh sởi Rubella mới xuất hiện:
+Bệnh khởi phát với sốt nhẹ, đau đầu, mệt mỏi, viêm mũi xuất tiết và viêm màng kết mạc mắt.
+Sau đó, bệnh nhân có thể sưng hạch bạch huyết ở sau tai, chẩm, sau cổ rồi tiến tới phát ban trong khoảng 5-10 ngày
+Ban xuất hiện ban đầu ở mặt, sau đó lan ra toàn thân. Tuy nhiên 50% trường hợp bệnh lại không có phát ban nên dễ nhầm lẫn với bệnh khác
+Các biến chứng có thể gặp của Rubella: sưng đau khớp ở phụ nữ trẻ tuổi hoặc biến chứng viêm não ở người lớn
+Rubella dù ở thể ẩn vẫn rất nguy hiểm với phụ nữ mang thai trong 3 tháng đầu vì sẽ khiến thai nhi chết lưu, sinh non hoặc mắc hội chứng Rubella bẩm sinh với các dị tật nghiêm trọng như: điếc, đục thủy tinh thể, viêm màng não- gan,…
+
+
+Đối tượng nguy cơ bệnh Bệnh Rubella
+Tất cả những người chưa có miễn dịch với Rubella đều có nguy cơ mắc bệnh. Những khu dân cư đông đúc có thể là điều kiện thuận lợi để tăng nguy cơ mắc bệnh.
+Những người đi đến các quốc gia khác hoặc vùng dịch cũng có nguy cơ mắc phải Rubella
+Tại Việt Nam, nhóm đối tượng có nguy cơ mắc Rubella cao bao gồm trẻ em, thiếu niên và thanh niên. Vì vậy những người này cần được tiêm chủng vaccine Rubella để phòng bệnh
+
+
+Phòng ngừa bệnh Bệnh Rubella
+Bệnh Rubella hiện chưa có thuốc điều trị đặc hiệu nên chủ động tiêm vaccine Rubella vẫn là biện pháp tốt nhất để phòng bệnh
+Vì mức độ nguy hiểm của bệnh Rubella, với phụ nữ mang thai cần:
+Tiêm phòng vaccine là biện pháp hiệu quả nhất để phòng hội chứng Rubella bẩm sinh
+Hạn chế tiếp xúc với bệnh nhân có sốt, phát ban hoặc trẻ mắc hội chứng Rubella bẩm sinh
+Nếu phụ nữ mang thai trong những tháng đầu có triệu chứng sốt, phát ban cần đến các cơ sở y tế ngay để được khám, xét nghiệm, chẩn đoán và tư vấn kịp thời để hạn chế biến chứng của bệnh.
+
+
+Các biện pháp chẩn đoán bệnh Bệnh Rubella
+Bệnh sởi Rubella được chẩn đoán chủ yếu dựa vào lâm sàng với các biểu hiện: đau đầu, mệt mỏi, khó chịu, sốt nhẹ, chán ăn. Sau đó biểu hiện phát ban dạng sởi, sưng hạch bạch huyết ở sau tai, chẩm và sau cổ.
+Các xét nghiệm có thể chẩn đoán xác định bệnh gồm có: ELISA(+) hoặc phân lập được virus Rubella(+)
+
+
+Các biện pháp điều trị bệnh Bệnh Rubella
+Cho tới nay, quá trình phát triển bệnh và tự miễn dịch Rubella vẫn chưa có cách rút ngắn, nếu đã nhiễm bệnh thì cơ thể bệnh nhân sẽ tự đề kháng và miễn dịch với bệnh vĩnh viễn
+Điều trị chủ yếu là làm giảm các triệu chứng như hạ sốt hay giảm đau, có thể dùng kem bôi ngoài da nếu có biểu hiện ngứa.
+Nếu đang mang thai, bác sĩ có thể chỉ định kháng nguyên Rubella (hyperimmune globulin) để giúp mẹ tự đề kháng với virus nhưng con vẫn có nguy cơ dị tật bẩm sinh.
+
+
+
+================================================================================
+B: Bệnh sa sút trí tuệ (Dementia): Nguyên nhân, triệu chứng, chẩn đoán và điều trị
+Tổng quan bệnh Bệnh sa sút trí tuệ (Dementia)
+Sa sút trí tuệ (Dementia) mô tả một nhóm các triệu chứng ảnh hưởng đến trí nhớ, suy nghĩ và khả năng xã hội đủ nghiêm trọng để ảnh hưởng đến cuộc sống hàng ngày của người mắc phải. Đây không phải là một bệnh cụ thể, nhưng một số bệnh khác nhau cũng có thể gây ra chứng sa sút trí tuệ.
+Mặc dù sa sút trí tuệ nói chung liên quan đến mất trí nhớ, mất trí nhớ có những nguyên nhân khác nhau. Nếu chỉ có triệu chứng mất trí nhớ thì không có nghĩa là người đó bị sa sút trí tuệ.
+Bệnh Alzheimer là nguyên nhân phổ biến nhất của chứng mất trí tiến triển ở người lớn tuổi, nhưng có một số nguyên nhân khác cũng gây sa sút trí tuệ. Tùy thuộc vào nguyên nhân, một số triệu chứng sa sút trí tuệ có thể hồi phục.
+
+
+Nguyên nhân bệnh Bệnh sa sút trí tuệ (Dementia)
+Nguyên nhân gây bệnh sa sút trí tuệ do tổn thương hoặc mất các tế bào thần kinh và các kết nối của chúng ở trong não. Tùy thuộc vào khu vực não bị ảnh hưởng do tổn thương thì chứng sa sút trí tuệ có thể ảnh hưởng đến mỗi người khác nhau và gây ra các triệu chứng khác nhau.
+Chứng sa sút trí tuệ thường được chia theo nhóm theo những đặc điểm chung. Một số bệnh trông giống như chứng sa sút trí tuệ, chẳng hạn như những bệnh gây ra bởi phản ứng với thuốc hoặc thiếu vitamin và các tình trạng này có thể cải thiện khi người bệnh được điều trị.
+Các loại chứng sa sút trí tuệ tiến triển và không hồi phục bao gồm:
+Bệnh Alzheimer. Bệnh Alzheimer là nguyên nhân phổ biến nhất của chứng sa sút trí tuệ. Hiện nay, mặc dù phần lớn các nguyên nhân gây bệnh Alzheimer chưa được nắm rõ, các chuyên gia đều biết rằng một tỷ lệ nhỏ có liên quan đến đột biến ở ba gen, có thể truyền từ cha mẹ sang con. Trong khi một số gen khác nhau có thể liên quan đến bệnh Alzheimer, một gen quan trọng làm tăng nguy cơ là apolipoprotein E4 (APOE). Bệnh nhân mắc bệnh Alzheimer có các mảng và đám rối trong não. Mảng bám là một khối của một protein gọi là beta-amyloid và các đám  rối là các rối sợi được tạo thành từ protein Tau. Người ta nghĩ rằng những khối này làm hỏng các tế bào thần kinh khỏe mạnh và các sợi kết nối chúng. Các yếu tố di truyền khác có thể khiến mọi người có khả năng mắc bệnh Alzheimer.
+Sa sút trí tuệ não mạch (Vascular dementia). Loại sa sút trí tuệ phổ biến thứ hai này là do tổn thương các mạch cung cấp máu cho não của người bệnh. Các vấn đề về mạch máu có thể gây ra đột quỵ hoặc làm hỏng não theo những cách khác nhau, chẳng hạn như làm hỏng các sợi trong chất trắng của não. Các triệu chứng phổ biến nhất của chứng Sa sút trí tuệ não mạch bao gồm khó khăn trong việc giải quyết vấn đề, suy nghĩ chậm, tập trung và tổ chức. Những xu hướng này đáng chú ý hơn là mất trí nhớ.
+Sa sút trí tuệ thể Lewy (Lewy body dementia). Sa sút trí tuệ thể Lewy là khối  khối protein bất thường có hình dạng giống như quả bóng bay được tìm thấy trong não của những người mắc chứng sa sút trí tuệ thể Lewy như bệnh Alzheimer và bệnh Parkinson. Đây là một trong những rối loạn mất trí tiến triển phổ biến hơn. Các dấu hiệu và triệu chứng phổ biến bao gồm có hành vi trong quá trình mơ khi ngủ, nhìn thấy những thứ không có thật (hay còn gọi là ảo giác thị giác) và các vấn đề về tập trung và chú ý. Các dấu hiệu khác bao gồm di chuyển không phối hợp hoặc chậm, run rẩy và cứng nhắc (parkinsonism).
+Bệnh sa sút trí tuệ tiền đình thái dương (frontotemporal dementia). Đây là một nhóm bệnh đặc trưng bởi sự phá vỡ (thoái hóa) của các tế bào thần kinh và các kết nối của chúng ở thùy trán và thái dương của não, các khu vực thường liên quan đến tính cách, hành vi và ngôn ngữ. Các triệu chứng phổ biến ảnh hưởng đến hành vi, tính cách, suy nghĩ, phán đoán, và ngôn ngữ và chuyển động.
+Sa sút trí tuệ hỗn hợp (Mixed Dementia). Nghiên cứu khám nghiệm tử thi não của những người từ 80 tuổi trở lên mắc chứng mất trí nhớ cho thấy nhiều người có sự kết hợp của một số nguyên nhân, chẳng hạn như bệnh Alzheimer, chứng sa sút trí tuệ não mạch và sa sút trí tuệ thể Lewy. Các nghiên cứu đang được tiến hành để xác định mức độ mất trí nhớ hỗn hợp ảnh hưởng đến các triệu chứng và phương pháp điều trị.
+Bệnh Huntington được biết đến là một bệnh di truyền làm ảnh hưởng đến những tế bào thần kinh trong não. Quá trình tổn thương não sẽ có khuynh hướng ngày càng nghiêm trọng hơn và có thể ảnh hưởng đến sự vận động và những nhận thức cũng như hành vi và thường xuất hiện khoảng 30 hoặc 40 tuổi.
+Chấn thương sọ não. Tình trạng này thường được gây ra bởi chấn thương đầu lặp đi lặp lại như võ sĩ, cầu thủ bóng đá hoặc chiến sĩ. Tùy thuộc vào phần não bị tổn thương, tình trạng này có thể gây ra các dấu hiệu và triệu chứng sa sút trí tuệ như trầm cảm, bùng nổ, giảm trí nhớ và suy giảm khả năng nói. Ngoài ra, chấn thương sọ não cũng có thể gây ra bệnh parkinson, các triệu chứng có thể không xuất hiện cho đến nhiều năm sau chấn thương.
+Bệnh Creutzfeldt-Jakob (Bệnh bò điên; CJD: Nhũn não). Các dấu hiệu và triệu chứng của bệnh này thường xuất hiện sau 60 tuổi.
+Bệnh Parkinson. Nhiều người mắc bệnh Parkinson cuối cùng phát triển các triệu chứng sa sút trí tuệ (chứng mất trí nhớ bệnh Parkinson).
+Một số nguyên nhân gây ra chứng mất trí nhớ hoặc các triệu chứng giống như mất trí nhớ có thể được đảo ngược bằng điều trị như:
+Nhiễm trùng và rối loạn miễn dịch. Các triệu chứng giống như chứng mất trí nhớ có thể là do sốt hoặc các tác dụng phụ khác trong nỗ lực chống nhiễm trùng của cơ thể. Bệnh đa xơ cứng (Multiple Sclerosis) và các tình trạng khác do hệ thống miễn dịch của cơ thể tấn công các tế bào thần kinh cũng có thể gây ra chứng mất trí nhớ.
+Vấn đề trao đổi chất và bất thường nội tiết. Những người có vấn đề về tuyến giáp, lượng đường trong máu thấp, quá ít hoặc quá nhiều natri hoặc canxi, hoặc các vấn đề hấp thụ vitamin B-12 có thể phát triển các triệu chứng giống như sa sút trí tuệ hoặc thay đổi tính cách khác.
+Thiếu hụt dinh dưỡng. Không uống đủ hoặc bù đủ chất lỏng dẫn tới mất nước; không nhận đủ thiamin (vitamin B-1), thường gặp ở những người nghiện rượu mãn tính; và không nhận đủ vitamin B-6 và B-12 trong chế độ ăn uống có thể gây ra các triệu chứng giống như sa sút trí tuệ. Thiếu hụt đồng và vitamin E cũng có thể gây ra các triệu chứng sa sút trí tuệ.
+Tác dụng phụ của thuốc. Tác dụng phụ của thuốc, phản ứng với thuốc hoặc tương tác của một số loại thuốc có thể gây ra các triệu chứng giống như sa sút trí tuệ.
+Tụ máu dưới màng cứng. Chảy máu giữa bề mặt não và màng não, thường gặp ở người cao tuổi sau khi ngã, có thể gây ra các triệu chứng tương tự như chứng sa sút trí tuệ.
+Ngộ độc. Tiếp xúc với kim loại nặng, chẳng hạn như chì và các chất độc khác, thuốc trừ sâu, thuốc hướng thần hoặc sử dụng rượu nặng có thể dẫn đến các triệu chứng sa sút trí tuệ. Các triệu chứng có thể giải quyết bằng điều trị.
+U não. Hiếm khi, chứng mất trí có thể xảy ra do tổn thương do khối u não gây ra.
+Anoxia. Tình trạng này, còn được gọi là thiếu oxy, xảy ra khi các mô cơ quan không nhận đủ oxy. Anoxia có thể xảy ra do ngưng thở khi hen suyễn, đau tim, ngộ độc carbon monoxide hoặc các nguyên nhân khác.
+
+
+Triệu chứng bệnh Bệnh sa sút trí tuệ (Dementia)
+Các triệu chứng sa sút trí tuệ khác nhau tùy thuộc vào nguyên nhân, nhưng các dấu hiệu và triệu chứng phổ biến bao gồm:
+Thay đổi nhận thức
+Mất trí nhớ
+Khó giao tiếp hoặc tìm từ
+Khó khăn với khả năng thị giác và không gian, chẳng hạn như bị lạc trong khi lái xe
+Khó khăn trong việc suy luận hoặc giải quyết vấn đề
+Khó xử lý các nhiệm vụ phức tạp
+Khó khăn với việc lập kế hoạch và tổ chức
+Khó khăn với sự phối hợp và chức năng vận động
+Nhầm lẫn và mất phương hướng
+Thay đổi tâm lý
+Thay đổi tính cách
+Phiền muộn
+Lo âu
+Hành vi không phù hợp
+Chứng hoang tưởng
+Kích động
+Ảo giác
+Khi nào đi khám bác sĩ?
+Gặp bác sĩ sớm nếu người bệnh hoặc người thân có vấn đề về trí nhớ hoặc các triệu chứng sa sút trí tuệ. Một số phương pháp điều trị hay bệnh đều có thể gây ra các triệu chứng sa sút trí tuệ, vì vậy điều quan trọng là cần xác định nguyên nhân.
+
+
+Đường lây truyền bệnh Bệnh sa sút trí tuệ (Dementia)
+Bệnh sa sút trí tuệ không phải là bệnh truyền nhiễm, do đó, không lây truyền từ người mắc bệnh sang người khỏe mạnh.
+
+
+Đối tượng nguy cơ bệnh Bệnh sa sút trí tuệ (Dementia)
+Có rất nhiều yếu tố cuối cùng có thể góp phần vào chứng sa sút trí tuệ và các yếu tố nguy cơ này được chia thành hai nhóm:
+Tuổi tác. Nguy cơ tăng lên khi già đi, đặc biệt là sau 65 tuổi. Tuy nhiên, chứng sa sút trí tuệ không phải là một phần bình thường của lão hóa và chứng mất trí nhớ có thể xảy ra ở những người trẻ tuổi.
+Tiền sử gia đình. Có tiền sử gia đình mắc chứng sa sút trí tuệ khiến thế hệ sau có nguy cơ mắc bệnh cao hơn. Tuy nhiên, nhiều người có tiền sử gia đình không bao giờ phát triển các triệu chứng và nhiều người không có tiền sử gia đình nhưng lại bị sa sút trí tuệ.
+Hội chứng Down. Ở tuổi trung niên, nhiều người mắc hội chứng Down khởi phát bệnh Alzheimer sớm so với người bình thường.
+Bạn có thể kiểm soát các yếu tố nguy cơ sau đây đối với chứng sa sút trí tuệ.
+Ăn kiêng và tập thể dục. Nghiên cứu cho thấy thiếu tập thể dục làm tăng nguy cơ mắc chứng sa sút trí tuệ. Và mặc dù không có chế độ ăn kiêng cụ thể nào làm giảm nguy cơ mắc chứng sa sút trí tuệ, nhiều nghiên cứu chỉ ra tỷ lệ mắc chứng mất trí nhớ cao hơn ở những người ăn chế độ ăn không lành mạnh so với những người theo chế độ ăn kiểu Địa Trung Hải giàu sản phẩm, ngũ cốc, hạt và hạt.
+Uống nhiều rượu bia.
+Yếu tố nguy cơ tim mạch bao gồm huyết áp cao (tăng huyết áp), cholesterol cao, tích tụ chất béo trong thành động mạch (xơ vữa động mạch) và béo phì.
+Phiền muộn. Mặc dù cơ chế chưa được hiểu rõ nhưng trầm cảm ở giai đoạn cuối đời có thể cho thấy sự phát triển của chứng sa sút trí tuệ.
+Bệnh tiểu đường có thể làm tăng nguy cơ mắc chứng sa sút trí tuệ, đặc biệt là khi bệnh tiểu được được kiểm soát kém.
+Hút thuốc. Hút thuốc có thể làm tăng nguy cơ mắc bệnh sa sút trí tuệ và các bệnh về mạch máu.
+Hội chứng ngưng thở khi ngủ.
+Thiếu vitamin và dinh dưỡng. Hàm lượng vitamin D, vitamin B-6, vitamin B-12 và folate thấp có thể làm tăng nguy cơ mắc chứng sa sút trí tuệ.
+
+
+Phòng ngừa bệnh Bệnh sa sút trí tuệ (Dementia)
+Không có cách nào chắc chắn để ngăn ngừa chứng sa sút trí tuệ, nhưng có những bước có thể hữu ích như sau:
+Giữ cho tâm trí hoạt động. Các hoạt động kích thích tinh thần, chẳng hạn như đọc, giải câu đố và chơi trò chơi chữ và rèn luyện trí nhớ có thể trì hoãn sự khởi phát của chứng sa sút trí tuệ và giảm hậu quả của nó.
+Hoạt động thể chất và xã hội. Hoạt động thể chất và tương tác xã hội có thể trì hoãn sự khởi phát của chứng sa sút trí tuệ và giảm các triệu chứng của nó.
+Từ bỏ hút thuốc lá. Một số nghiên cứu đã chỉ ra rằng hút thuốc lá ở tuổi trung niên trở lên có thể làm tăng nguy cơ mắc chứng sa sút trí tuệ và các bệnh về mạch máu. Bỏ hút thuốc có thể làm giảm nguy cơ và sẽ cải thiện sức khỏe của người bệnh.
+Bổ sung đủ vitamin. Một số nghiên cứu cho thấy những người có lượng vitamin D trong máu thấp có nhiều khả năng mắc bệnh Alzheimer và các dạng sa sút trí tuệ khác. Do vậy, cần bổ sung đủ vitamin D thông qua một số loại thực phẩm, thực phẩm chức năng và phơi nắng. Cần nghiên cứu thêm trước khi tăng lượng vitamin D để ngăn ngừa chứng mất trí nhớ, nhưng nên đảm bảo bạn có đủ vitamin D. Uống vitamin B và vitamin C hàng ngày cũng có thể hữu ích.
+Quản lý các yếu tố nguy cơ tim mạch. Điều trị huyết áp cao, cholesterol cao, tiểu đường và chỉ số khối cơ thể (BMI) cao. Huyết áp cao có thể dẫn đến nguy cơ mắc một số loại chứng mất trí nhớ, tuy nhiên vẫn cần nhiều nghiên cứu hơn để xác định xem điều trị huyết áp cao có thể làm giảm nguy cơ mắc chứng mất trí nhớ hay không.
+Điều trị tình trạng sức khỏe. Gặp bác sĩ để điều trị nếu người bệnh bị mất thính lực, trầm cảm hoặc lo lắng.
+Duy trì chế độ ăn uống lành mạnh. Ăn chế độ ăn uống lành mạnh rất quan trọng như chế độ ăn như chế độ ăn Địa Trung Hải - giàu trái cây, rau, ngũ cốc và axit béo omega-3, thường thấy trong một số loại cá và các loại hạt, có thể tăng cường sức khỏe và giảm nguy cơ phát triển chứng mất trí. Loại chế độ ăn kiêng này cũng cải thiện sức khỏe tim mạch, có thể giúp giảm nguy cơ sa sút trí tuệ. Hãy thử ăn cá như cá hồi ba lần một tuần và một số ít các loại hạt, đặc biệt là hạnh nhân và quả óc chó  hàng ngày.
+Đảm bảo chất lượng giấc ngủ. Thực hành vệ sinh giấc ngủ tốt và nói chuyện với bác sĩ trong trường hợp ngáy to khi ngủ hoặc có những khoảng thời gian ngừng thở hoặc thở hổn hển trong khi ngủ.
+
+
+Các biện pháp chẩn đoán bệnh Bệnh sa sút trí tuệ (Dementia)
+Để chẩn đoán bệnh sa sút trí tuệ, bác sĩ sẽ xem xét tiền sử bệnh tật và các triệu chứng hiện tại của người bệnh và tiến hành kiểm tra thể chất. Không có xét nghiệm đơn lẻ nào có thể chẩn đoán chứng sa sút trí tuệ, vì vậy các bác sĩ có khả năng chỉ định một số xét nghiệm có thể giúp xác định chính xác vấn đề.
+Các bác sĩ sẽ đánh giá chức năng tư duy (nhận thức) của người bệnh. Một số bài kiểm tra đo lường các kỹ năng tư duy, như trí nhớ, định hướng, lý luận và phán đoán, kỹ năng ngôn ngữ và sự chú ý.
+Đánh giá thần kinh bằng cách đánh giá trí nhớ, ngôn ngữ, nhận thức thị giác, sự chú ý, giải quyết vấn đề, chuyển động, giác quan, cân bằng, phản xạ và các lĩnh vực khác.
+Chụp CT hoặc MRI. Những kỹ thuật này có thể phát hiện các dấu hiệu của đột quỵ hoặc chảy máu hoặc khối u hoặc tràn dịch não.
+PET scan cho thấy các mô hình hoạt động của não và tìm mảng protein amyloid, một dấu hiệu đặc trưng của bệnh Alzheimer.
+Xét nghiệm máu có thể phát hiện các vấn đề về thể chất có thể ảnh hưởng đến chức năng não, chẳng hạn như thiếu vitamin B-12 hoặc tuyến giáp hoạt động kém. Đôi khi dịch não tủy được kiểm tra xem có tình trạng nhiễm trùng, viêm hoặc dấu hiệu của một số bệnh thoái hóa.
+Chuyên gia sức khỏe tâm thần có thể xác định liệu trầm cảm hoặc một tình trạng sức khỏe tâm thần khác đang góp phần vào các triệu chứng sa sút trí tuệ.
+
+
+Các biện pháp điều trị bệnh Bệnh sa sút trí tuệ (Dementia)
+Hầu hết các loại chứng mất trí nhớ không thể được chữa khỏi, nhưng có nhiều cách để kiểm soát các triệu chứng của người bệnh.
+Bên cạnh việc dùng thuốc, một số triệu chứng sa sút trí tuệ và các vấn đề về hành vi có thể được điều trị ban đầu bằng cách sử dụng các phương pháp không sử dụng thuốc như:
+Trị liệu nghề nghiệp. Một nhà trị liệu nghề nghiệp có thể chỉ cho người bệnh cách làm cho nhà an toàn hơn và dạy các hành vi đối phó. Mục đích là để ngăn ngừa tai nạn, chẳng hạn như té ngã; quản lý hành vi; và chuẩn bị cho bạn tiến triển mất trí nhớ.
+Điều chỉnh môi trường. Giảm sự lộn xộn và tiếng ồn có thể giúp người mắc chứng mất trí nhớ tập trung và hoạt động dễ dàng hơn.
+Đơn giản hóa các nhiệm vụ. Chia nhiệm vụ thành các bước dễ dàng hơn và tập trung vào thành công, không bị thất bại. Cấu trúc hóa các bước thực hiện và thói quen cũng giúp giảm sự nhầm lẫn ở những người mắc chứng mất trí nhớ.
+
+

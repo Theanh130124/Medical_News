@@ -3,13 +3,14 @@ from openai import embeddings
 from flask_apscheduler import APScheduler
 from src.helper import download_hugging_face_embeddings 
 from langchain_pinecone import PineconeVectorStore
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from configs import *
 from langchain_core.prompts import ChatPromptTemplate
 from src.prompt import *
 from store_index import *
+from sentence_transformers import CrossEncoder
 
 
 
@@ -28,16 +29,20 @@ docsearch = PineconeVectorStore.from_existing_index(
     embedding=embeddings
 )
 
-retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})  #search_type="similarity tìm kiếm theo cosin  ,  
+retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":40})  #search_type="similarity tìm kiếm theo cosin  ,  
 #as_retrieve biến docsearch thành bộ tìm kiếm , .. k =3 -> tìm 3 giá trị gần nhất
+
+cross_encoder = CrossEncoder(MODEL_CROSS_ENCODER_NAME)
+
+
 
 
 llm = ChatOpenAI(
-    model="deepseek/deepseek-r1-distill-llama-70b:free",
+    model=MODEL_LLM_NAME,
     openai_api_key=DEEPSEEK_API_KEY,
     openai_api_base="https://openrouter.ai/api/v1",
     temperature=0.4,
-    max_tokens=500
+    max_tokens=2048
 ) #độ sáng tạo là 0.4 và số kí tự tối đa là 500
 
 prompt = ChatPromptTemplate.from_messages(
@@ -50,7 +55,12 @@ prompt = ChatPromptTemplate.from_messages(
 
 
 question_answer_chain = create_stuff_documents_chain(llm,prompt)
-rag_chain = create_retrieval_chain(retriever,question_answer_chain) #retriever -> là các câu trả lời đã lấy ra rồi , quest.... là cách mà chỉ nó trả lời
+
+def rerank_documents(query, docs, top_n=5):
+    pairs = [[query, doc.page_content] for doc in docs]
+    scores = cross_encoder.predict(pairs)
+    reranked = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
+    return [doc for doc, _ in reranked[:top_n]]
 
 
 
@@ -60,8 +70,15 @@ rag_chain = create_retrieval_chain(retriever,question_answer_chain) #retriever -
 def chat_chatbot():
     data = request.json
     user_input = data.get("msg")
-    response = rag_chain.invoke({"input": user_input})
-    return jsonify({"answer": response["answer"]})
+    #Lấy top - k 
+    similar_docs = retriever.invoke(user_input)
+    top_docs = rerank_documents(user_input, similar_docs, top_n=5)
+    response = question_answer_chain.invoke({
+        "input": user_input,
+        "context": top_docs
+    })
+
+    return jsonify({"answer": response})
 
 @app.route("/train_new_files", methods=["POST"])
 def train_api():

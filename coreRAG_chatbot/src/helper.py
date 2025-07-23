@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import DirectoryLoader, UnstructuredWordDocumentLoader #Đã update 
+from langchain_community.document_loaders import DirectoryLoader, UnstructuredWordDocumentLoader , TextLoader #Đã update 
 from langchain_huggingface import HuggingFaceEmbeddings # Đã update
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import re
@@ -12,8 +12,8 @@ import os
 def load_word_files(data):
     loader = DirectoryLoader(
         path=data,
-        glob="*.docx",
-        loader_cls=UnstructuredWordDocumentLoader #loại file cần load   
+        glob="*.txt",
+        loader_cls=lambda path: TextLoader(path, encoding='utf-8') #loại file cần load   
     )
     documents = loader.load()
     return documents
@@ -23,20 +23,23 @@ def load_word_files(data):
 #Preprocess data
 def preprocess_data(text):
 
-    text = re.sub(r'http\S+', '', text)
+    
+    #Xóa URL
+    text = re.sub(r'(https?://\S+|www\.\S+)', '', text)
+    # Xoá các dòng chỉ chứa dấu = hoặc -
+    text = re.sub(r'^[=\-]{2,}\s*$', '', text, flags=re.MULTILINE)
     #Xoá các ký tự bảng markdown (|, ---)
     text = re.sub(r'\|.*?\|', '', text)
-    text = re.sub(r'-{2,}', '', text)
-    #Xóa emoji và Unicode không cần thiết
+    # Xoá emoji và ký tự Unicode không cần thiết
     text = re.sub(r'[^\w\s,.!?à-ỹÀ-Ỹ\-–]', '', text)
-
+    # Xoá khoảng trắng thừa và dòng trống
     text = re.sub(r'\s+', ' ', text).strip()
     return text
     
 
 #Tách thành các chunk
 def text_split(cleaned_data):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=20)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=20)
     text_chunks = text_splitter.split_documents(cleaned_data)
     return text_chunks
 
@@ -47,6 +50,10 @@ def download_hugging_face_embeddings():
     )
     return embeddings
 
+
+
+
+#n8n
 
 #Kiểm trả file train chưa
 def is_file_trained(file_name,trained_files_log):
