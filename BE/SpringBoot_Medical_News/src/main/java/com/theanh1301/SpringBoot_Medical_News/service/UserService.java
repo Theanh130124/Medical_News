@@ -17,10 +17,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< Updated upstream
-=======
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> Stashed changes
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +34,7 @@ import java.util.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -65,11 +62,9 @@ public class UserService implements UserDetailsService {
     }
 
 
-<<<<<<< Updated upstream
-    public UserResponse createUser(UserCreationRequest request){
-=======
+
     public UserResponse createUser(UserCreationRequest request, MultipartFile avatar){
->>>>>>> Stashed changes
+
         //Ktra username ton tai chua
         if(userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTS);
@@ -125,16 +120,20 @@ public class UserService implements UserDetailsService {
         return userMapper.toUserResponse(user);
     }
 
-
     public User getUserByUsername(String username){
         return userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
     }
-<<<<<<< Updated upstream
+
+    public List<UserResponse> getAllUsers()  {
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+    }
 
 
 
 
 
-=======
->>>>>>> Stashed changes
+
+
+
+
 }

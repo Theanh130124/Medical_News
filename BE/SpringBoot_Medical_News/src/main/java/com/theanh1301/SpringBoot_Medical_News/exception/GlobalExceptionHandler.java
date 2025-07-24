@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -90,10 +91,10 @@ public class GlobalExceptionHandler {
     }
 
 
-    //Phần exception 403 cho API
-    @ExceptionHandler(value = AccessDeniedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleException(AccessDeniedException exception) {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED; //default
+    //Phần exception 403 cho API -> phần mà thiếu hoặc sai token , @PreAuthorize -> sai role
+    @ExceptionHandler(value = AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(AuthorizationDeniedException exception) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED; //default 403
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMsg());
