@@ -90,13 +90,13 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
-
+    //formlogin Gọi loadUserByUsername() của UserDetailService -> nên mình cần có
     @Bean
     @Order(2)
     public SecurityFilterChain formLoginFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/", "/login").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/stats").hasAnyAuthority("ADMIN", "DOCTOR")
                 .anyRequest().authenticated()
         ).formLogin(form -> form
