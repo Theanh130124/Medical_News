@@ -4,6 +4,7 @@ package com.theanh1301.SpringBoot_Medical_News.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
@@ -28,12 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -63,7 +62,7 @@ public class UserService implements UserDetailsService {
 
 
 
-    public UserResponse createUser(UserCreationRequest request, MultipartFile avatar){
+    public UserResponse createUser(UserCreationRequest request){
 
         //Ktra username ton tai chua
         if(userRepository.existsByUsername(request.getUsername())){
@@ -78,7 +77,7 @@ public class UserService implements UserDetailsService {
 
 
         User user = userMapper.toUser(request);//map các trường user vào request
-
+        MultipartFile avatar = request.getAvatar();
         if (avatar != null && !avatar.isEmpty()) {
             try{
                 Map res = cloudinary.uploader().upload(avatar.getBytes(),
@@ -98,21 +97,6 @@ public class UserService implements UserDetailsService {
 
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-//
-//        if (avatar != null && !avatar.isEmpty()) {
-//            try {
-//                Map res = cloudinary.uploader().upload(avatar.getBytes(),
-//                        ObjectUtils.asMap("resource_type", "auto"));
-//                u.setAvatar(res.get("secure_url").toString());
-//            } catch (IOException ex) {
-//                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            //AVATAR = null
-//        } else {
-//            u.setAvatar("https://res.cloudinary.com/dxiawzgnz/image/upload/v1744000840/qlrmknm7hfe81aplswy2.png");
-//        }
-//
         //Admin tạo
         user.setIsActive(role.getName() != RoleName.DOCTOR); //false nếu doctor
         userRepository.save(user);
@@ -120,12 +104,42 @@ public class UserService implements UserDetailsService {
         return userMapper.toUserResponse(user);
     }
 
+    public UserResponse updateUser(String id , UserUpdateRequest request) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+        userMapper.updateUser(user, request);
+        if(request.getPassword() != null && !request.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        MultipartFile avatar = request.getAvatar();
+        //Đưa multipart và string cho user nhận
+        if (avatar != null && !avatar.isEmpty()) {
+            try {
+                Map res = cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                user.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+
     public User getUserByUsername(String username){
         return userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
     }
 
+
     public List<UserResponse> getAllUsers()  {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+    }
+
+
+    public UserResponse getUserById(String id){
+        return userMapper.toUserResponse(userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
     }
 
 

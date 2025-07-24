@@ -12,13 +12,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 
 
-//Để lỗi jwt -> trả ra 401 theo Error code có msg
+//Để lỗi jwt -> trả ra 401 (KHÔNG CÓ TOKEN LUÔN ) theo Error code có msg
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     //Ghi đè lại entrypoint
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response , AuthenticationException authException) throws IOException  {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        ErrorCode errorCode = ErrorCode.NONE_YET_TOKEN;
         response.setStatus(errorCode.getStatusCode().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
