@@ -12,6 +12,7 @@ public interface UserMapper {
 
     //Mapstruct -> tự map các fields trùng tên giữa dto và entity (target la fields tác gốc của User -> mapper do biến)
     @Mapping(target = "role" , ignore = true) // không map role -> xử lý riêng bên UserService
+    @Mapping(target = "avatar" , ignore = true)
     User toUser(UserCreationRequest request);
 
 
