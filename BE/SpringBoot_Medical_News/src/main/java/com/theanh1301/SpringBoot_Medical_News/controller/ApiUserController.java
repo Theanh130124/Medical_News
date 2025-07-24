@@ -10,8 +10,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,5 +34,18 @@ public class ApiUserController {
         ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setResult(userService.createUser(request, avatar));
         return response;
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')") // TỰ điền ROLE_  , tuy CSDL không lưu nhưng trong SCOPE jwt có
+    @GetMapping
+    public List<UserResponse> getUsers(){
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
+
+        return userService.getAllUsers();
+
     }
 }
