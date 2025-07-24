@@ -1,6 +1,8 @@
 package com.theanh1301.SpringBoot_Medical_News.service;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
@@ -15,12 +17,24 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< Updated upstream
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> Stashed changes
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +49,7 @@ public class UserService implements UserDetailsService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    Cloudinary cloudinary;
 
 
     @Override
@@ -50,7 +65,11 @@ public class UserService implements UserDetailsService {
     }
 
 
+<<<<<<< Updated upstream
     public UserResponse createUser(UserCreationRequest request){
+=======
+    public UserResponse createUser(UserCreationRequest request, MultipartFile avatar){
+>>>>>>> Stashed changes
         //Ktra username ton tai chua
         if(userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTS);
@@ -61,8 +80,23 @@ public class UserService implements UserDetailsService {
         if(userRepository.existsByPhoneNumber(request.getPhoneNumber())){
             throw new AppException(ErrorCode.PHONENUMBER_EXIST);
         }
+
+
         User user = userMapper.toUser(request);//map các trường user vào request
 
+        if (avatar != null && !avatar.isEmpty()) {
+            try{
+                Map res = cloudinary.uploader().upload(avatar.getBytes(),
+                ObjectUtils.asMap("resource_type", "auto"));
+                user.setAvatar(res.get("secure_url").toString());
+            }catch (IOException ex){
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //Avatar == NULL ?
+        }else{
+            user.setAvatar("https://res.cloudinary.com/dxiawzgnz/image/upload/v1744000840/qlrmknm7hfe81aplswy2.png");
+        }
 
         Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
@@ -86,20 +120,21 @@ public class UserService implements UserDetailsService {
 //
         //Admin tạo
         user.setIsActive(role.getName() != RoleName.DOCTOR); //false nếu doctor
-
-
-
         userRepository.save(user);
         //Chỉ trả ra các thông tin response
         return userMapper.toUserResponse(user);
     }
 
+
     public User getUserByUsername(String username){
         return userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
     }
+<<<<<<< Updated upstream
 
 
 
 
 
+=======
+>>>>>>> Stashed changes
 }
