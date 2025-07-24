@@ -20,22 +20,21 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/}">Hệ thống thông tin y tế trực tuyến</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Doctor')">
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'DOCTOR')">
                         <a class="nav-link" th:href="@{/stats}">Thống kê</a>
                     </li>
 
-
-                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/license}">Xét duyệt</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/createclinic}">Quản lý người dùng</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/createspecialty}">Tạo thêm chuyên khoa</a>
                     </li>
 
-                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMINN')">
                         <a class="nav-link" th:href="@{/registerdoctor}">Tạo tài khoản bác sĩ</a>
                     </li>
 
