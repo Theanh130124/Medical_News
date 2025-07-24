@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -42,7 +43,8 @@ public class UserCreationRequest
     @Size(min=10 , message = "EMAIL_INVALID")
     String email;
 
-    String avatar;
+    //Sửa thành multipartFile
+    MultipartFile avatar;
     //ảnh bìa khỏi
     //bio khỏi
 
