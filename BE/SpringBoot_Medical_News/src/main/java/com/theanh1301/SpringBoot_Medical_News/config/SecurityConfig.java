@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -69,7 +70,6 @@ public class SecurityConfig {
 
 
 
-
     CustomJwtDecoder customJwtDecoder;
 
     @Bean
@@ -84,7 +84,8 @@ public class SecurityConfig {
                         .jwtAuthenticationConverter(jwtAuthenticationConverter())//set cái custom vào đây
 
 
-                ).authenticationEntryPoint(new JwtAuthenticationEntryPoint()) ); // điều hướng hoặc in ra lỗi nếu đăng nhập fail
+                ).authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+        );
 
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
