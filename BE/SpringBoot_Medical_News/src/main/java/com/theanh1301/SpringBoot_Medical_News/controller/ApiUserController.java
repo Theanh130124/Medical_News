@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -23,10 +24,11 @@ public class ApiUserController {
     UserService userService;
     //@RequestBody -> gửi json
     @PostMapping
-    public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request){
+    public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request ,
+                                                @RequestParam(value = "avatar")MultipartFile avatar){
 
         ApiResponse<UserResponse> response = new ApiResponse<>();
-        response.setResult(userService.createUser(request));
+        response.setResult(userService.createUser(request, avatar));
         return response;
     }
 }
