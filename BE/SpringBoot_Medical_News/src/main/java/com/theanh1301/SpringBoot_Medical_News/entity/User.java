@@ -25,7 +25,7 @@ public class User {
     private String id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false) // sửa thành EAGER -> để lấy role cho formLogin vì xử lý login ngoài transaction
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
