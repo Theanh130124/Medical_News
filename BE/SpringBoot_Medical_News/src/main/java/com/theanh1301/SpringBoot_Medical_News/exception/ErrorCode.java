@@ -25,7 +25,7 @@ public enum ErrorCode {
     ADDRESS_INVALID(1010,"Địa chỉ nơi ở quá ngắn , phải dài 10 ký tự",HttpStatus.BAD_REQUEST ),
     EMAIL_INVALID(1011,"Địa chỉ email quá ngắn , phải dài hơn {min} ký tự",HttpStatus.BAD_REQUEST),
     EMAIL_EXISTS(1012,"Địa chỉ email đã tồn tài",HttpStatus.BAD_REQUEST ),
-    IS_ACTIVEFALSE(1013 ,"Trạng thái hoạt đồng tài khoản chưa được kích hoạt", HttpStatus.UNAUTHORIZED),
+    IS_ACTIVEFALSE(1013 ,"Trạng thái hoạt động tài khoản chưa được kích hoạt", HttpStatus.UNAUTHORIZED),
     PASSWORD_FAIL(1014, "Nhập sai mật khẩu" , HttpStatus.UNAUTHORIZED),
     NONE_YET_TOKEN(1015 , "Ban chua co token" , HttpStatus.UNAUTHORIZED);
     private final int code;
