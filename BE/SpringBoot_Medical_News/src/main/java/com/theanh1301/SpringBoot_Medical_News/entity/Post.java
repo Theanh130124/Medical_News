@@ -68,6 +68,9 @@ public class Post {
     protected void onCreate() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
+        this.visibility = VisibilityPost.PUBLIC;
+        this.type = TypePost.NORMAL;
+        this.allowComments = true;
     }
 
     @PreUpdate
