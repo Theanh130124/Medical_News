@@ -1,6 +1,5 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
-
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
@@ -15,7 +14,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -40,29 +38,52 @@ public class ApiUserController {
     //Trc method run
     @PreAuthorize("hasRole('ADMIN')") // TỰ điền ROLE_  , tuy CSDL không lưu nhưng trong SCOPE jwt có
     @GetMapping
-    public List<UserResponse> getUsers(){
+    public ApiResponse<List<UserResponse>> getUsers(){
+
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
 
-        return userService.getAllUsers();
+
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .message("Lấy danh sách người dùng thành công").build();
 
     }
 
-    //Sau method run
-    @PostAuthorize("returnObject.username == authentication.name") //Chỉ current_user
+    //Sau method run  -> returnObject -> là ApiResponse<UserResponse> nếu UserResponse thì  returnObject.username
+    @PostAuthorize("returnObject.result.username == authentication.name") //Chỉ current_user
     @GetMapping("/{userId}")
-    public UserResponse getUserById(@PathVariable(value = "userId") String id){
-        return userService.getUserById(id);
+    public ApiResponse<UserResponse> getUserById(@PathVariable(value = "userId") String id){
+
+
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(id))
+                .message("Lấy thông tin tài khoản thành công").build();
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
+    @PostAuthorize("returnObject.result.username == authentication.name")
     @PatchMapping("/{userId}")
-    public UserResponse updateUser(@PathVariable(value="userId") String id ,
+    public ApiResponse<UserResponse> updateUser(@PathVariable(value="userId") String id ,
                                    @ModelAttribute UserUpdateRequest request){
-        return userService.updateUser(id, request);
+
+
+
+        return ApiResponse.<UserResponse>builder().result(userService.updateUser(id, request)).message("Cập nhật tài khoản thành công").build();
 
     }
+
+    //ApiResponse<Void> -> là void nên không lấy username Trong UserResponse
+    @PreAuthorize("@userService.getUserById(#id).username == authentication.name") //username theo id trên params và username của jwt
+    @DeleteMapping("/{userId}")
+    public ApiResponse<Void> deleteUser(@PathVariable(value="userId") String id){
+        userService.deleteUserbyId(id);
+        return  ApiResponse.<Void>builder().message("Đã xóa tài khoản với ID:" +id).build();
+    }
+
+
+
+
 
 }
