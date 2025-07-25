@@ -142,6 +142,10 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
     }
 
+    public void deleteUserbyId(String id){
+         userRepository.deleteById(id);
+    }
+
 
 
 
