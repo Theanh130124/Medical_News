@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
         return msg;
     }
 
-    //Xử lý in ra msg cho Validate @Size , @Dob ....
+    //Xử lý in ra theo msg cho Validate @Size , @Dob ....
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(MethodArgumentNotValidException exception) {
         String enumKey = exception.getFieldError().getDefaultMessage(); //tên message trong @Size
