@@ -30,9 +30,10 @@ public class ApiUserController {
     @PostMapping
     public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request){
 
-        ApiResponse<UserResponse> response = new ApiResponse<>();
-        response.setResult(userService.createUser(request));
-        return response;
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .message("Tạo tài khoản thành công")
+                .build();
     }
 
     //Trc method run
@@ -66,7 +67,7 @@ public class ApiUserController {
     @PostAuthorize("returnObject.result.username == authentication.name")
     @PatchMapping("/{userId}")
     public ApiResponse<UserResponse> updateUser(@PathVariable(value="userId") String id ,
-                                   @ModelAttribute UserUpdateRequest request){
+                                   @ModelAttribute @Valid UserUpdateRequest request){
 
 
 

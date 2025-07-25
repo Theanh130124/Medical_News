@@ -63,6 +63,18 @@ public class Certificate {
     private Instant updatedAt;
 
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        this.status = CertificateStatus.PENDING;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
 
 
 }
