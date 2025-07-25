@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.CertificateStatus;
 import com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,6 +52,7 @@ public class Friend {
     protected void onCreate() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
+        this.status = FriendStatus.PENDING;
     }
 
     @PreUpdate

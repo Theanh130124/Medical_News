@@ -27,7 +27,10 @@ public enum ErrorCode {
     EMAIL_EXISTS(1012,"Địa chỉ email đã tồn tài",HttpStatus.BAD_REQUEST ),
     IS_ACTIVEFALSE(1013 ,"Trạng thái hoạt động tài khoản chưa được kích hoạt", HttpStatus.UNAUTHORIZED),
     PASSWORD_FAIL(1014, "Nhập sai mật khẩu" , HttpStatus.UNAUTHORIZED),
-    NONE_YET_TOKEN(1015 , "Ban chua co token" , HttpStatus.UNAUTHORIZED);
+    NONE_YET_TOKEN(1015 , "Ban chua co token" , HttpStatus.UNAUTHORIZED),
+    CERTIFICATE_NUMBER_INVALID(1016,"Mã chứng chỉ hành nghề không được ngắn hơn {min} ký tự" , HttpStatus.BAD_REQUEST),
+    CERTIFICATE_NUMBER_EXISTS(1017 , "Mã chứng chỉ hành nghề đã tồn tại",HttpStatus.BAD_REQUEST ),
+    NOT_ROLE_DOCTOR(1018,"Tài khoản không có quyền bác sĩ",HttpStatus.FORBIDDEN) ;
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;
