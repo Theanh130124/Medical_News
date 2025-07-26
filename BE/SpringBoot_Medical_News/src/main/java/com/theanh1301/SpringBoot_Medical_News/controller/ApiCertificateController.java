@@ -5,6 +5,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.CertificateCreationReq
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.CertificateResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.CertificateService;
+import com.theanh1301.SpringBoot_Medical_News.service.impl.CertificateServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

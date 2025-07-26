@@ -5,6 +5,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
+import com.theanh1301.SpringBoot_Medical_News.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +77,7 @@ public class ApiUserController {
     }
 
     //ApiResponse<Void> -> là void nên không lấy username Trong UserResponse
-    @PreAuthorize("@userService.getUserById(#id).username == authentication.name") //username theo id trên params và username của jwt
+    @PreAuthorize("@userServiceImpl.getUserById(#id).username == authentication.name") //username theo id trên params và username của jwt
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable(value="userId") String id){
         userService.deleteUserbyId(id);
