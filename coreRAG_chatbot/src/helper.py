@@ -6,8 +6,6 @@ import os
 
 
 
-#Load data
-
 
 def load_word_files(data):
     loader = DirectoryLoader(
@@ -19,11 +17,8 @@ def load_word_files(data):
     return documents
 
 
-
-#Preprocess data
 def preprocess_data(text):
 
-    
     #Xóa URL
     text = re.sub(r'(https?://\S+|www\.\S+)', '', text)
     # Xoá các dòng chỉ chứa dấu = hoặc -
@@ -37,7 +32,6 @@ def preprocess_data(text):
     return text
     
 
-#Tách thành các chunk
 def text_split(cleaned_data):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=20)
     text_chunks = text_splitter.split_documents(cleaned_data)

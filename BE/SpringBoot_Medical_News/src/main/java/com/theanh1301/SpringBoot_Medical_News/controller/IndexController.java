@@ -3,11 +3,11 @@ package com.theanh1301.SpringBoot_Medical_News.controller;
 
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
+import com.theanh1301.SpringBoot_Medical_News.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
