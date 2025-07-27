@@ -20,7 +20,7 @@ public class InvalidatedTokenCleanerImpl implements InvalidatedTokenCleaner {
 
     InvalidatedTokenRepository invalidatedTokenRepository;
 
-
+    @Override
     @Scheduled(fixedRateString = "${token.cleaner.fixedRate}") // 2 tiếng
     public void cleanExpiredTokens() {
         Date now = new Date();
