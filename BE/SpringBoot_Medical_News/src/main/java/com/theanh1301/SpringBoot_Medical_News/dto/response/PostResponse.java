@@ -2,12 +2,14 @@ package com.theanh1301.SpringBoot_Medical_News.dto.response;
 
 
 
+import com.theanh1301.SpringBoot_Medical_News.entity.ImagePost;
 import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
 import com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +26,7 @@ public class PostResponse {
     Boolean allowComments;
     Instant createdAt;
     Instant updatedAt;
+    List<ImagePostResponse> imagePostResponses;// cái này ManyToOne -> đã đổi thành LAZY
 
 
 

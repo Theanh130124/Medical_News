@@ -1,4 +1,4 @@
-package com.theanh1301.SpringBoot_Medical_News.dto.request;
+package com.theanh1301.SpringBoot_Medical_News.dto.response;
 
 
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImagePostCreationRequest {
+public class ImagePostResponse {
 
     String postImageUrl;
 
