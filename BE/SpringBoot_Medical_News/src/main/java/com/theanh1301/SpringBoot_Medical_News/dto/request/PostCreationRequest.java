@@ -20,7 +20,7 @@ public class PostCreationRequest {
     String userId; // tự map
     String title;
     String content;
-    String visibility; // -> mapStruct map đc enum
+    String visibility; // -> mapStruct map đc enum (Nhưng truyền đúng tên)
     String type; //-> mapStruct map đc enum
     Boolean allowComments;
 
