@@ -2,10 +2,12 @@ package com.theanh1301.SpringBoot_Medical_News.mapper;
 
 
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring" ,
@@ -20,4 +22,7 @@ public interface PostMapper {
     @Mapping(target="imagePostResponses" , ignore = true)
     @Mapping(target = "userResponse" ,ignore = true)
     PostResponse toPostResponse(Post post);
+
+    @Mapping(target = "imagePosts" , ignore = true)
+    void updatePost(@MappingTarget Post post, PostUpdateRequest  request);
 }
