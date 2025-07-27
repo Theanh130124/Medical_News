@@ -30,6 +30,8 @@ public class RoleServiceImpl implements RoleService {
     RoleMapper roleMapper;
     PermissionRepository permissionRepository;
 
+
+    @Override
     public RoleResponse createRole(RoleRequest request) {
         Role role = roleMapper.toRole(request);
 
@@ -41,14 +43,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
+    @Override
     public List<RoleResponse> getAllRoles() {
         return roleRepository.findAll().stream().map(roleMapper::toRoleResponse).collect(Collectors.toList()); //.map(role -> roleMapper.toRoleResponse(role)
     }
 
+    @Override
     public void deleteRole(String id) {
         roleRepository.deleteById(id);
     }
 
+    @Override
     public RoleResponse updateRole(String id, RoleRequest roleRequest) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));

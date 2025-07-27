@@ -106,4 +106,14 @@ public class PostServiceImpl implements PostService {
         }
         return  postResponse;
     }
+
+    @Override
+    public void deletePost(String postId) {
+        postRepository.deleteById(postId);
+    }
+
+    @Override
+    public PostResponse getPostReponseById(String id) {
+       return postMapper.toPostResponse(postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND)));
+    }
 }
