@@ -10,7 +10,10 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -20,6 +23,7 @@ public class ApiPostController {
 
 
     PostService postService;
+    private final RestClient.Builder builder;
 
 
     @PostMapping
@@ -28,10 +32,23 @@ public class ApiPostController {
         return ApiResponse.<PostResponse>builder().result(res).message("Tạo bài viết thành công").build();
     }
 
+    //Chưa test
+    @PostAuthorize("returnObject.result.userResponse.username == authentication.name") //người đăng post đc update
     @PatchMapping("/{postId}")
     public ApiResponse<PostResponse> updatePost(@ModelAttribute @Valid PostUpdateRequest request ,@PathVariable(value="postId") String postId){
         var res = postService.updatePost(postId, request);
         return ApiResponse.<PostResponse>builder().result(res).message("Cập nhật bài viết thành công").build();
+    }
+
+    //Chi admin hoac chu bai viet
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("@postServiceImpl.getPostReponseById(#id).userResponse.username == authentication.name")
+    @DeleteMapping("/{postId}")
+    public ApiResponse<Void> deletePost(@PathVariable(value="postId") String id){
+        postService.deletePost(id);
+        return ApiResponse.<Void>builder().message("Đã xóa thành công bài viết ID:" + id).build();
+
+
     }
 
 }

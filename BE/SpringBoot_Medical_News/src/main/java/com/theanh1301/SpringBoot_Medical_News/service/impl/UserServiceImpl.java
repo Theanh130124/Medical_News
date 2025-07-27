@@ -65,7 +65,7 @@ public class UserServiceImpl implements  UserService {
     }
 
 
-
+    @Override
     public UserResponse createUser(UserCreationRequest request){
 
         //Ktra username ton tai chua
@@ -118,6 +118,7 @@ public class UserServiceImpl implements  UserService {
     }
 
     //Không để id trong request -> id bắt trên PathVariable
+    @Override
     public UserResponse updateUser(String id , UserUpdateRequest request) {
 
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
@@ -140,22 +141,23 @@ public class UserServiceImpl implements  UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-
+    @Override
     public User getUserByUsername(String username){
         return userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
     }
 
-
+    @Override
     public List<UserResponse> getAllUsers()  {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
 
 
+    @Override
     public UserResponse getUserById(String id){
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
     }
-
+    @Override
     public void deleteUserbyId(String id){
          userRepository.deleteById(id);
     }
