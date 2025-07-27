@@ -23,22 +23,22 @@ public class SearchHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "keyword", nullable = false)
-    private String keyword;
+    String keyword;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "searched_at")
-    private Instant searchedAt;
+    Instant searchedAt;
 
 
 

@@ -20,16 +20,16 @@ public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    String name;
 
     @Size(max = 255)
     @Column(name = "description")
-    private String description;
+    String description;
 
     @ManyToMany(mappedBy = "permissions")
     Set<Role> roles;

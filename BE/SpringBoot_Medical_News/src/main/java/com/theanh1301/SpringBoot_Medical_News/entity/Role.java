@@ -21,16 +21,16 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false)
-    private RoleName name;
+    RoleName name;
 
     @Size(max = 255)
     @Column(name = "description")
-    private String description;
+    String description;
 
     //Tự thêm -> để lấy permission
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
