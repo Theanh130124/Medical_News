@@ -22,79 +22,79 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false) // sửa thành EAGER -> để lấy role cho formLogin vì xử lý login ngoài transaction
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    Role role;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "username", nullable = false, length = 50)
-    private String username;
+    String username;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "first_name", nullable = false, length = 100)
-    private String firstName;
+    String firstName;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "last_name", nullable = false, length = 100)
-    private String lastName;
+    String lastName;
 
     @Size(max = 20)
     @NotNull
     @Column(name = "phone_number", nullable = false, length = 20)
-    private String phoneNumber;
+    String phoneNumber;
 
     @NotNull
     @Lob
     @Column(name = "address", nullable = false)
-    private String address;
+    String address;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private Gender gender;
+    Gender gender;
 
     @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
+    LocalDate dateOfBirth;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "email", nullable = false, length = 100)
-    private String email;
+    String email;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "password", nullable = false)
-    private String password;
+    String password;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "avatar", nullable = false)
-    private String avatar;
+    String avatar;
 
     @Size(max = 255)
     @Column(name = "cover_image")
-    private String coverImage;
+    String coverImage;
 
     @Lob
     @Column(name = "bio")
-    private String bio;
+    String bio;
 
     @ColumnDefault("1")
     @Column(name = "is_active")
-    private Boolean isActive;
+    Boolean isActive;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {

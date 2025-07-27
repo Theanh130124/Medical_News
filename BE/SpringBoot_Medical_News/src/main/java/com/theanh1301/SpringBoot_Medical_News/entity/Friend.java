@@ -21,32 +21,32 @@ import java.time.Instant;
 @Table(name = "Friends")
 public class Friend {
     @EmbeddedId
-    private FriendId id;
+    FriendId id;
 
     @MapsId("firstUserId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "first_user_id", nullable = false)
-    private User firstUser;
+    User firstUser;
 
     @MapsId("secondUserId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "second_user_id", nullable = false)
-    private User secondUser;
+    User secondUser;
 
     @ColumnDefault("'PENDING'")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private FriendStatus status;
+    FriendStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {

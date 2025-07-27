@@ -16,18 +16,18 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "Role_Permission")
 public class RolePermission {
     @EmbeddedId
-    private RolePermissionId id;
+    RolePermissionId id;
 
     @MapsId("roleId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    Role role;
 
     @MapsId("permissionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "permission_id", nullable = false)
-    private Permission permission;
+    Permission permission;
 
 }

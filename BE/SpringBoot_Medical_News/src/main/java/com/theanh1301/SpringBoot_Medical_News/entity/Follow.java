@@ -18,27 +18,27 @@ import java.time.Instant;
 @Entity
 public class Follow {
     @EmbeddedId
-    private FollowId id;// dùng FollowId là key (có kết hợp 2 key)
+    FollowId id;// dùng FollowId là key (có kết hợp 2 key)
 
     @MapsId("followerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "follower_id", nullable = false)
-    private User follower;
+    User follower;
 
     @MapsId("followingId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "following_id", nullable = false)
-    private User following;
+    User following;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {
