@@ -16,6 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "imagepost")
 public class ImagePost {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
