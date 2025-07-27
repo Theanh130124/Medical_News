@@ -24,43 +24,43 @@ public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "certificate_number", nullable = false, length = 100)
-    private String certificateNumber;
+    String certificateNumber;
 
     @NotNull
     @Column(name = "issue_date", nullable = false)
-    private LocalDate issueDate;
+    LocalDate issueDate;
 
     @Column(name = "expiry_date")
-    private LocalDate expiryDate;
+    LocalDate expiryDate;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "image_certificate", nullable = false)
-    private String imageCertificate;
+    String imageCertificate;
 
     @ColumnDefault("'PENDING'")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private CertificateStatus status;
+    CertificateStatus status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
 
 
     @PrePersist

@@ -24,5 +24,5 @@ public class InvalidatedToken {
     @Id
     String id; // chinh la jwtId
     @Column(name = "expiry_time", nullable = false)
-    private Date expiryTime;
+    Date expiryTime;
 }

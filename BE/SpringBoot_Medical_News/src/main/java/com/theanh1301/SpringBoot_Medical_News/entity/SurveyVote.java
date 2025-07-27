@@ -19,23 +19,23 @@ import java.time.Instant;
 @Table(name = "Survey_Vote")
 public class SurveyVote {
     @EmbeddedId
-    private SurveyVoteId id;
+    SurveyVoteId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @MapsId("optionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "option_id", nullable = false)
-    private SurveyOption option;
+    SurveyOption option;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "voted_at")
-    private Instant votedAt;
+    Instant votedAt;
 
 
 

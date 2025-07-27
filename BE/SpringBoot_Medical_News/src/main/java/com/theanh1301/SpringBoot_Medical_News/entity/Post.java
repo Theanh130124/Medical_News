@@ -11,7 +11,10 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.awt.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,45 +27,49 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
-    private String id;
+    String id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "title", nullable = false)
-    private String title;
+    String title;
 
     @NotNull
     @Lob
     @Column(name = "content", nullable = false)
-    private String content;
+    String content;
 
     @ColumnDefault("'PUBLIC'")
     @Enumerated(EnumType.STRING)
     @Column(name = "visibility")
-    private VisibilityPost visibility;
+    VisibilityPost visibility;
 
     @ColumnDefault("'NORMAL'")
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private TypePost type;
+    TypePost type;
 
     @ColumnDefault("1")
     @Column(name = "allow_comments")
-    private Boolean allowComments;
+    Boolean allowComments;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    Instant createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    Instant updatedAt;
+
+    // "post" bên imagePost
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<ImagePost> imagePosts;
 
     @PrePersist
     protected void onCreate() {
