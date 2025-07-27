@@ -22,7 +22,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,6 +50,7 @@ public class UserServiceImpl implements  UserService {
     Cloudinary cloudinary;
     EmailService emailService;
 
+    //Clean code lại -> xử lý image
 
     @Override
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
@@ -117,11 +117,12 @@ public class UserServiceImpl implements  UserService {
         return userMapper.toUserResponse(user);
     }
 
+    //Không để id trong request -> id bắt trên PathVariable
     public UserResponse updateUser(String id , UserUpdateRequest request) {
 
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
-        userMapper.updateUser(user, request);
+        userMapper.updateUser(user, request); //   mapstruct các trg kia
         if(request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
