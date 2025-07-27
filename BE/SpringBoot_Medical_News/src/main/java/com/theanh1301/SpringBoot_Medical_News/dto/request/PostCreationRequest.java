@@ -6,6 +6,7 @@ import com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PostCreationRequest {
     String type; //-> mapStruct map đc enum
     Boolean allowComments;
 
-    List<String> imagePosts;// tự map
+    List<MultipartFile> imagePosts;// tự map
 
 
 }

@@ -17,7 +17,7 @@ public interface PostMapper {
     @Mapping(target = "imagePosts" , ignore = true)
     Post toPost(PostCreationRequest request); // tư map từ String -? Enum
 
-
+    @Mapping(target="imagePosts" , ignore = true)
     @Mapping(target = "userResponse" ,ignore = true)
     PostResponse toPostResponse(Post post);
 }
