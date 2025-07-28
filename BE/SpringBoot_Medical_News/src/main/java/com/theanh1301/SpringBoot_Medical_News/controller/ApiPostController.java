@@ -32,17 +32,16 @@ public class ApiPostController {
         return ApiResponse.<PostResponse>builder().result(res).message("Tạo bài viết thành công").build();
     }
 
-    //Chưa test
-    @PostAuthorize("returnObject.result.userResponse.username == authentication.name") //người đăng post đc update
+
+    @PostAuthorize("returnObject.result.userResponse.username == authentication.name") //người đăng post đc update -> bắt buộc phải để mapstruct map
     @PatchMapping("/{postId}")
     public ApiResponse<PostResponse> updatePost(@ModelAttribute @Valid PostUpdateRequest request ,@PathVariable(value="postId") String postId){
         var res = postService.updatePost(postId, request);
         return ApiResponse.<PostResponse>builder().result(res).message("Cập nhật bài viết thành công").build();
     }
 
-    //Chi admin hoac chu bai viet
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostAuthorize("@postServiceImpl.getPostReponseById(#id).userResponse.username == authentication.name")
+    //Chi admin hoac chu bai viet ->
+    @PreAuthorize("hasRole('ADMIN') or @postServiceImpl.getPostReponseById(#id).userResponse.username == authentication.name")
     @DeleteMapping("/{postId}")
     public ApiResponse<Void> deletePost(@PathVariable(value="postId") String id){
         postService.deletePost(id);
