@@ -4,7 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
-import com.theanh1301.SpringBoot_Medical_News.dto.response.ImagePostResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.ImagePost;
 import com.theanh1301.SpringBoot_Medical_News.entity.Post;
@@ -13,7 +12,6 @@ import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.ImagePostMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.PostMapper;
-import com.theanh1301.SpringBoot_Medical_News.mapper.UserMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.PostRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
@@ -39,7 +37,6 @@ public class PostServiceImpl implements PostService {
     PostRepository postRepository;
     PostMapper postMapper;
     UserRepository userRepository;
-    UserMapper userMapper;
     Cloudinary cloudinary;
     ImagePostMapper imagePostMapper;
 
@@ -53,7 +50,7 @@ public class PostServiceImpl implements PostService {
                         file.getBytes(),
                         ObjectUtils.asMap("resource_type", "auto")
                 );
-                return ImagePost.builder()
+                return ImagePost.builder() // thêm vào bảng ImagePost
                         .postImageUrl(uploadResult.get("secure_url").toString())
                         .post(post)
                         .build();
@@ -78,9 +75,7 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        //Tự map lại thành userResponse để trả về trong PostResponse(Tự map)
         PostResponse postResponse = postMapper.toPostResponse(post);
-        postResponse.setUserResponse(userMapper.toUserResponse(user));
 
         if (imagePosts != null) {
             postResponse.setImagePostResponses(imagePostMapper.toImagePostResponse(imagePosts));
