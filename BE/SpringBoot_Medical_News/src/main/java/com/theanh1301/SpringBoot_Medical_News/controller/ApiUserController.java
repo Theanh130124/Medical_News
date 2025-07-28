@@ -4,6 +4,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
 import com.theanh1301.SpringBoot_Medical_News.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -83,6 +85,17 @@ public class ApiUserController {
         userService.deleteUserbyId(id);
         return  ApiResponse.<Void>builder().message("Đã xóa tài khoản với ID:" +id).build();
     }
+
+
+
+    @GetMapping("/secure/profile")
+    public ApiResponse<UserResponse> getCurrentUser(Principal principal){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserResponseByUsername(principal.getName()))
+                .message("Lấy thông tin người dùng hiện tại thành công").build();
+    }
+
+
 
 
 
