@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -47,6 +49,15 @@ public class ApiPostController {
         postService.deletePost(id);
         return ApiResponse.<Void>builder().message("Đã xóa thành công bài viết ID:" + id).build();
 
+
+    }
+
+    @GetMapping("/getAll")
+    public ApiResponse<List<PostResponse>> getAllPost(){
+
+        return ApiResponse.<List<PostResponse>>builder()
+                .result(postService.getAllPost())
+                .message("Lấy danh sách tất cả bài viết thành công").build();
 
     }
 

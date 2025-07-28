@@ -147,6 +147,12 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
+    public UserResponse getUserResponseByUsername(String username) {
+        User user = userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
     public List<UserResponse> getAllUsers()  {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
