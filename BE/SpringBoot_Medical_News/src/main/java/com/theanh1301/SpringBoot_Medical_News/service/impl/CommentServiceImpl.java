@@ -39,6 +39,10 @@ public class CommentServiceImpl implements CommentService {
 
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        //Check bài viết có bi khóa cmt
+        if(post.getAllowComments().equals(Boolean.TRUE)){
+            throw new AppException(ErrorCode.COMMENT_LOCKED);
+        }
         Comment comment = commentMapper.toComment(request);
         comment.setUser(user);
         comment.setPost(post);
