@@ -21,11 +21,11 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 
 @Transactional  // create có transaction
@@ -110,5 +110,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getPostReponseById(String id) {
        return postMapper.toPostResponse(postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND)));
+    }
+
+    @Override
+    public List<PostResponse> getAllPost() {
+       return postRepository.findAll().stream().map(postMapper::toPostResponse).collect(Collectors.toList());
     }
 }

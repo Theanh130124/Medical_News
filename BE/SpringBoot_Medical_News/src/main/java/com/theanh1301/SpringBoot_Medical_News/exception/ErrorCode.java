@@ -31,7 +31,8 @@ public enum ErrorCode {
     CERTIFICATE_NUMBER_INVALID(1016,"Mã chứng chỉ hành nghề không được ngắn hơn {min} ký tự" , HttpStatus.BAD_REQUEST),
     CERTIFICATE_NUMBER_EXISTS(1017 , "Mã chứng chỉ hành nghề đã tồn tại",HttpStatus.BAD_REQUEST ),
     NOT_ROLE_DOCTOR(1018,"Tài khoản không có quyền bác sĩ",HttpStatus.FORBIDDEN),
-    POST_NOT_FOUND(1019, "Không tìm thấy bài viết" , HttpStatus.BAD_REQUEST),;
+    POST_NOT_FOUND(1019, "Không tìm thấy bài viết" , HttpStatus.BAD_REQUEST),
+    COMMENT_NOT_FOUND(1020, "Không tìm thấy commment", HttpStatus.BAD_REQUEST),;
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;
