@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,24 +26,30 @@ public class ApiCommentController {
 
 
 
-//Chưa test
+
     @PostMapping
-    public ApiResponse<CommentResponse> createComment(@ModelAttribute @Valid CommentCreationRequest request){
+    public ApiResponse<CommentResponse> createComment(@RequestBody @Valid CommentCreationRequest request){
         var res = commentService.createComment(request);
         return ApiResponse.<CommentResponse>builder().result(res).message("Tạo comment thành công").build();
     }
 
+
+    @PostAuthorize("returnObject.result.userResponse.username == authentication.name")
     @PatchMapping("/{commentId}")
-    public ApiResponse<CommentResponse> updateComment(@ModelAttribute @Valid CommentUpdateRequest request , @PathVariable(value = "commentId") String id){
+    public ApiResponse<CommentResponse> updateComment(@RequestBody @Valid CommentUpdateRequest request , @PathVariable(value = "commentId") String id){
         var res = commentService.updateComment(id , request);
         return  ApiResponse.<CommentResponse>builder().result(res).message("Cập nhật bình luận thành công").build();
     }
 
+    //Admin chủ cmt
+    @PreAuthorize("hasRole('ADMIN') or @commentServiceImpl.getCommentResponseById(#id).userResponse.username == authentication.name")
     @DeleteMapping("/{commentId}")
     public ApiResponse<Void> deleteComment(@PathVariable(value = "commentId") String id){
         commentService.deleteComment(id);
         return ApiResponse.<Void>builder().message("Xóa thành công bình luận ID:"+id).build();
     }
+
+
 
     @GetMapping("/byPostId/{postId}")
     public ApiResponse<List<CommentResponse>> getCommentByPost(@PathVariable(value = "postId") String id){
