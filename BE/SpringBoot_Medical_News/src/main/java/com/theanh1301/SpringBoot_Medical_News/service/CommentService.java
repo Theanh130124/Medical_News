@@ -13,4 +13,5 @@ public interface CommentService {
     CommentResponse updateComment(String commentId ,CommentUpdateRequest request);
     void deleteComment(String commentId);
     List<CommentResponse> getCommentByPostId(String postId);
+    CommentResponse getCommentResponseById(String commentId);
 }

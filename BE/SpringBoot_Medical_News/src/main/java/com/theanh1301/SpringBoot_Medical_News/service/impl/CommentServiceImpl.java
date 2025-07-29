@@ -72,4 +72,10 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
         return commentRepository.getCommentByPost(post).stream().map(commentMapper::toCommentResponse).collect(Collectors.toList());
     }
+
+    @Override
+    public CommentResponse getCommentResponseById(String commentId) {
+        return commentMapper.toCommentResponse(commentRepository.findById(commentId)
+        .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND)));
+    }
 }
