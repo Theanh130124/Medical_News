@@ -18,6 +18,8 @@ public class ApiResponse<T> {
 
     int code = 9999 ;
     String message;
+    long count;
     T result; //generic -> truyền fiedl nào cũng đc
+
 
 }

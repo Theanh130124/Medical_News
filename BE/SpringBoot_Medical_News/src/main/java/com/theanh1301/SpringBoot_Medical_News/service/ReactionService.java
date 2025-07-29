@@ -13,4 +13,7 @@ public interface ReactionService {
     ReactionResponse updateReaction(String reactionId ,ReactionUpdateRequest request);
     void deleteReaction(String reactionId);
     List<ReactionResponse> getAllReactionsByPost(String postId);
+    ReactionResponse getReactionById(String reactionId);
+    long countReactionByPost(String postId);
+
 }
