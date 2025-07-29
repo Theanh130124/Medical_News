@@ -48,12 +48,19 @@ public class ApiUserController {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
-
+        long count = userService.countAllUser();
 
         return ApiResponse.<List<UserResponse>>builder()
-                .result(userService.getAllUsers())
+                .result(userService.getAllUsers()).count(count)
                 .message("Lấy danh sách người dùng thành công").build();
 
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/isActive")
+    public ApiResponse<List<UserResponse>> getActiveUsers(){
+        var res = userService.findAllUserIsActive();
+        long count = userService.countUserIsActive();
+        return ApiResponse.<List<UserResponse>>builder().result(res).count(count).message("Lấy toàn bộ users đang hoạt động thành công").build();
     }
 
     //Sau method run  -> returnObject -> là ApiResponse<UserResponse> nếu UserResponse thì  returnObject.username
@@ -94,6 +101,9 @@ public class ApiUserController {
                 .result(userService.getUserResponseByUsername(principal.getName()))
                 .message("Lấy thông tin người dùng hiện tại thành công").build();
     }
+
+
+
 
 
 
