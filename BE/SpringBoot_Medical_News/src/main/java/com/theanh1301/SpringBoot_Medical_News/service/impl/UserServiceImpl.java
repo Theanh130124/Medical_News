@@ -169,11 +169,19 @@ public class UserServiceImpl implements  UserService {
     }
 
 
+    @Override
+    public List<UserResponse> findAllUserIsActive() {
+       List<User> users = userRepository.findAllUserIsActive();
+        return userMapper.toUserResponses(users);
+    }
 
+    @Override
+    public long countUserIsActive() {
+        return  userRepository.countUserIsActive();
+    }
 
-
-
-
-
-
+    @Override
+    public long countAllUser() {
+        return userRepository.countAllUser();
+    }
 }

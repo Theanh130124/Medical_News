@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring" ,
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE) //bỏ qua các null trong update
 //mapstruct -> đk thành bean
@@ -24,6 +26,7 @@ public interface UserMapper {
     //fields nào userResponse có thì map từ user vào
     UserResponse toUserResponse(User user);
 
+    List<UserResponse> toUserResponses(List<User> users);
 
     //@MappingTarget -> không new User
     @Mapping(target = "avatar" , ignore = true)
