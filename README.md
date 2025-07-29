@@ -44,6 +44,39 @@ python app.py
 
 ```
 
+<h1>Setup -Redis</h1>
+
+
+CMD
+```
+RUN DOCKER DESKTOP
+
+docker --version 
+
+docker run --name redis-dev -p 6379:6379 -d redis
+
+
+add pom.xml
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+    <version>3.5.3</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+    <version>3.5.3</version>
+</dependency>
+
+Config -> application.properties 
+
+```
+
 ![1752468675941](image/README/1752468675941.png)
 
 
