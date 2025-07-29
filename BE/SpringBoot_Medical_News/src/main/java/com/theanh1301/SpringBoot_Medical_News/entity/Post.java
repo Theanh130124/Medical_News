@@ -55,7 +55,7 @@ public class Post {
     @Column(name = "type")
     TypePost type;
 
-    @ColumnDefault("1")
+    @ColumnDefault("0")
     @Column(name = "allow_comments")
     Boolean allowComments;
 
