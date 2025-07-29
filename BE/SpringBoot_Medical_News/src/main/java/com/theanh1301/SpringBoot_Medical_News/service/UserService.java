@@ -18,6 +18,8 @@ public interface UserService extends UserDetailsService {
     List<UserResponse> getAllUsers();
     UserResponse getUserById(String id);
     void deleteUserbyId(String id);
-    public UserResponse getUserResponseByUsername(String username);
-
+    UserResponse getUserResponseByUsername(String username);
+    List<UserResponse> findAllUserIsActive();
+    long countUserIsActive();
+    long countAllUser();
 }
