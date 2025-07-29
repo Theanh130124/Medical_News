@@ -78,4 +78,10 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.toCommentResponse(commentRepository.findById(commentId)
         .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND)));
     }
+
+    @Override
+    public long countCommentByPost(String postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        return commentRepository.countCommentByPost(post);
+    }
 }

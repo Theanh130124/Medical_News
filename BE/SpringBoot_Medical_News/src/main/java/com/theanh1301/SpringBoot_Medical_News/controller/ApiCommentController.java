@@ -52,9 +52,10 @@ public class ApiCommentController {
 
 
     @GetMapping("/byPostId/{postId}")
-    public ApiResponse<List<CommentResponse>> getCommentByPost(@PathVariable(value = "postId") String id){
+    public ApiResponse<List<CommentResponse>> getAllCommentByPost(@PathVariable(value = "postId") String id){
         var res = commentService.getCommentByPostId(id);
-        return ApiResponse.<List<CommentResponse>>builder().result(res).message("Lấy các bình luận của một bài viết thành công").build();
+        long count = commentService.countCommentByPost(id);
+        return ApiResponse.<List<CommentResponse>>builder().result(res).count(count).message("Lấy các bình luận của một bài viết thành công").build();
     }
 
 
