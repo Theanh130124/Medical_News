@@ -53,6 +53,7 @@ public class ReactionServiceImpl implements ReactionService {
         Reaction reaction  = reactionRepository.findById(reactionId)
                 .orElseThrow(() -> new AppException(ErrorCode.REACTION_NOT_FOUND));
         reactionMapper.updateReaction(reaction,request);
+        reactionRepository.save(reaction);
         return reactionMapper.toReactionResponse(reaction);
     }
 
@@ -66,5 +67,18 @@ public class ReactionServiceImpl implements ReactionService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
         return reactionRepository.getReactionByPost(post).stream().map(reactionMapper::toReactionResponse).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public ReactionResponse getReactionById(String reactionId) {
+        return reactionMapper.toReactionResponse(reactionRepository
+                .findById(reactionId).orElseThrow(() -> new AppException(ErrorCode.REACTION_NOT_FOUND)));
+    }
+
+    @Override
+    public long countReactionByPost(String postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        return reactionRepository.countReactionByPost(post);
     }
 }
