@@ -5,6 +5,7 @@ import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
@@ -26,5 +27,6 @@ public class UserResponse {
     String avatar;
     LocalDate dateOfBirth;
     RoleResponse role;
+    Instant createdAt;
 
 }

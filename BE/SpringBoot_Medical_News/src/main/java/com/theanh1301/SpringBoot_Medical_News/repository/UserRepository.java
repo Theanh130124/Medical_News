@@ -1,11 +1,13 @@
 package com.theanh1301.SpringBoot_Medical_News.repository;
 
-import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
+
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,String> {
@@ -16,8 +18,14 @@ public interface UserRepository extends JpaRepository<User,String> {
     Optional<User> findByUsername(String username); //Phải tự xử lý trường hợp null
     Optional<User> getUserByUsername(String username);
 
+
+    //Check warning
+    @Query("SELECT u FROM User u")
+    Page<User> getAllUsers(Pageable pageable);
+
+    //Page đã là LIST
     @Query("SELECT u FROM User u where u.isActive is true")
-    List<User> findAllUserIsActive();
+    Page<User> findAllUserIsActive(Pageable pageable);
 
     @Query("SELECT count(u) from User u")
     long countAllUser();
