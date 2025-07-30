@@ -20,6 +20,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -153,8 +155,8 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers()  {
-        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+    public List<UserResponse> getAllUsers(Pageable pageable)  {
+        return userRepository.getAllUsers(pageable).stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
 
 
@@ -170,9 +172,9 @@ public class UserServiceImpl implements  UserService {
 
 
     @Override
-    public List<UserResponse> findAllUserIsActive() {
-       List<User> users = userRepository.findAllUserIsActive();
-        return userMapper.toUserResponses(users);
+    public Page<UserResponse> findAllUserIsActive(Pageable pageable) {
+       Page<User> users = userRepository.findAllUserIsActive(pageable);
+        return users.map(userMapper::toUserResponse); // Map page -> có thêm .map
     }
 
     @Override
