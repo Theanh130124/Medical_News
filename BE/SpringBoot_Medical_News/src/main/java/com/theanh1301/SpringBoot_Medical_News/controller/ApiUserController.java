@@ -4,9 +4,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
-import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
-import com.theanh1301.SpringBoot_Medical_News.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +41,6 @@ public class ApiUserController {
     @PreAuthorize("hasRole('ADMIN')") // TỰ điền ROLE_  , tuy CSDL không lưu nhưng trong SCOPE jwt có
     @GetMapping
     public ApiResponse<List<UserResponse>> getUsers(){
-
-
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
