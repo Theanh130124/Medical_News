@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public interface UserMapper {
 
     //fields nào userResponse có thì map từ user vào
     UserResponse toUserResponse(User user);
+
+
 
     List<UserResponse> toUserResponses(List<User> users);
 
