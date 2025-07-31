@@ -43,14 +43,14 @@ public class ApiUserController {
     //Trc method run
     @PreAuthorize("hasRole('ADMIN')") // TỰ điền ROLE_  , tuy CSDL không lưu nhưng trong SCOPE jwt có
     @GetMapping
-    public ApiResponse<List<UserResponse>> getUsers(@RequestParam(defaultValue = "5") int size , @RequestParam(defaultValue = "0") int page){
+    public ApiResponse<Page<UserResponse>> getUsers(@RequestParam(defaultValue = "5") int size , @RequestParam(defaultValue = "0") int page){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
         Pageable pageable = PageRequest.of(page, size);
         authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
         long count = userService.countAllUser();
 
-        return ApiResponse.<List<UserResponse>>builder()
+        return ApiResponse.<Page<UserResponse>>builder()
                 .result(userService.getAllUsers(pageable)).count(count)
                 .message("Lấy danh sách người dùng thành công").build();
 
@@ -91,7 +91,7 @@ public class ApiUserController {
     @PreAuthorize("@userServiceImpl.getUserById(#id).username == authentication.name") //username theo id trên params và username của jwt
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable(value="userId") String id){
-        userService.deleteUserbyId(id);
+        userService.deleteUserById(id);
         return  ApiResponse.<Void>builder().message("Đã xóa tài khoản với ID:" +id).build();
     }
 

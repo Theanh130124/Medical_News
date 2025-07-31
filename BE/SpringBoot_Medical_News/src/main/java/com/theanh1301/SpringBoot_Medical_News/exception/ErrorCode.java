@@ -34,7 +34,10 @@ public enum ErrorCode {
     POST_NOT_FOUND(1019, "Không tìm thấy bài viết" , HttpStatus.BAD_REQUEST),
     COMMENT_NOT_FOUND(1020, "Không tìm thấy commment", HttpStatus.BAD_REQUEST),
     COMMENT_LOCKED(1021,"Bài viết đã khóa comment",HttpStatus.FORBIDDEN),
-    REACTION_NOT_FOUND(1022,"Không tìm thấy reaction" ,HttpStatus.BAD_REQUEST),;
+    REACTION_NOT_FOUND(1022,"Không tìm thấy reaction" ,HttpStatus.BAD_REQUEST),
+    FOLLOW_INVALID(1023,"Không thể tự follow " , HttpStatus.BAD_REQUEST),
+    FOLLOW_ALREADY(1024,"Bạn đã follow người này" , HttpStatus.BAD_REQUEST),
+    FOLLOW_NOT_FOUND(1025,"Bạn chưa follow người này" , HttpStatus.NOT_FOUND);
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;
