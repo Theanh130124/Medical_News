@@ -78,4 +78,16 @@ public class FollowServiceImpl implements FollowService {
         return followRepository.findAllByFollowerId(user, pageable)
                 .map(followMapper::toFollowResponse);
     }
+
+    @Override
+    public long countFollowers(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return followRepository.countFollowers(user);
+    }
+
+    @Override
+    public long countFollowing(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return followRepository.countFollowing(user);
+    }
 }
