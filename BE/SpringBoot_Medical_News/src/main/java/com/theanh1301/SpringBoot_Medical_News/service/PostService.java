@@ -4,6 +4,8 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,5 +14,5 @@ public interface PostService {
     PostResponse updatePost(String postId ,PostUpdateRequest request);
     void deletePost(String postId);
     PostResponse getPostReponseById(String id);
-    List<PostResponse> getAllPost();//Dung cho PreAuthorize
+    Page<PostResponse> getAllPost(Pageable pageable);//Dung cho PreAuthorize
 }
