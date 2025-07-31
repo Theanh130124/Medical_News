@@ -18,6 +18,8 @@ import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,7 +115,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getAllPost() {
-       return postRepository.findAll().stream().map(postMapper::toPostResponse).collect(Collectors.toList());
+    public Page<PostResponse> getAllPost(Pageable pageable) {
+       return postRepository.getAllPost(pageable).map(postMapper::toPostResponse);
     }
 }

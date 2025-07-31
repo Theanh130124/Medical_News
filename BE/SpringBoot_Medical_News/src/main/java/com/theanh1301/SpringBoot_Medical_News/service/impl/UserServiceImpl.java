@@ -155,8 +155,8 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers(Pageable pageable)  {
-        return userRepository.getAllUsers(pageable).stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+    public Page<UserResponse> getAllUsers(Pageable pageable)  {
+        return userRepository.getAllUsers(pageable).map(userMapper::toUserResponse);
     }
 
 
@@ -166,7 +166,7 @@ public class UserServiceImpl implements  UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
     }
     @Override
-    public void deleteUserbyId(String id){
+    public void deleteUserById(String id){
          userRepository.deleteById(id);
     }
 
