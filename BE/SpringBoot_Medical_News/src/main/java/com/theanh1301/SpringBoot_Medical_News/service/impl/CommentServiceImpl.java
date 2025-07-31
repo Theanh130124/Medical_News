@@ -16,6 +16,8 @@ import com.theanh1301.SpringBoot_Medical_News.service.CommentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
     UserRepository userRepository;
     PostRepository postRepository;
     CommentMapper commentMapper;
+    private final CommentService commentService;
 
     @Override
     public CommentResponse createComment(CommentCreationRequest request) {
@@ -67,10 +70,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponse> getCommentByPostId(String postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
-        return commentRepository.getCommentByPost(post).stream().map(commentMapper::toCommentResponse).collect(Collectors.toList());
+    public Page<CommentResponse> getCommentsByPostId(String postId , Pageable pageable) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        return commentRepository.getCommentsByPost(post, pageable).map(commentMapper::toCommentResponse);
     }
 
     @Override

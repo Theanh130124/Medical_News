@@ -17,9 +17,9 @@ public interface UserService extends UserDetailsService {
     UserResponse createUser(UserCreationRequest request);
     UserResponse updateUser(String id , UserUpdateRequest request);
     User getUserByUsername(String username);
-    List<UserResponse> getAllUsers(Pageable pageable);
+    Page<UserResponse> getAllUsers(Pageable pageable); //Page đã có List
     UserResponse getUserById(String id);
-    void deleteUserbyId(String id);
+    void deleteUserById(String id);
     UserResponse getUserResponseByUsername(String username);
     Page<UserResponse> findAllUserIsActive(Pageable pageable);
     long countUserIsActive();

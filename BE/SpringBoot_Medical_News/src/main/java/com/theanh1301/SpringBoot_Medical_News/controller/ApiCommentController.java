@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,12 +53,14 @@ public class ApiCommentController {
     }
 
 
-
+//Test lại
     @GetMapping("/byPostId/{postId}")
-    public ApiResponse<List<CommentResponse>> getAllCommentByPost(@PathVariable(value = "postId") String id){
-        var res = commentService.getCommentByPostId(id);
+    public ApiResponse<Page<CommentResponse>> getAllCommentByPost(@PathVariable(value = "postId") String id ,
+                                                                  @RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        var res = commentService.getCommentsByPostId(id,pageable);
         long count = commentService.countCommentByPost(id);
-        return ApiResponse.<List<CommentResponse>>builder().result(res).count(count).message("Lấy các bình luận của một bài viết thành công").build();
+        return ApiResponse.<Page<CommentResponse>>builder().result(res).count(count).message("Lấy các bình luận của một bài viết thành công").build();
     }
 
 

@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -53,10 +56,11 @@ public class ApiPostController {
     }
 
     @GetMapping("/getAll")
-    public ApiResponse<List<PostResponse>> getAllPost(){
+    public ApiResponse<Page<PostResponse>> getAllPost(@RequestParam(defaultValue = "10") int size ,@RequestParam(defaultValue = "0") int page){
 
-        return ApiResponse.<List<PostResponse>>builder()
-                .result(postService.getAllPost())
+        Pageable pageable = PageRequest.of(page, size);
+        return ApiResponse.<Page<PostResponse>>builder()
+                .result(postService.getAllPost(pageable))
                 .message("Lấy danh sách tất cả bài viết thành công").build();
 
     }
