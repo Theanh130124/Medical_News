@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     UserRepository userRepository;
     PostRepository postRepository;
     CommentMapper commentMapper;
-    private final CommentService commentService;
+
 
     @Override
     public CommentResponse createComment(CommentCreationRequest request) {

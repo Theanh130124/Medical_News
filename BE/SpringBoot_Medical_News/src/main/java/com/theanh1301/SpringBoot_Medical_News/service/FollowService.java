@@ -17,4 +17,7 @@ public interface FollowService {
 
     Page<FollowResponse> getFollowings(String userId, Pageable pageable);
 
+    long countFollowers(String userId);
+
+    long countFollowing(String userId);
 }

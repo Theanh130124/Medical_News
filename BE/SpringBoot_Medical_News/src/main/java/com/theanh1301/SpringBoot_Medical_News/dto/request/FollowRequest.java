@@ -11,6 +11,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class FollowRequest {
 
-    String followerId;
+    String followerId; //Người thực hiện theo dõi
     String followingId;
 }
