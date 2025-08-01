@@ -20,7 +20,7 @@ public class CertificateCreationRequest {
 
 
 
-    String userId; // tự map thành user
+    String doctorId; // tự map
 
     //Bên API phải có @Valid -> @Size mới hđ
     @Size(min=5, max=30 , message="CERTIFICATE_NUMBER_INVALID")
