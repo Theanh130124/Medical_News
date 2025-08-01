@@ -6,12 +6,14 @@ import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.CertificateCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.CertificateResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Certificate;
+import com.theanh1301.SpringBoot_Medical_News.entity.Doctor;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.CertificateMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.CertificateRepository;
+import com.theanh1301.SpringBoot_Medical_News.repository.DoctorRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.CertificateService;
 import lombok.AccessLevel;
@@ -35,7 +37,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     CertificateRepository certificateRepository;
     CertificateMapper certificateMapper;
-    UserRepository userRepository;
+    DoctorRepository doctorRepository;
     Cloudinary cloudinary;
 
     @Override
@@ -58,11 +60,11 @@ public class CertificateServiceImpl implements CertificateService {
             }
 
         }
-        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
-        if(!user.getRole().getName().equals(RoleName.DOCTOR)){
-            throw new AppException(ErrorCode.NOT_ROLE_DOCTOR);
-        }
-        certificate.setUser(user);
+        Doctor doctor = doctorRepository
+                .findById(request.getDoctorId()).orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+
+        certificate.setDoctor(doctor);
+
 
 
         return certificateMapper.toCertificateResponse(certificateRepository.save(certificate));

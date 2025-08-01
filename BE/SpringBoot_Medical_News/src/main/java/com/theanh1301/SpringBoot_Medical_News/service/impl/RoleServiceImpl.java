@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
     //Nữa viet tren thymeleaf
     RoleRepository roleRepository;
     RoleMapper roleMapper;
-    PermissionRepository permissionRepository;
+
 
 
     @Override

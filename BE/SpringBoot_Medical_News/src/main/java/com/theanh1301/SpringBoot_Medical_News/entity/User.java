@@ -101,7 +101,9 @@ public class User {
     protected void onCreate() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
-        this.isActive = true;
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
     }
 
     @PreUpdate
