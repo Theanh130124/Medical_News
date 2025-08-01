@@ -6,12 +6,14 @@ import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.Doctor;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.UserMapper;
+import com.theanh1301.SpringBoot_Medical_News.repository.DoctorRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.RoleRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.EmailService;
@@ -27,6 +29,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,6 +45,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements  UserService {
@@ -51,6 +56,7 @@ public class UserServiceImpl implements  UserService {
     RoleRepository roleRepository;
     Cloudinary cloudinary;
     EmailService emailService;
+    DoctorRepository doctorRepository;
 
     //Clean code lại -> xử lý image
 
@@ -65,7 +71,6 @@ public class UserServiceImpl implements  UserService {
         );
 
     }
-
 
     @Override
     public UserResponse createUser(UserCreationRequest request){
@@ -93,7 +98,6 @@ public class UserServiceImpl implements  UserService {
                 Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            //Avatar == NULL ?
         }else{
             user.setAvatar("https://res.cloudinary.com/dxiawzgnz/image/upload/v1744000840/qlrmknm7hfe81aplswy2.png");
         }
@@ -103,11 +107,23 @@ public class UserServiceImpl implements  UserService {
 
         user.setRole(role);
         user.setCreatedAt(Instant.now());
-        //Admin tạo
+        //Admin tạo -> tách qua thymeleaf
         if(role.getName().equals(RoleName.DOCTOR)){
             user.setIsActive(false); //false nếu doctor -> để xét duyệt mới true
             user.setPassword(passwordEncoder.encode(user.getUsername()+"@123"));
+            userRepository.save(user); //Lưu để có userId
+
+            Doctor doctor = Doctor.builder()
+                    .user(user)
+                    .specialty("NOT VALUE")
+                    .yearsOfExperience(0)
+                    .workplace("NOT VALUE")
+                    .educationalLevel("NOT VALUE")
+                    .introduction("NOT VALUE")
+                    .build();
+            doctorRepository.save(doctor);
             emailService.sendAccountDoctorInfoEmail(user);
+
         }else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
