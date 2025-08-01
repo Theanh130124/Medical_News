@@ -44,6 +44,12 @@ python app.py
 
 ```
 
+Enable SpringBoot Dev Tool
+
+![alt text](image.png)
+
+Ctrl+Shift+A -> registry -> compiler.automake.allow.when.app.running
+
 <h1>Setup -Redis</h1>
 
 

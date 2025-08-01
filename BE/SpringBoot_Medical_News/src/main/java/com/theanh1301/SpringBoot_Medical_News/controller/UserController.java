@@ -11,8 +11,7 @@ public class UserController {
 
 
     @GetMapping("/login")
-    public String loginView(HttpServletRequest request , Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
+    public String loginView() {
         return "login";
     }
 }
