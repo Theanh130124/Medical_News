@@ -13,7 +13,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CertificateMapper {
 
-    @Mapping(target="user" , ignore = true)
+    @Mapping(target="doctor" , ignore = true)
     @Mapping(target = "imageCertificate" , ignore = true)
     Certificate toCertificate(CertificateCreationRequest request);
 

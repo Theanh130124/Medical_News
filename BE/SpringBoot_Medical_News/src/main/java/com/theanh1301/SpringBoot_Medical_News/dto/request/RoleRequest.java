@@ -15,6 +15,5 @@ import java.util.Set;
 public class RoleRequest {
     RoleName name;
     String description;
-    //Tại vì người dùng không thể truyền một object
-    Set<String> permissions;
+
 }
