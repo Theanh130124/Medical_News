@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "certificate")
 public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,8 +30,8 @@ public class Certificate {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    Doctor doctor;
 
     @Size(max = 100)
     @NotNull
@@ -74,7 +75,6 @@ public class Certificate {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-
 
 
 }

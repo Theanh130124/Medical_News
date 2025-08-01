@@ -1,6 +1,5 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
-import com.theanh1301.SpringBoot_Medical_News.enums.CertificateStatus;
 import com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +17,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "Friends")
+@Table(name = "friends")
 public class Friend {
     @EmbeddedId
     FriendId id;
@@ -48,6 +47,7 @@ public class Friend {
     @Column(name = "updated_at")
     Instant updatedAt;
 
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();
@@ -59,5 +59,6 @@ public class Friend {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
+
 
 }

@@ -19,6 +19,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "reaction")
 public class Reaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -51,7 +52,5 @@ public class Reaction {
         this.createdAt = Instant.now();
 
     }
-
-
 
 }

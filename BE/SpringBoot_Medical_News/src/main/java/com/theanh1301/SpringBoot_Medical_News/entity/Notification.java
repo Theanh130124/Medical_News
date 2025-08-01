@@ -18,6 +18,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "notification")
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -47,6 +48,7 @@ public class Notification {
     @Column(name = "updated_at")
     Instant updatedAt;
 
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();
@@ -57,6 +59,5 @@ public class Notification {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-
 
 }
