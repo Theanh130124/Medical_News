@@ -14,6 +14,8 @@ public interface DoctorMapper {
     @Mapping(target ="user", ignore = true)
     Doctor toDoctor(DoctorCreationRequest request);
 
+
+    @Mapping(target = "userResponse" , source = "user")
     DoctorResponse toDoctorResponse(Doctor doctor);
 
     void updateDoctor(@MappingTarget Doctor doctor, DoctorUpdateRequest request);

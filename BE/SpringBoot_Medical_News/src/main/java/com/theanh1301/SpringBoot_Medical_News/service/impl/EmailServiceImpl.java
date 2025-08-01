@@ -20,7 +20,7 @@ import java.util.Properties;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE) // côi makeFinal nữa
 
 public class EmailServiceImpl implements EmailService {
 

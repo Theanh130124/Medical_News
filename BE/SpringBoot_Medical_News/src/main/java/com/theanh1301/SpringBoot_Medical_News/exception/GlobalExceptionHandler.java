@@ -91,6 +91,8 @@ public class GlobalExceptionHandler {
     }
 
 
+
+
     //Phần exception 403 cho API -> phần mà thiếu hoặc sai token , @PreAuthorize -> sai role
     @ExceptionHandler(value = AuthorizationDeniedException.class)
     public ResponseEntity<ApiResponse<Void>> handleException(AuthorizationDeniedException exception) {
