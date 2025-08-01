@@ -12,6 +12,12 @@
 <section class="container">
     <h1 class="text-center text-info mt-3 mb-3">ĐĂNG NHẬP</h1>
 
+    <div th:if="${param.error}" class="alert alert-danger">
+        Tên đăng nhập hoặc mật khẩu không đúng!
+    </div>
+
+
+
 
     <form method="post" th:action="@{/login}" >
         <div class="form-floating mb-3 mt-3">
