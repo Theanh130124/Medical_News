@@ -16,9 +16,10 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "follow")
 public class Follow {
     @EmbeddedId
-    FollowId id;// dùng FollowId là key (có kết hợp 2 key)
+    FollowId id;
 
     @MapsId("followerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

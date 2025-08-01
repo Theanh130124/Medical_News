@@ -11,9 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.awt.*;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
+@Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -55,7 +54,7 @@ public class Post {
     @Column(name = "type")
     TypePost type;
 
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     @Column(name = "allow_comments")
     Boolean allowComments;
 
@@ -66,6 +65,7 @@ public class Post {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     Instant updatedAt;
+
 
     // "post" bên imagePost
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

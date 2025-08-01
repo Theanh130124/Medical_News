@@ -13,7 +13,6 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.RefreshTokenRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.AuthenticationResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.InvalidatedToken;
-import com.theanh1301.SpringBoot_Medical_News.entity.Permission;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
@@ -22,16 +21,13 @@ import com.theanh1301.SpringBoot_Medical_News.repository.InvalidatedTokenReposit
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.CollectionUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -86,27 +82,16 @@ public class AuthenticationServiceImpl implements com.theanh1301.SpringBoot_Medi
         return signedJWT;
 
     }
-    //Trong scope thì vẫn còn ROLE_ADMIN , CREATE_POST ...  , trong grantedAuthority -> không có tiền tố ROLE_
-    //build cho scope của token(jwt) chúa role và permission  -> muốn xem scope lên service xem luôn (khoongg xem ở current_user đc
+    //Trong scope thì vẫn còn ROLE_ADMIN , , trong grantedAuthority -> không có tiền tố ROLE_
+    //build cho scope của token(jwt) chúa role  -> muốn xem scope lên service xem luôn (khoongg xem ở current_user đc
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" "); //ngăn cách nhau bởi dấu cách
         Role role = user.getRole();
         if (role != null) // Không empty -> lấy role ra
 
-            //Thêm tiền tố ROLE_ và permission mình để trống (để dễ phân biệt)
+
             stringJoiner.add("ROLE_" + role.getName()); // add role và scope
 
-        if (role.getPermissions() != null && !CollectionUtils.isEmpty(role.getPermissions())) {
-            role.getPermissions().forEach(rolePermission ->
-            {
-                Permission permission = rolePermission;
-                if (permission != null) {
-                    stringJoiner.add(permission.getName()); // Add permisson vào scope
-                }
-
-            });
-
-        }
         return stringJoiner.toString();
     }
     //Tạo ra token của JWT

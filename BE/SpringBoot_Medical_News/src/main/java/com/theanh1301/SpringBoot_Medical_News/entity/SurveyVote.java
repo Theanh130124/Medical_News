@@ -16,7 +16,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "Survey_Vote")
+@Table(name = "survey_vote")
 public class SurveyVote {
     @EmbeddedId
     SurveyVoteId id;
@@ -36,7 +36,5 @@ public class SurveyVote {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "voted_at")
     Instant votedAt;
-
-
 
 }
