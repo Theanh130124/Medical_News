@@ -60,6 +60,8 @@ public class UserServiceImpl implements  UserService {
 
     //Clean code lại -> xử lý image
 
+
+    //Kiểm tra login của form login
     @Override
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
