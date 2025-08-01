@@ -19,6 +19,7 @@ import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.repository.InvalidatedTokenRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
+import com.theanh1301.SpringBoot_Medical_News.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -39,7 +40,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor //Contructror cho field final và @NonNull
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
-public class AuthenticationServiceImpl implements com.theanh1301.SpringBoot_Medical_News.service.AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     UserRepository userRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
