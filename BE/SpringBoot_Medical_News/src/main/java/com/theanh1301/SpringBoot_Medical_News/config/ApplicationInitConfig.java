@@ -26,9 +26,6 @@ public class ApplicationInitConfig {
    PasswordEncoder passwordEncoder; //đã thêm vào bean bên SecurityConfig
 
 
-
-
-
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository,RoleRepository roleRepository) {
         return args -> {
