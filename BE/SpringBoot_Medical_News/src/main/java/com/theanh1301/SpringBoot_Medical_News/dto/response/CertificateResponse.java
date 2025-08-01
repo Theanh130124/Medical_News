@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class CertificateResponse {
 
     String id;
-    UserResponse user; // nếu có toUserReponse thì để mapstruct tự map đc
+    UserResponse user; // nếu có toUserReponse thì để mapstruct tự map đc -> xem map lai doctor
     String certificateNumber;
     LocalDate issueDate;
     LocalDate expiryDate;

@@ -18,7 +18,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "Search_history")
+@Table(name = "search_history")
 public class SearchHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,8 +39,5 @@ public class SearchHistory {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "searched_at")
     Instant searchedAt;
-
-
-
 
 }

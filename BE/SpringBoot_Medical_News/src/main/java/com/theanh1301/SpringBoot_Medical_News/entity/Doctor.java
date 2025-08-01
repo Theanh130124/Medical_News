@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.entity;
 
+import com.theanh1301.SpringBoot_Medical_News.enums.CertificateStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,29 +19,37 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "doctor")
+public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, length = 36)
     String id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "post_id", nullable = false)
-    Post post;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @NotNull
+    @Size(max = 100)
+    @Column(name = "specialty", length = 100)
+    String specialty;
+
+    @Column(name = "years_of_experience")
+    Integer yearsOfExperience;
+
+    @Size(max = 255)
+    @Column(name = "workplace")
+    String workplace;
+
+    @Size(max = 100)
+    @Column(name = "educational_level", length = 100)
+    String educationalLevel;
+
     @Lob
-    @Column(name = "content", nullable = false)
-    String content;
+    @Column(name = "introduction")
+    String introduction;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -49,6 +58,7 @@ public class Comment {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     Instant updatedAt;
+
 
     @PrePersist
     protected void onCreate() {
@@ -60,6 +70,5 @@ public class Comment {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-
 
 }

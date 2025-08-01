@@ -18,7 +18,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "Survey_Option")
+@Table(name = "survey_option")
 public class SurveyOption {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,6 +50,5 @@ public class SurveyOption {
     protected void onUpdate() {
 
     }
-
 
 }

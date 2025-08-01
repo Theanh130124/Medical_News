@@ -10,8 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
 
-    //Phải bỏ qua vì request vào là Set<String> nhưng thực tế nó là Set<RolePermission> -> nên mình tự map bên service
-    @Mapping(target ="permissions", ignore = true)
+
     Role toRole(RoleRequest roleRequest);
     RoleResponse toRoleResponse(Role role);
 }

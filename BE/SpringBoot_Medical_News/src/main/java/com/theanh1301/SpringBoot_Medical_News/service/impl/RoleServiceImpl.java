@@ -7,7 +7,6 @@ import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.RoleMapper;
-import com.theanh1301.SpringBoot_Medical_News.repository.PermissionRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.RoleRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.RoleService;
 import lombok.AccessLevel;
@@ -34,10 +33,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleResponse createRole(RoleRequest request) {
         Role role = roleMapper.toRole(request);
-
-        //Tự map permission
-        var permissions = permissionRepository.findAllByNameIn(request.getPermissions()); //chỉ set các permission sẳn có
-        role.setPermissions(permissions);
         roleRepository.save(role);
         return roleMapper.toRoleResponse(role);
     }
@@ -60,10 +55,6 @@ public class RoleServiceImpl implements RoleService {
 
         role.setName(roleRequest.getName());
         role.setDescription(roleRequest.getDescription());
-
-        var permissions = permissionRepository.findAllByNameIn(roleRequest.getPermissions()); // trog json truyền [] với set
-        role.setPermissions(permissions);
-
         roleRepository.save(role);
         return roleMapper.toRoleResponse(role);
 
