@@ -10,15 +10,14 @@
 
 
 <section class="container">
-    <h1 class="text-center text-info mt-1">ĐĂNG NHẬP</h1>
+    <h1 class="text-center text-info mt-3 mb-3">ĐĂNG NHẬP</h1>
 
-    <div th:if="${param.error}" class="alert alert-danger">
-        Tên đăng nhập hoặc mật khẩu không đúng!
-    </div>
+
     <form method="post" th:action="@{/login}" >
         <div class="form-floating mb-3 mt-3">
             <input type="text" class="form-control" name="username" id="name" placeholder="Tên đăng nhập">
             <label for="name">Tên đăng nhập</label>
+<!--            for liên kết với name="username"-->
         </div>
         <div class="form-floating mb-3 mt-3">
             <input type="password" class="form-control" name="password" id="password" placeholder="Mật khẩu">
