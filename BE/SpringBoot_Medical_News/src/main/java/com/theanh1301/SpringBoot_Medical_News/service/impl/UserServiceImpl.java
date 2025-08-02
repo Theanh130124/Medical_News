@@ -117,11 +117,11 @@ public class UserServiceImpl implements  UserService {
 
             Doctor doctor = Doctor.builder()
                     .user(user)
-                    .specialty("NOT VALUE")
+                    .specialty("Chưa cập nhật")
                     .yearsOfExperience(0)
-                    .workplace("NOT VALUE")
-                    .educationalLevel("NOT VALUE")
-                    .introduction("NOT VALUE")
+                    .workplace("Chưa cập nhật")
+                    .educationalLevel("Chưa cập nhật")
+                    .introduction("Chưa cập nhật")
                     .build();
             doctorRepository.save(doctor);
             emailService.sendAccountDoctorInfoEmail(user);
