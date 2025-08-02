@@ -1,9 +1,11 @@
 package com.theanh1301.SpringBoot_Medical_News.exception;
 
 
+import ch.qos.logback.core.model.Model;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -64,9 +67,11 @@ public class GlobalExceptionHandler {
         return msg;
     }
 
+
+
     //Xử lý in ra theo msg cho Validate @Size , @Dob ....  -> dùng cho RESTAPI
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiResponse<Void>> handleRestApiValidation(MethodArgumentNotValidException exception) {
         String enumKey = exception.getFieldError().getDefaultMessage(); //tên message trong @Size
         ErrorCode errorCode = ErrorCode.INVALID_KEY; //nếu mà không tìm đc thì lỗi vậy -> không đúng msg
         Map<String, Object> attributes = null; //key là null
@@ -89,6 +94,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiResponse);
 
     }
+
+
+
+
+
+
 
 
 
