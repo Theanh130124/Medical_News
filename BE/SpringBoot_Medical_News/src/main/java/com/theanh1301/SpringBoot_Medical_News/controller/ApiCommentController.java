@@ -1,11 +1,13 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
+import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.CommentCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.CommentUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.CommentResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.CommentService;
+import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.util.List;
 public class ApiCommentController {
 
     CommentService commentService;
+    PaginationProperties paginationProperties;
 
 
 
@@ -53,11 +56,11 @@ public class ApiCommentController {
     }
 
 
-//Test lại
+//Test lại  //required = false không bắt buộc
     @GetMapping("/byPostId/{postId}")
     public ApiResponse<Page<CommentResponse>> getAllCommentByPost(@PathVariable(value = "postId") String id ,
-                                                                  @RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+                                                                  @RequestParam(required = false) int page , @RequestParam(required = false) Integer size) {
+        Pageable pageable = PaginationUtils.createPageable(page,size, paginationProperties);
         var res = commentService.getCommentsByPostId(id,pageable);
         long count = commentService.countCommentByPost(id);
         return ApiResponse.<Page<CommentResponse>>builder().result(res).count(count).message("Lấy các bình luận của một bài viết thành công").build();
