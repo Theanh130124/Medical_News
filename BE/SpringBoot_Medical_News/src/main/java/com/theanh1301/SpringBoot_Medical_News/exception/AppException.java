@@ -14,6 +14,7 @@ public class AppException extends RuntimeException {
     private ErrorCode errorCode;
 
 
+
     public AppException(ErrorCode errorCode) {
         super(errorCode.getMsg()); // sẽ gửi msg từ AppException (con) -> lên RuntimeException (cha)
         this.errorCode = errorCode;
