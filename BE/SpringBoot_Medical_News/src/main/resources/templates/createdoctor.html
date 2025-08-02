@@ -36,26 +36,6 @@
             <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Họ">
             <label for="username">Họ</label>
         </div>
-
-        <div class="form-floating mb-3">
-            <input type="date" th:field="*{dateOfBirth}" class="form-control" id="dateOfBirth" placeholder="Ngày sinh">
-            <label for="dateOfBirth">Ngày sinh</label>
-            <div class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" th:field="*{address}" class="form-control" id="address" placeholder="Địa chỉ">
-            <label for="address">Địa chỉ</label>
-            <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-        </div>
-
-
-        <!--        <div class="form-floating mb-3">-->
-<!--            <input type="password" th:field="*{password}" class="form-control"id="password" placeholder="Mật khẩu">-->
-<!--            <label for="password">Mật khẩu</label>-->
-<!--            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
-<!--        </div>-->
-
         <div class="form-floating mb-3">
             <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email">
             <label for="email">Email</label>
@@ -68,12 +48,42 @@
             <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
         </div>
 
+        <div class="form-floating mb-3">
+            <input type="date" th:field="*{dateOfBirth}" class="form-control" id="dateOfBirth" placeholder="Ngày sinh">
+            <label for="dateOfBirth">Ngày sinh</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select th:field="*{gender}" class="form-select" id="gender">
+                <option th:each="g : ${genders}" th:value="${g}" th:text="${g}"></option>
+            </select>
+            <label for="gender">Giới tính</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+        </div>
+
+
+        <div class="form-floating mb-3">
+            <input type="text" th:field="*{address}" class="form-control" id="address" placeholder="Địa chỉ">
+            <label for="address">Địa chỉ</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+        </div>
+
+<!--Nên hiện trên giao diện nói pass là username+@123-->
+        <!--        <div class="form-floating mb-3">-->
+<!--            <input type="password" th:field="*{password}" class="form-control"id="password" placeholder="Mật khẩu">-->
+<!--            <label for="password">Mật khẩu</label>-->
+<!--            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
+<!--        </div>-->
+
+
+
         <div class="mb-3">
             <label class="form-label">Ảnh đại diện</label>
             <input type="file" th:field="*{avatar}" class="form-control">
         </div>
 
-        <input type="hidden" th:field="*{role}" value="DOCTOR"/>
+
 
         <button type="submit" class="btn btn-primary">Đăng ký</button>
     </form>

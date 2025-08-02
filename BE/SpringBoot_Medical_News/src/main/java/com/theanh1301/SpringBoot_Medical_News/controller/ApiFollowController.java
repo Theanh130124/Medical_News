@@ -1,10 +1,12 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
+import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.FollowRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.FollowResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.FollowService;
+import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApiFollowController {
 
     FollowService followService;
+    PaginationProperties paginationProperties;
 
 
     //Xem permission
@@ -43,7 +46,10 @@ public class ApiFollowController {
 
     //Chỉ có followerId đúng mới được làm
     @GetMapping("/followers/{userId}")
-    public ApiResponse<Page<FollowResponse>> getFollowers(@PathVariable String userId , Pageable pageable){
+    public ApiResponse<Page<FollowResponse>> getFollowers(@PathVariable String userId , @RequestParam(required = false) Integer size,
+                                                          @RequestParam(required = false) Integer page){
+
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         var res = followService.getFollowers(userId,pageable);
         long count = followService.countFollowers(userId);
 
@@ -56,7 +62,10 @@ public class ApiFollowController {
 
     //Chỉ có followerId đúng mới được làm
     @GetMapping("/following/{userId}")
-    public ApiResponse<Page<FollowResponse>> getFollowing(@PathVariable String userId , Pageable pageable){
+    public ApiResponse<Page<FollowResponse>> getFollowing(@PathVariable String userId , @RequestParam(required = false) Integer size,
+                                                          @RequestParam(required = false) Integer page){
+
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         var res = followService.getFollowings(userId,pageable);
         long count = followService.countFollowing(userId);
         return ApiResponse.<Page<FollowResponse>>builder()

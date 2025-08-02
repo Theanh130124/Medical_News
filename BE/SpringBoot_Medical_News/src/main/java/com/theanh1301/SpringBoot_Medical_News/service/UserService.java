@@ -4,6 +4,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,5 +25,6 @@ public interface UserService extends UserDetailsService {
     Page<UserResponse> findAllUserIsActive(Pageable pageable);
     long countUserIsActive();
     long countAllUser();
+    Page<UserResponse> getUserByRole(RoleName roleName , Pageable pageable);
 
 }
