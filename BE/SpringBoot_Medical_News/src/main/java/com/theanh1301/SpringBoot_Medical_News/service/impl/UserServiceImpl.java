@@ -58,6 +58,7 @@ public class UserServiceImpl implements  UserService {
     EmailService emailService;
     DoctorRepository doctorRepository;
 
+
     //Clean code lại -> xử lý image
 
 
@@ -203,5 +204,14 @@ public class UserServiceImpl implements  UserService {
     @Override
     public long countAllUser() {
         return userRepository.countAllUser();
+    }
+
+
+    @Override
+    public Page<UserResponse> getUserByRole(RoleName roleName, Pageable pageable) {
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+
+        return userRepository.getUserByRole(role, pageable).map(userMapper::toUserResponse);
     }
 }

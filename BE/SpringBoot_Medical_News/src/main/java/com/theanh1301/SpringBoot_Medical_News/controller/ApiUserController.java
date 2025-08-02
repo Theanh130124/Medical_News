@@ -1,10 +1,12 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
+import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
+import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class ApiUserController {
 
 
     UserService userService;
+    PaginationProperties paginationProperties;
     //@RequestBody -> gửi json
     @PostMapping
     public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request){
@@ -43,10 +46,13 @@ public class ApiUserController {
     //Trc method run
     @PreAuthorize("hasRole('ADMIN')") // TỰ điền ROLE_  , tuy CSDL không lưu nhưng trong SCOPE jwt có
     @GetMapping
-    public ApiResponse<Page<UserResponse>> getUsers(@RequestParam(defaultValue = "5") int size , @RequestParam(defaultValue = "0") int page){
+    public ApiResponse<Page<UserResponse>> getUsers(@RequestParam(required = false) Integer size,
+                                                    @RequestParam(required = false) Integer page){
+
+
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         authentication.getAuthorities().forEach(authority -> log.info(authority.getAuthority()));
         long count = userService.countAllUser();
 
@@ -57,9 +63,10 @@ public class ApiUserController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/isActive")
-    public ApiResponse<Page<UserResponse>> getActiveUsers(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page){
+    public ApiResponse<Page<UserResponse>> getActiveUsers(@RequestParam(required = false) Integer size,
+                                                          @RequestParam(required = false) Integer page){
 
-        Pageable pageable = PageRequest.of(page, size); // bổ sung sort sau
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties); // bổ sung sort sau
         var res = userService.findAllUserIsActive(pageable);
         long count = userService.countUserIsActive();
         return ApiResponse.<Page<UserResponse>>builder().result(res).count(count).message("Lấy toàn bộ users đang hoạt động thành công").build();
