@@ -1,0 +1,60 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Danh sách bác sĩ</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<section class="container mt-4">
+    <h2 class="text-center text-primary">Danh sách bác sĩ</h2>
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Tên tài khoản</th>
+                <th>Họ và tên</th>
+                <th>Email</th>
+                <th>SĐT</th>
+                <th>Ngày sinh</th>
+                <th>Địa chỉ</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="doctor : ${doctorPage.content}">
+                <td th:text="${doctor.username}"></td>
+                <td th:text="${doctor.firstName + ' ' + doctor.lastName}"></td>
+                <td th:text="${doctor.email}"></td>
+                <td th:text="${doctor.phoneNumber}"></td>
+                <td th:text="${#temporals.format(doctor.dateOfBirth, 'dd/MM/yyyy')}"></td>
+                <td th:text="${doctor.address}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!--Phân trang-->
+
+<div class="d-flex justify-content-center">
+    <nav>
+        <ul class="pagination">
+            <li th:classappend="${doctorPage.first} ? 'disabled'" class="page-item">
+                <a th:href="@{'/doctors'(page=${doctorPage.number - 1})}" class="page-link">Trước</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" th:text="'Trang ' + (${doctorPage.number + 1}) + '/' + ${doctorPage.totalPages}"></a>
+            </li>
+            <li th:classappend="${doctorPage.last} ? 'disabled'" class="page-item">
+                <a th:href="@{'/doctors'(page=${doctorPage.number + 1})}" class="page-link">Sau</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="layout/footer :: footer"></div>
+</body>
+
+</html>

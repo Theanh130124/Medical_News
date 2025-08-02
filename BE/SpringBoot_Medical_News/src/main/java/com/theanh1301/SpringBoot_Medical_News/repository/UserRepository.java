@@ -1,6 +1,7 @@
 package com.theanh1301.SpringBoot_Medical_News.repository;
 
 
+import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,6 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     @Query("SELECT  Count(u) from  User u where u.isActive")
     long countUserIsActive();
+
+    Page<User> getUserByRole(Role role, Pageable pageable);
 }

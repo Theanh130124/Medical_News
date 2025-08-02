@@ -1,11 +1,13 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
+import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
+import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,8 @@ public class ApiPostController {
 
 
     PostService postService;
-    private final RestClient.Builder builder;
+
+    PaginationProperties paginationProperties;
 
 
     @PostMapping
@@ -56,9 +59,10 @@ public class ApiPostController {
     }
 
     @GetMapping("/getAll")
-    public ApiResponse<Page<PostResponse>> getAllPost(@RequestParam(defaultValue = "10") int size ,@RequestParam(defaultValue = "0") int page){
+    public ApiResponse<Page<PostResponse>> getAllPost(@RequestParam(required = false) Integer size,
+                                                      @RequestParam(required = false) Integer page){
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         return ApiResponse.<Page<PostResponse>>builder()
                 .result(postService.getAllPost(pageable))
                 .message("Lấy danh sách tất cả bài viết thành công").build();
