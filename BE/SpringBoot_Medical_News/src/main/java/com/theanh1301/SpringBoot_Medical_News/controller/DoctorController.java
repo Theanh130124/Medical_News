@@ -2,6 +2,8 @@ package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
+import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
 import jakarta.validation.Valid;
@@ -45,9 +47,12 @@ public class DoctorController {
             return "createdoctor"; //
         }
         try{
+            request.setGender(Gender.FEMALE); // xem fix
+            request.setRole(RoleName.DOCTOR); // xem fix?
             userService.createUser(request);
+
             redirectAttributes.addFlashAttribute("success", true);
-            return "redirect:/createdoctor";
+            return "redirect:/create_doctor"; //redirect là phải trả về  đúng /create_doctor của Post
         }catch(AppException e){
             model.addAttribute("error",e.getMessage()); //lấy msg của mình ra
             return "createdoctor";

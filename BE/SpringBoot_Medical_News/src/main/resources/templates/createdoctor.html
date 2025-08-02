@@ -28,12 +28,33 @@
             <label for="username">Tên tài khoản</label>
             <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
         </div>
+        <div class="form-floating mb-3">
+            <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="Tên">
+            <label for="username">Tên</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Họ">
+            <label for="username">Họ</label>
+        </div>
 
         <div class="form-floating mb-3">
-            <input type="password" th:field="*{password}" class="form-control"id="password" placeholder="Mật khẩu">
-            <label for="password">Mật khẩu</label>
-            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <input type="date" th:field="*{dateOfBirth}" class="form-control" id="dateOfBirth" placeholder="Ngày sinh">
+            <label for="dateOfBirth">Ngày sinh</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
         </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" th:field="*{address}" class="form-control" id="address" placeholder="Địa chỉ">
+            <label for="address">Địa chỉ</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+        </div>
+
+
+        <!--        <div class="form-floating mb-3">-->
+<!--            <input type="password" th:field="*{password}" class="form-control"id="password" placeholder="Mật khẩu">-->
+<!--            <label for="password">Mật khẩu</label>-->
+<!--            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
+<!--        </div>-->
 
         <div class="form-floating mb-3">
             <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email">
