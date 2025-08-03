@@ -1,6 +1,7 @@
 package com.theanh1301.SpringBoot_Medical_News.mapper;
 
 
+import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
@@ -27,7 +28,7 @@ public interface UserMapper {
     //fields nào userResponse có thì map từ user vào
     UserResponse toUserResponse(User user);
 
-
+    User toUserforSearch(DoctorSearchRequest request);
 
     List<UserResponse> toUserResponses(List<User> users);
 

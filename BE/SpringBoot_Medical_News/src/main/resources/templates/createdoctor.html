@@ -20,6 +20,22 @@
     <div th:if="${success}" class="alert alert-success">
         Tạo tài khoản bác sĩ thành công.
     </div>
+
+
+
+<!--    <form method="get" th:action="@{/search}" th:object="${searchReq}" class="row g-2 mb-3">-->
+<!--        <input type="text" th:field="*{username}" class="form-control col" placeholder="Tên tài khoản">-->
+<!--        <input type="text" th:field="*{fullName}" class="form-control col" placeholder="Họ và tên">-->
+<!--        <input type="text" th:field="*{email}" class="form-control col" placeholder="Email">-->
+<!--        <input type="text" th:field="*{phone}" class="form-control col" placeholder="SĐT">-->
+<!--        <input type="text" th:field="*{dateOfBirth}" class="form-control col" placeholder="Ngày sinh (yyyy-MM-dd)">-->
+<!--        <input type="text" th:field="*{address}" class="form-control col" placeholder="Địa chỉ">-->
+<!--        <div class="col">-->
+<!--            <button class="btn btn-primary">Tìm kiếm</button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+
 <!--th:fields thay thế cho name -> trong html -->
 <!-- dùng th:fields nếu có lỗi (từ @Valid) trả ra đc -->
     <form th:action="@{/create_doctor}" th:object="${user}" method="post" enctype="multipart/form-data" class="mt-3">
