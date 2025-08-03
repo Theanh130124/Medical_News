@@ -4,6 +4,7 @@ package com.theanh1301.SpringBoot_Medical_News.controller;
 import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
@@ -19,10 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -46,7 +44,7 @@ public class DoctorController {
 
 
     @PostMapping("/create_doctor")
-    public String createDoctor(@ModelAttribute("user") @Valid UserCreationRequest request ,
+    public String createDoctor(@ModelAttribute @Valid UserCreationRequest request ,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model) {
 
@@ -67,27 +65,65 @@ public class DoctorController {
 
 
     @GetMapping("/doctors")
-    public String listDoctors(Model model ,  @RequestParam(required = false) Integer page,
+    public String listDoctors(@ModelAttribute DoctorSearchRequest request, Model model
+            ,@RequestParam(required = false) Integer page,
                               @RequestParam(required = false) Integer size) {
 
         Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
-        Page<UserResponse> doctorPage = userService.getUserByRole(RoleName.DOCTOR, pageable);
+
+
+        Page<UserResponse> doctorPage;
+        //isEmpty tự thêm
+        if (request.isEmpty()) {
+            doctorPage = userService.getUserByRole(RoleName.DOCTOR, pageable); // load tất cả
+        } else {
+            doctorPage = userService.searchDoctors(request, pageable); // có lọc
+        }
         model.addAttribute("doctorPage",doctorPage);
         model.addAttribute("search", new DoctorSearchRequest());
         return "doctors";
     }
 
 
-    @GetMapping("/search")
-    public String searchDoctor(@ModelAttribute("search") DoctorSearchRequest request,
-                               @RequestParam(required = false) Integer page,
-                               @RequestParam(required = false) Integer size,
-                               Model model) {
-        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
-        Page<UserResponse> doctorPage = userService.searchDoctors(request, pageable);
-        model.addAttribute("doctorPage", doctorPage); // để hiển thị danh sách
-        model.addAttribute("search", request); // để giữ lại form nhập
-        return "doctors";
+    @GetMapping("/doctors/edit/{id}")
+    public String editDoctorForm(@PathVariable String id, Model model){
+        UserResponse doctor = userService.getUserById(id);
+        model.addAttribute("doctor",doctor);
+        return "editdoctor";
     }
+
+
+    @PostMapping("/doctors/edit/{id}")
+    public String editDoctor(@PathVariable String id, @ModelAttribute @Valid UserUpdateRequest request,
+                             BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("doctor", request);
+            return "editdoctor";
+        }
+        try{
+            userService.updateUser(id, request);
+            redirectAttributes.addFlashAttribute("success", true);
+            return "redirect:/doctors";
+        }catch(AppException e){
+            model.addAttribute("error",e.getMessage());
+            return "editdoctor";
+        }
+    }
+
+    //delete trên form cũng xử  lý post
+    @PostMapping("/doctors/delete/{id}")
+    public String deleteDoctor(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        try{
+            userService.deleteUserById(id);
+            redirectAttributes.addFlashAttribute("success", "Xóa thành công !");
+
+        }catch(AppException e){
+            redirectAttributes.addFlashAttribute("error",e.getMessage());
+        }
+        return "redirect:/doctors";
+    }
+
+
+
 
 }
