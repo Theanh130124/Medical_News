@@ -1,25 +1,28 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
+import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
+import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class DoctorController {
 
     UserService userService;
+    PaginationProperties paginationProperties;
 //Nên code hiển thị các tài khoản hiện có nữa  -> Chưa in được valid
 
     //Form create
@@ -63,10 +67,26 @@ public class DoctorController {
 
 
     @GetMapping("/doctors")
-    public String listDoctors(Model model ,  @PageableDefault(size = 5) Pageable pageable) {
+    public String listDoctors(Model model ,  @RequestParam(required = false) Integer page,
+                              @RequestParam(required = false) Integer size) {
 
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         Page<UserResponse> doctorPage = userService.getUserByRole(RoleName.DOCTOR, pageable);
         model.addAttribute("doctorPage",doctorPage);
+        model.addAttribute("searchReq", new DoctorSearchRequest());
+        return "doctors";
+    }
+
+
+    @GetMapping("/search")
+    public String searchDoctor(@ModelAttribute("searchReq") DoctorSearchRequest request,
+                               @RequestParam(required = false) Integer page,
+                               @RequestParam(required = false) Integer size,
+                               Model model) {
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+        Page<UserResponse> doctorPage = userService.searchDoctors(request, pageable);
+        model.addAttribute("doctorPage", doctorPage); // để hiển thị danh sách
+        model.addAttribute("searchReq", request); // để giữ lại form nhập
         return "doctors";
     }
 
