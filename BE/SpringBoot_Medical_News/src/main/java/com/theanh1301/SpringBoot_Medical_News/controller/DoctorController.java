@@ -73,20 +73,20 @@ public class DoctorController {
         Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         Page<UserResponse> doctorPage = userService.getUserByRole(RoleName.DOCTOR, pageable);
         model.addAttribute("doctorPage",doctorPage);
-        model.addAttribute("searchReq", new DoctorSearchRequest());
+        model.addAttribute("search", new DoctorSearchRequest());
         return "doctors";
     }
 
 
     @GetMapping("/search")
-    public String searchDoctor(@ModelAttribute("searchReq") DoctorSearchRequest request,
+    public String searchDoctor(@ModelAttribute("search") DoctorSearchRequest request,
                                @RequestParam(required = false) Integer page,
                                @RequestParam(required = false) Integer size,
                                Model model) {
         Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
         Page<UserResponse> doctorPage = userService.searchDoctors(request, pageable);
         model.addAttribute("doctorPage", doctorPage); // để hiển thị danh sách
-        model.addAttribute("searchReq", request); // để giữ lại form nhập
+        model.addAttribute("search", request); // để giữ lại form nhập
         return "doctors";
     }
 
