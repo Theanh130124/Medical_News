@@ -20,4 +20,10 @@ public class DoctorSearchRequest {
     String phoneNumber;
     LocalDate dateOfBirth;
     String address;
+
+    public boolean isEmpty() {
+        return username == null && firstName == null && lastName == null &&
+                email == null && phoneNumber == null && dateOfBirth == null && address == null;
+    }
+
 }

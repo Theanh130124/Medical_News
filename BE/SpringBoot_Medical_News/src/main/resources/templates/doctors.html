@@ -46,6 +46,7 @@
                 <th>SĐT</th>
                 <th>Ngày sinh</th>
                 <th>Địa chỉ</th>
+                <th>Thao tác</th>
             </tr>
             </thead>
             <tbody>
@@ -56,9 +57,24 @@
                 <td th:text="${doctor.phoneNumber}"></td>
                 <td th:text="${#temporals.format(doctor.dateOfBirth, 'dd/MM/yyyy')}"></td>
                 <td th:text="${doctor.address}"></td>
+                <td>
+                    <a th:href="@{'/doctors/edit/' + ${doctor.id}}" class="btn btn-warning btn-sm">Sửa</a>
+
+                    <form th:action="@{'/doctors/delete/' + ${doctor.id}}" method="post"
+                          th:onsubmit="return confirm('Bạn có chắc muốn xóa?')" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" type="submit">Xóa</button>
+                    </form>
+
+                </td>
             </tr>
+
             </tbody>
         </table>
+
+        <div th:if="${doctorPage.content.size() == 0}" class="alert alert-warning text-center mt-3">
+            Không tìm thấy kết quả phù hợp.
+        </div>
+
     </div>
 </section>
 
