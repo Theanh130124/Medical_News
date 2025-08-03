@@ -9,8 +9,33 @@
 <body>
 <div th:replace="layout/header :: header"></div>
 
+
+
+
 <section class="container mt-4">
     <h2 class="text-center text-primary">Danh sách bác sĩ</h2>
+
+    <form th:action="@{/doctors}" method="get" th:object="${search}" class="row g-2 mb-3">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Tài khoản" th:field="*{username}" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Họ" th:field="*{lastName}" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Tên" th:field="*{firstName}" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Email" th:field="*{email}" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="SĐT" th:field="*{phoneNumber}" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Tìm kiếm</button>
+        </div>
+    </form>
+
     <div class="table-responsive mt-3">
         <table class="table table-bordered table-hover">
             <thead>

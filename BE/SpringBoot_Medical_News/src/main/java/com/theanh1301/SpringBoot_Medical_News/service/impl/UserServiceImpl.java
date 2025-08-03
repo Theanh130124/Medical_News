@@ -19,6 +19,7 @@ import com.theanh1301.SpringBoot_Medical_News.repository.RoleRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.EmailService;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
+import com.theanh1301.SpringBoot_Medical_News.specification.UserSpecification;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -218,7 +219,6 @@ public class UserServiceImpl implements  UserService {
 
     @Override
     public Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable) {
-        User user = userMapper.toUserforSearch(request);
-        return userRepository.searchDoctors(user, pageable).map(userMapper::toUserResponse);
+        return userRepository.findAll(UserSpecification.filterByRequest(request), pageable).map(userMapper::toUserResponse);
     }
 }
