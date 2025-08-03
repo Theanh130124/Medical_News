@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.service;
 
+import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.print.Doc;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -26,5 +28,6 @@ public interface UserService extends UserDetailsService {
     long countUserIsActive();
     long countAllUser();
     Page<UserResponse> getUserByRole(RoleName roleName , Pageable pageable);
+    Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable);
 
 }

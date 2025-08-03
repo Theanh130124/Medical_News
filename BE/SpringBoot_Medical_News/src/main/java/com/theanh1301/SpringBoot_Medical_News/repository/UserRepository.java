@@ -1,12 +1,14 @@
 package com.theanh1301.SpringBoot_Medical_News.repository;
 
 
+import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 import java.util.Optional;
@@ -35,4 +37,18 @@ public interface UserRepository extends JpaRepository<User,String> {
     long countUserIsActive();
 
     Page<User> getUserByRole(Role role, Pageable pageable);
+
+
+    //nếu không null thì -> lower(u.fields) LIKE với req -> nếu null thì true (bỏ qua)
+    @Query("SELECT u FROM User u " +
+            "WHERE (:#{#req.username} IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', :#{#req.username}, '%'))) " +
+            "AND (:#{#req.firstName} IS NULL OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :#{#req.firstName}, '%'))) " +
+            "AND (:#{#req.lastName} IS NULL OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :#{#req.lastName}, '%'))) " +
+            "AND (:#{#req.email} IS NULL OR LOWER(u.email) LIKE LOWER(CONCAT('%', :#{#req.email}, '%'))) " +
+            "AND (:#{#req.phoneNumber} IS NULL OR u.phoneNumber LIKE CONCAT('%', :#{#req.phoneNumber}, '%')) " +
+            "AND (:#{#req.dateOfBirth} IS NULL OR FUNCTION('DATE_FORMAT', u.dateOfBirth, '%Y-%m-%d') LIKE CONCAT('%', :#{#req.dateOfBirth}, '%')) " +
+            "AND (:#{#req.address} IS NULL OR LOWER(u.address) LIKE LOWER(CONCAT('%', :#{#req.address}, '%'))) " +
+            "AND u.role.name = 'DOCTOR'")
+    Page<User> searchDoctors(@Param("req") User req, Pageable pageable);
+
 }

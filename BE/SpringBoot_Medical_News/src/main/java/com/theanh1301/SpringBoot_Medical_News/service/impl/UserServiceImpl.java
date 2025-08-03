@@ -3,6 +3,7 @@ package com.theanh1301.SpringBoot_Medical_News.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
@@ -213,5 +214,11 @@ public class UserServiceImpl implements  UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
         return userRepository.getUserByRole(role, pageable).map(userMapper::toUserResponse);
+    }
+
+    @Override
+    public Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable) {
+        User user = userMapper.toUserforSearch(request);
+        return userRepository.searchDoctors(user, pageable).map(userMapper::toUserResponse);
     }
 }
