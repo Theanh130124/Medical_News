@@ -43,6 +43,7 @@ public class CertificateServiceImpl implements CertificateService {
     CertificateMapper certificateMapper;
     DoctorRepository doctorRepository;
     Cloudinary cloudinary;
+    private final UserRepository userRepository;
 
     @Override
     public CertificateResponse createCertificate(CertificateCreationRequest request) {
@@ -74,9 +75,14 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
 
+    //Duyệt nhận cũng cập nhật trạng thái cho doctor
     @Override
     public CertificateResponse updateCertificate(String id, CertificateUpdateRequest request) {
         Certificate certificate = certificateRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
+        //Save lại active
+        User user = certificate.getDoctor().getUser();
+        user.setIsActive(true);
+        userRepository.save(user);
         certificateMapper.updateCertificate(certificate, request); // map cái status
 
         return  certificateMapper.toCertificateResponse(certificateRepository.save(certificate));
@@ -87,6 +93,31 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public Page<CertificateResponse> getCertificatesByStatus(CertificateStatus status , Pageable pageable) {
         return certificateRepository.getCertificateByStatus(status, pageable).map(certificateMapper::toCertificateResponse);
+
+    }
+
+    @Override
+    public Page<CertificateResponse> getAllCertificates(Pageable pageable) {
+        return certificateRepository.findAll(pageable).map(certificateMapper::toCertificateResponse);
+    }
+
+
+
+    @Override
+    public void deleteCertificate(String id) {
+        certificateRepository.deleteById(id);
+    }
+
+    @Override
+    public void rejectCertificate(String id, String reason) {
+        Certificate cert = certificateRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
+        cert.setStatus(CertificateStatus.REJECTED);
+
+        certificateRepository.save(cert);
+
+        User user = cert.getDoctor().getUser();
+
+
 
     }
 }
