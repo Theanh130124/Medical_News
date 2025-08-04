@@ -37,4 +37,6 @@ public interface UserMapper {
     void updateUser(@MappingTarget User user, UserUpdateRequest request); //map trừng request vào user(đã có)
 
 
+    @Mapping(target = "avatar" , ignore = true)
+    UserUpdateRequest toUserUpdateRequest(UserResponse userResponse);
 }

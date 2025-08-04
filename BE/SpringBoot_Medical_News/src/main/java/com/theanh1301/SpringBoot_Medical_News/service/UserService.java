@@ -30,4 +30,5 @@ public interface UserService extends UserDetailsService {
     Page<UserResponse> getUserByRole(RoleName roleName , Pageable pageable);
     Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable);
 
+    UserUpdateRequest getUserUpdateRequestById(String id);
 }

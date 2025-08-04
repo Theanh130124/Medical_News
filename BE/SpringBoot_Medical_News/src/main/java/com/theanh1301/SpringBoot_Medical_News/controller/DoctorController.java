@@ -44,11 +44,11 @@ public class DoctorController {
 
 
     @PostMapping("/create_doctor")
-    public String createDoctor(@ModelAttribute @Valid UserCreationRequest request ,
+    public String createDoctor(@ModelAttribute("user") @Valid UserCreationRequest request ,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model) {
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) { //ktra tạo có đúng @Valid không
             model.addAttribute("user",request); //vẫn giữ lại data -> trên form dù có lỗi
             return "createdoctor";
         }
@@ -65,7 +65,7 @@ public class DoctorController {
 
 
     @GetMapping("/doctors")
-    public String listDoctors(@ModelAttribute DoctorSearchRequest request, Model model
+    public String listDoctors(@ModelAttribute("search") DoctorSearchRequest request, Model model
             ,@RequestParam(required = false) Integer page,
                               @RequestParam(required = false) Integer size) {
 
@@ -87,19 +87,27 @@ public class DoctorController {
 
     @GetMapping("/doctors/edit/{id}")
     public String editDoctorForm(@PathVariable String id, Model model){
-        UserResponse doctor = userService.getUserById(id);
-        model.addAttribute("doctor",doctor);
+
+
+        UserUpdateRequest request = userService.getUserUpdateRequestById(id);
+        //Lấy ra data của user theo id -> và phải là UserUpdateRequest vì khi edit cần @Valid
+        model.addAttribute("doctor",request);
+        model.addAttribute("genders" ,Gender.values());
         return "editdoctor";
     }
 
 
     @PostMapping("/doctors/edit/{id}")
-    public String editDoctor(@PathVariable String id, @ModelAttribute @Valid UserUpdateRequest request,
-                             BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("doctor", request);
+    public String editDoctor(@PathVariable String id, @ModelAttribute("doctor") @Valid UserUpdateRequest request,
+                             BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        model.addAttribute("genders" ,Gender.values());
+        if (bindingResult.hasErrors()) { //ktra tạo có đúng @Valid không
+            model.addAttribute("doctor", request);  //phải là request vì có @Size...
+            System.out.println("Có lỗi: " + bindingResult.getAllErrors());
             return "editdoctor";
         }
+        //Thực hiện update
         try{
             userService.updateUser(id, request);
             redirectAttributes.addFlashAttribute("success", true);
