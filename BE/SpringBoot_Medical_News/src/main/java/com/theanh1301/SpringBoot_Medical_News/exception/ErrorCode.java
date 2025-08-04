@@ -41,7 +41,8 @@ public enum ErrorCode {
     SPECIALTY_INVALID(1026,"Tên chuyên khoa không hợp lệ, không ngắn hơn {min} ký tự",HttpStatus.BAD_REQUEST),
     WORKPLACE_INVALID(1027,"Nợi làm việc không ngắn hơn {min} ký tự", HttpStatus.BAD_REQUEST),
     EDUCATIONAL_LEVEL_INVALID(1028,"Trình độ học vấn không hợp lệ ,phải lớn hơn {min} ký tư",HttpStatus.BAD_REQUEST),
-    DOCTOR_NOT_FOUND(1029 , "Không tìm thấy bác sĩ" , HttpStatus.BAD_REQUEST),;
+    DOCTOR_NOT_FOUND(1029 , "Không tìm thấy bác sĩ" , HttpStatus.BAD_REQUEST),
+    CERTIFICATE_NOT_FOUND(1030,"Không tìm thấy chứng chỉ hành nghề" , HttpStatus.BAD_REQUEST) ;
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;
