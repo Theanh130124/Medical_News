@@ -15,6 +15,30 @@
 <section class="container mt-4">
     <h2 class="text-center text-primary">Danh sách chứng chỉ hành nghề</h2>
 
+
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" id="rejectForm">
+<!--                rejectForm đúng với id bên nút từ chối-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Từ chối chứng chỉ</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="rejectId">
+                        <div class="mb-3">
+                            <label>Lý do từ chối:</label>
+                            <textarea name="reason" class="form-control" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Gửi từ chối</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <form method="get" class="mb-3">
         <div class="row">
             <div class="col-md-3">
@@ -39,6 +63,7 @@
         <th>Ngày hết hạn</th>
         <th>Hình ảnh</th>
         <th>Trạng thái</th>
+        <th>Hành động</th>
     </tr>
     </thead>
 
@@ -50,9 +75,26 @@
             <td th:text="${cert.issueDate}"></td>
             <td th:text="${cert.expiryDate}"></td>
             <td>
-                <img th:src="${cert.imageCertificate}" alt="Ảnh chứng chỉ" style="width: 100px; height: auto;">
+                <a th:href="${cert.imageCertificate}" target="_blank">
+                    <img th:src="${cert.imageCertificate}" alt="Ảnh chứng chỉ" style="width: 100px; height: auto;">
+                </a>
             </td>
             <td th:text="${cert.status}"></td>
+            <td>
+                <form th:action="@{'/certificate/approve/' + ${cert.id}}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success btn-sm">Xác nhận</button>
+                </form>
+
+                <button type="button" class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#rejectModal"
+                        th:attr="data-id=${cert.id}">
+<!--                    gán id vào modal-->
+                    Từ chối
+
+                </button>
+
+            </td>
         </tr>
         </tbody>
     </table>
@@ -75,6 +117,17 @@
         </ul>
     </nav>
 </div>
+
+
+<script>
+    const rejectModal = document.getElementById('rejectModal');
+    rejectModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const certId = button.getAttribute('data-id');
+        document.getElementById('rejectId').value = certId;
+        document.getElementById('rejectForm').action = `/certificate/reject/${certId}`;
+    });
+</script>
 <div th:replace="layout/footer :: footer"></div>
 </body>
 

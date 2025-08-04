@@ -12,4 +12,7 @@ public interface CertificateService {
     CertificateResponse createCertificate(CertificateCreationRequest request);
     CertificateResponse updateCertificate(String id , CertificateUpdateRequest request);
     Page<CertificateResponse> getCertificatesByStatus(CertificateStatus status , Pageable pageable);
-}
+    Page<CertificateResponse> getAllCertificates(Pageable pageable);
+    void deleteCertificate(String id);
+    void rejectCertificate(String id, String reason);
+    }
