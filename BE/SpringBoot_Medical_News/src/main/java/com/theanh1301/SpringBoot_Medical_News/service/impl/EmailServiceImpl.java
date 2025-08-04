@@ -78,4 +78,45 @@ public class EmailServiceImpl implements EmailService {
             }
 
     }
+
+    @Override
+    public void sendRejectionEmail(User user, String reason) {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new jakarta.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(this.username, "Hệ thống thông tin y tế trực tuyến"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            message.setSubject("Chứng chỉ bị từ chối");
+
+            String content = String.format("""
+            <html>
+              <body>
+                <h3>Xin chào %s %s,</h3>
+                <p>Chứng chỉ hành nghề của bạn đã bị từ chối.</p>
+                <p><strong>Lý do:</strong> %s</p>
+                <p>Vui lòng cập nhật lại và gửi lại để được xét duyệt.</p>
+                <br/>
+                <p>Trân trọng,<br/>Hệ thống Thông tin Y tế</p>
+              </body>
+            </html>
+        """, user.getLastName(), user.getFirstName(), reason);
+
+            message.setContent(content, "text/html; charset=UTF-8");
+            Transport.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
