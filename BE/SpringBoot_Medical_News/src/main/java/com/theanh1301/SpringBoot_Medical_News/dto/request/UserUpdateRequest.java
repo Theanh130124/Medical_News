@@ -1,6 +1,7 @@
 package com.theanh1301.SpringBoot_Medical_News.dto.request;
 
 
+import com.theanh1301.SpringBoot_Medical_News.enums.Gender;
 import com.theanh1301.SpringBoot_Medical_News.validator.DobConstraint;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,8 +17,11 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
+
+    String id;
     @Size(min=8, max=30 , message ="PASSWORD_INVALID")
     String password;
+
     String firstName;
     String lastName;
 
@@ -29,6 +33,8 @@ public class UserUpdateRequest {
 
     @Size(min=10 , message = "EMAIL_INVALID")
     String email;
+
+    Gender gender;
 
     MultipartFile avatar;
 
