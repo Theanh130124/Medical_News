@@ -15,23 +15,16 @@
 <section class="container mt-4">
     <h2 class="text-primary text-center mb-4">Chỉnh sửa thông tin bác sĩ</h2>
 
+    <div th:if="${error}" class="alert alert-danger">
+        <span th:text="${error}"></span>
+    </div>
 
+<!--    <div th:if="${success}" class="alert alert-success">-->
+<!--        Cập nhật tài khoản bác sĩ thành công-->
+<!--    </div>-->
 
     <form th:action="@{'/doctors/edit/'+ ${doctor.id}}" th:object="${doctor}" method="post">
 
-        <div th:if="${error}" class="alert alert-danger">
-            <span th:text="${error}"></span>
-        </div>
-
-<!--        <div th:if="${success}" class="alert alert-success">-->
-<!--            Cập nhật tài khoản bác sĩ thành công-->
-<!--        </div>-->
-
-        <input type="hidden" th:field="*{id}"/>
-        <div class="mb-3">
-            <label>Tên đăng nhập</label>
-            <input type="text" th:field="*{username}" class="form-control" disabled/>
-        </div>
 
         <div class="mb-3">
             <label>Họ</label>
@@ -46,24 +39,34 @@
         <div class="mb-3">
             <label>Email</label>
             <input type="email" th:field="*{email}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
 
         <div class="mb-3">
             <label>SĐT</label>
             <input type="text" th:field="*{phoneNumber}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select th:field="*{gender}" class="form-select" id="gender">
+                <option th:each="g : ${genders}" th:value="${g}" th:text="${g}"></option>
+            </select>
+            <label for="gender">Giới tính</label>
+            <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
         </div>
 
         <div class="mb-3">
             <label>Ngày sinh</label>
             <input type="date" th:field="*{dateOfBirth}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
         </div>
 
         <div class="mb-3">
             <label>Địa chỉ</label>
             <input type="text" th:field="*{address}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
         </div>
-
-        <input type="hidden" th:field="*{role}"/>
 
         <button type="submit" class="btn btn-success">Lưu</button>
         <a th:href="@{/doctors}" class="btn btn-secondary">Hủy</a>
