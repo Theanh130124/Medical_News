@@ -30,7 +30,6 @@ public class DoctorController {
 
     UserService userService;
     PaginationProperties paginationProperties;
-//Nên code hiển thị các tài khoản hiện có nữa  -> Chưa in được valid
 
     //Form create
     @GetMapping("/create_doctor")
