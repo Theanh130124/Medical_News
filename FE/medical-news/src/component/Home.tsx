@@ -17,13 +17,10 @@ const Home = () => {
         <Container fluid className="p-0">
             <Row className={`align-items-center justify-content-center mt-5 ${styles.customRow}`}>
                 <Col xs={12} md={7} lg={6} className={styles.homeText}>
-                    <h2 className="text-white">Đặt khám bác sĩ</h2>
+                    <h2 className="text-white">Tin tức y tế chính thống, từ hơn 500 bác sĩ uy tín</h2>
                     <span>
-                        Đặt khám với hơn 500 bác sĩ đã kết nối chính thức với HEALTH CARE để có số thứ tự và khung giờ khám trước
+                        Theo dõi các thông tin y tế mới nhất được tổng hợp và xác thực bởi đội ngũ chuyên gia và bác sĩ hàng đầu từ hệ thống MEDICAL NEWS
                     </span>
-                    <div className="px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg mt-3 mb-2">
-                        Đặt lịch khám dễ dàng | Tư vấn sức khỏe trực tuyến | Bác sĩ uy tín, tận tâm | Hỗ trợ 24/7 cho bạn
-                    </div>
                 </Col>
                 <Col xs={12} md={5} lg={4} className="text-center mt-4 mt-md-0">
                     <Image src="/assets/images/doctor.jpg" alt="Doctor" className={styles.doctorImage} />
