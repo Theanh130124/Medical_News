@@ -44,6 +44,8 @@ public class CertificateController {
         model.addAttribute("certificate", certificatePage);
         model.addAttribute("allStatuses", CertificateStatus.values());
         model.addAttribute("selectedStatus", status);
+        model.addAttribute("REJECTED", CertificateStatus.REJECTED);
+        model.addAttribute("APPROVED", CertificateStatus.APPROVED);
         return "certificate";
     }
 

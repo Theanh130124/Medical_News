@@ -23,6 +23,5 @@ public interface CertificateMapper {
     CertificateResponse toCertificateResponse(Certificate certificate);
 
 
-
     void updateCertificate(@MappingTarget Certificate certificate, CertificateUpdateRequest request);
 }
