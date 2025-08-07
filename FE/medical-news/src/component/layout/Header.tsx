@@ -9,22 +9,22 @@ const Header = () => {
             <Container className="p-0">
                 <Navbar.Brand as={Link} to="/" className={styles.logoLink}>
                     <h2 className={styles.logoTitle}>
-                        <span className={styles.logoHealth}>HEALTH</span>
-                        <span className={styles.logoCare}>CARE.</span>
+                        <span className={styles.logoHealth}>MEDICAL</span>
+                        <span className={styles.logoCare}>NEWS</span>
                     </h2>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className={`me-auto ${styles.headerMenu} text-center`}>
                         <Link to="/calendar" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-                            Xem lịch trống
-                            <span className={styles.subText}>Đặt khám ngay</span>
+                        <span className={styles.navText}>Xem lịch trống</span>
+                        <span className={styles.subText}>Đặt khám ngay</span>
                         </Link>
-                        <Link to="/review" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-                            Xem đánh giá
-                            <span className={styles.subText}>Đánh giá về những bác sĩ</span>
+                        <Link to="/calendar" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+                        <span className={styles.navText}>Xem đánh giá</span>
+                        <span className={styles.subText}>Đặt khám</span>
                         </Link>
-                        <NavDropdown
+                        {/* <NavDropdown
                             title={
                                 <div className={styles.navItemWithSubtext}>
                                     Tìm bác sĩ
@@ -35,7 +35,7 @@ const Header = () => {
                             className={styles.navDropdown}
                         >
                             <NavDropdown.Item as={Link} to="/findDoctor">Tìm ngay...</NavDropdown.Item>
-                        </NavDropdown>
+                        </NavDropdown> */}
                     </Nav>
                     <Nav className={styles.headerAuth}>
                        <Link to="/register" className={styles.authBtn} style={{ textDecoration: "none" }}>
