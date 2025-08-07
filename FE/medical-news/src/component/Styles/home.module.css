@@ -1,0 +1,80 @@
+.customRow {
+  background: linear-gradient(135deg, #183e9f, #2a51b2);
+  border-radius: 0;
+  width: 100vw;
+  padding: 60px 20px;
+  height: auto;
+}
+.customRowPrimary {
+  background: linear-gradient(135deg, #9aabff, #d7e0ff);
+  border-radius: 0;
+  width: 100vw;
+  padding: 60px 20px;
+  height: auto;
+}
+.customFormControl {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 8px 12px;
+  border-radius: 16px;
+  border: 2px solid #ccc;
+  font-size: 14px;
+}
+
+.doctorImage {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  object-fit: cover;
+  margin-left: 20px;
+}
+
+.homeText {
+  text-align: left;
+  padding: 20px;
+}
+
+.homeText h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.homeText span {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #f0f0f0;
+}
+
+.customCarousel {
+  margin-top: 40px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carouselImage {
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cardWrapper {
+  position: relative;
+  display: block;
+}
+
+.carouselCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(37, 35, 35, 0.5);
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
