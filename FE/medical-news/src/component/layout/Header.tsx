@@ -1,33 +1,48 @@
-import { Container, Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
+import { Container, Navbar, Button, NavDropdown, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Styles/header.module.css";
 
 const Header = () => {
     return (
-        <Navbar expand="lg" bg="light" className={styles.header}>
-            <Container>
+
+        <Navbar collapseOnSelect expand="lg" variant="light" bg="light" className={styles.header}>
+            <Container className="p-0">
                 <Navbar.Brand as={Link} to="/" className={styles.logoLink}>
-                    <span className={styles.logoHealth}>MEDICAL</span>
-                    <span className={styles.logoNews}>NEWS</span>
+                    <h2 className={styles.logoTitle}>
+                        <span className={styles.logoHealth}>HEALTH</span>
+                        <span className={styles.logoCare}>CARE.</span>
+                    </h2>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="main-navbar" />
-                <Navbar.Collapse id="main-navbar">
-                    <Nav className="me-auto">
-                        <Link to="/news" className={styles.navLink}>Tin tức</Link>
-                        <Link to="/doctors" className={styles.navLink}>Bác sĩ</Link>
-                        <Link to="/hospitals" className={styles.navLink}>Bệnh viện</Link>
-                        <Link to="/reviews" className={styles.navLink}>Đánh giá</Link>
-                        <NavDropdown title="Dịch vụ" id="services-dropdown" className={styles.navDropdown}>
-                            <NavDropdown.Item as={Link} to="/booking">Đặt khám</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/health-records">Hồ sơ sức khỏe</NavDropdown.Item>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className={`me-auto ${styles.headerMenu} text-center`}>
+                        <Link to="/calendar" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+                            Xem lịch trống
+                            <span className={styles.subText}>Đặt khám ngay</span>
+                        </Link>
+                        <Link to="/review" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+                            Xem đánh giá
+                            <span className={styles.subText}>Đánh giá về những bác sĩ</span>
+                        </Link>
+                        <NavDropdown
+                            title={
+                                <div className={styles.navItemWithSubtext}>
+                                    Tìm bác sĩ
+                                    <span className={styles.subText}>Tìm ngay...</span>
+                                </div>
+                            }
+                            id="collapsible-nav-dropdown"
+                            className={styles.navDropdown}
+                        >
+                            <NavDropdown.Item as={Link} to="/findDoctor">Tìm ngay...</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Nav>
-                        <Link to="/login">
-                            <Button variant="outline-primary" className={styles.authBtn}>Đăng nhập</Button>
+                    <Nav className={styles.headerAuth}>
+                       <Link to="/register" className={styles.authBtn} style={{ textDecoration: "none" }}>
+                            Đăng ký
                         </Link>
-                        <Link to="/register">
-                            <Button variant="primary" className={styles.authBtn}>Đăng ký</Button>
+                        <Link to="/login" className={styles.authBtn} style={{ textDecoration: "none" }}>
+                            Đăng nhập
                         </Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -37,3 +52,6 @@ const Header = () => {
 };
 
 export default Header;
+
+
+

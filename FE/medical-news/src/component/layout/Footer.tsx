@@ -24,7 +24,7 @@ const Footer = () => {
                     </Col>
                     <Col md={4} className={styles.social}>
                         <h5>Kết nối với chúng tôi</h5>
-                        <div>
+                        <div className={styles.socialIcons}>
                             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faFacebook} /></a>
                             <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faYoutube} /></a>
                             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faLinkedin} /></a>
