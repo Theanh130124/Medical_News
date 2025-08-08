@@ -2,6 +2,8 @@ package com.theanh1301.SpringBoot_Medical_News.service.impl;
 
 import com.theanh1301.SpringBoot_Medical_News.dto.request.StatsRequest;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
+import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.StatsService;
 import lombok.AccessLevel;
@@ -28,10 +30,10 @@ public class StatsServiceImpl implements StatsService {
 
     private void validateRequest(StatsRequest request) {
         if ((request.getMonth() != null || request.getQuarter() != null) && request.getYear() == null) {
-            throw new IllegalArgumentException("Nếu chọn tháng hoặc quý thì bắt buộc phải có năm");
+            throw new AppException(ErrorCode.STATS_YEAR_VALIDATED);
         }
         if (request.getYear() != null && request.getMonth() != null && request.getQuarter() != null) {
-            throw new IllegalArgumentException("Không thể lọc cả tháng và quý cùng lúc");
+            throw new AppException(ErrorCode.STATS_MONTH_QUARTER_VALID);
         }
     }
 

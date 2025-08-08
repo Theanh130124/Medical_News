@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.StatsRequest;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.service.StatsService;
 import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import lombok.AccessLevel;
@@ -29,18 +30,26 @@ public class StatsController {
     PaginationProperties paginationProperties;
 
     @GetMapping("/stats")
-    public String statsForm(@ModelAttribute("statsRequest") StatsRequest statsRequest, Model model , @RequestParam(required = false) Integer page,
-                            @RequestParam(required = false) Integer size)  throws Exception{
-        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
-        Page<User> users = statsService.findUsersByStats(pageable,statsRequest);
-        List<Object[]> stats = statsService.countUsersStats(statsRequest);
+    public String statsForm(@ModelAttribute("statsRequest") StatsRequest statsRequest, Model model, @RequestParam(required = false) Integer page,
+                            @RequestParam(required = false) Integer size) throws Exception {
+        try {
+            Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+            Page<User> users = statsService.findUsersByStats(pageable, statsRequest);
+            List<Object[]> stats = statsService.countUsersStats(statsRequest);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String statsJson = mapper.writeValueAsString(stats); //Json
+            ObjectMapper mapper = new ObjectMapper();
+            String statsJson = mapper.writeValueAsString(stats); //Json
 
-        model.addAttribute("users", users);
-        model.addAttribute("statsJson", statsJson);
+            model.addAttribute("users", users);
+            model.addAttribute("statsJson", statsJson);
+        } catch (AppException e) {
+            // Gửi thông báo lỗi sang view
+            model.addAttribute("errorMessage", e.getErrorCode().getMsg());
+            model.addAttribute("users", Page.empty());
+            model.addAttribute("statsJson", "[]");
+        }
         return "stats";
-    }
 
+
+    }
 }
