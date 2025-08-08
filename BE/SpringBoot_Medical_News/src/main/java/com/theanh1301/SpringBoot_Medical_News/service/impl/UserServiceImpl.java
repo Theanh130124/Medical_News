@@ -104,7 +104,7 @@ public class UserServiceImpl implements  UserService {
         if (avatar != null && !avatar.isEmpty()) {
             try{
                 Map res = cloudinary.uploader().upload(avatar.getBytes(),
-                ObjectUtils.asMap("resource_type", "auto"));
+                        ObjectUtils.asMap("resource_type", "auto"));
                 user.setAvatar(res.get("secure_url").toString());
             }catch (IOException ex){
                 Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,13 +195,13 @@ public class UserServiceImpl implements  UserService {
     }
     @Override
     public void deleteUserById(String id){
-         userRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
 
     @Override
     public Page<UserResponse> findAllUserIsActive(Pageable pageable) {
-       Page<User> users = userRepository.findAllUserIsActive(pageable);
+        Page<User> users = userRepository.findAllUserIsActive(pageable);
         return users.map(userMapper::toUserResponse); // Map page -> có thêm .map
     }
 

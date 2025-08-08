@@ -19,7 +19,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -36,19 +35,12 @@ public class ApiUserController {
     PaginationProperties paginationProperties;
     //@RequestBody -> gửi json
     @PostMapping
-    public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request ,
-                                                @RequestParam(value = "avatar")MultipartFile avatar){
+    public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request){
 
-<<<<<<< Updated upstream
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request))
                 .message("Tạo tài khoản thành công")
                 .build();
-=======
-        ApiResponse<UserResponse> response = new ApiResponse<>();
-        response.setResult(userService.createUser(request, avatar));
-        return response;
->>>>>>> Stashed changes
     }
 
     //Trc method run
@@ -94,7 +86,7 @@ public class ApiUserController {
     @PostAuthorize("returnObject.result.username == authentication.name")
     @PatchMapping("/{userId}")
     public ApiResponse<UserResponse> updateUser(@PathVariable(value="userId") String id ,
-                                   @ModelAttribute @Valid UserUpdateRequest request){
+                                                @ModelAttribute @Valid UserUpdateRequest request){
 
 
 
