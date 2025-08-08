@@ -1,0 +1,84 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Thống kê báo cáo</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+
+<body>
+<div th:replace="layout/header :: header"></div>
+
+
+
+
+<section class="container mt-4">
+    <h2 class="text-center text-primary">Thống kê báo cáo</h2>
+
+    <form method="get" th:object="${statsRequest}" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label>Năm</label>
+            <input type="number" th:field="*{year}" class="form-control" placeholder="VD: 2025">
+        </div>
+        <div class="col-md-3">
+            <label>Tháng</label>
+            <input type="number" min="1" max="12" th:field="*{month}" class="form-control" placeholder="1-12">
+        </div>
+        <div class="col-md-3">
+            <label>Quý</label>
+            <input type="number" min="1" max="4" th:field="*{quarter}" class="form-control" placeholder="1-4">
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Ngày tạo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+                <li th:classappend="${users.first} ? 'disabled'" class="page-item">
+                    <a th:href="@{/stats(page=${users.number - 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Trước</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" th:text="'Trang ' + (${users.number + 1}) + '/' + ${users.totalPages}"></a>
+                </li>
+                <li th:classappend="${users.last} ? 'disabled'" class="page-item">
+                    <a th:href="@{/stats(page=${users.number + 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Sau</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="mt-5">
+        <canvas id="statsChart" height="100"></canvas>
+    </div>
+
+    <script th:inline="javascript">
+        const statsData = /*[[${statsJson}]]*/ [];
+    </script>
+    <script src="/js/stats.js"></script>
+
+</section>
+
+<div th:replace="layout/footer :: footer"></div>
+</body>
+
+</html>

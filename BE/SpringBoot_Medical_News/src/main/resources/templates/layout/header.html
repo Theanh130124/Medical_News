@@ -22,7 +22,11 @@
                     </li>
 
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+<<<<<<< Updated upstream
                         <a class="nav-link" th:href="@{/certificate}">Xét duyệt</a>
+=======
+                        <a class="nav-link" th:href="@{/license}">Xét duyệt</a>
+>>>>>>> Stashed changes
                     </li>
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/createclinic}">Quản lý người dùng</a>
@@ -30,12 +34,18 @@
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/createspecialty}">Tạo thêm chuyên khoa</a>
                     </li>
+<<<<<<< Updated upstream
 <!--href -> @GetMapping create_doctor -->
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/create_doctor}">Tạo tài khoản bác sĩ</a>
                     </li>
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/doctors}">Danh sách tài khoản bác sĩ</a>
+=======
+
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMINN')">
+                        <a class="nav-link" th:href="@{/registerdoctor}">Tạo tài khoản bác sĩ</a>
+>>>>>>> Stashed changes
                     </li>
 
                     <li class="nav-item" sec:authorize="isAuthenticated()">
