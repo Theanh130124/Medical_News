@@ -9,13 +9,12 @@
 <body>
 <div th:replace="layout/header :: header"></div>
 
-
-
-
 <section class="container mt-4">
     <h2 class="text-center text-primary">Thống kê báo cáo</h2>
 
     <form method="get" th:object="${statsRequest}" class="row g-3 mb-4">
+
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
         <div class="col-md-3">
             <label>Năm</label>
             <input type="number" th:field="*{year}" class="form-control" placeholder="VD: 2025">
