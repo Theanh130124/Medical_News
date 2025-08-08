@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,String> , JpaSpecificationExecutor<User> {
@@ -39,5 +40,34 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
 
     Page<User> getUserByRole(Role role, Pageable pageable);
 
+
+
+    @Query("SELECT FUNCTION('YEAR', u.createdAt), " +
+            "FUNCTION('QUARTER', u.createdAt), " +
+            "FUNCTION('MONTH', u.createdAt), " +
+            "COUNT(u) " +
+            "FROM User u " +
+            "WHERE (:year IS NULL OR FUNCTION('YEAR', u.createdAt) = :year) " +
+            "AND (:quarter IS NULL OR FUNCTION('QUARTER', u.createdAt) = :quarter) " +
+            "AND (:month IS NULL OR FUNCTION('MONTH', u.createdAt) = :month) " +
+            "GROUP BY FUNCTION('YEAR', u.createdAt), " +
+            "FUNCTION('QUARTER', u.createdAt), " +
+            "FUNCTION('MONTH', u.createdAt) " +
+            "ORDER BY FUNCTION('YEAR', u.createdAt) ASC, FUNCTION('MONTH', u.createdAt) ASC"
+    )
+    List<Object[]> countUsersStats(@Param("month") Integer month,
+                                   @Param("quarter") Integer quarter,
+                                   @Param("year") Integer year);
+
+
+    @Query("SELECT u from User u WHERE " +
+            "(:year IS NULL OR FUNCTION('YEAR' , u.createdAt) =:year )" +
+            "AND (:quarter IS NULL OR FUNCTION('QUARTER' , u.createdAt) =:quarter )" +
+            "AND (:month IS NULL OR FUNCTION('MONTH' ,u.createdAt) =:month )" +
+            "ORDER BY u.createdAt ASC ")
+    Page<User> findUsersByStats(Pageable pageable,
+                                @Param("month") Integer month,
+                                @Param("quarter") Integer quarter,
+                                @Param("year") Integer year);
 
 }
