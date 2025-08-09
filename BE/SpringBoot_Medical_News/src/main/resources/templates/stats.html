@@ -18,12 +18,14 @@
 
 
 
-        <div th:if="${users.content.size() == 0}" class="alert alert-warning">
-            Không có dữ liệu thống kê
+
+        <div class="col-md-3">
+            <label>Loại thống kê</label>
+            <select th:field="*{type}" class="form-select">
+                <option value="user" th:selected="${statsRequest.type == null || statsRequest.type == 'user'}">Người dùng</option>
+                <option value="post" th:selected="${statsRequest.type == 'post'}">Bài viết</option>
+            </select>
         </div>
-
-
-
 
         <div class="col-md-3">
             <label>Năm</label>
@@ -42,39 +44,95 @@
         </div>
     </form>
 
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Tên</th>
-            <th>Email</th>
-            <th>Ngày tạo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.firstName + ' ' + user.lastName}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Thống kê User -->
+    <div th:if="${statsRequest.type == null || statsRequest.type == 'user'}">
+        <div th:if="${users.content.size() == 0}" class="alert alert-warning">
+            Không có dữ liệu thống kê
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Ngày tạo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></td>
+            </tr>
+            </tbody>
+        </table>
 
 
-    <div class="d-flex justify-content-center">
-        <nav>
-            <ul class="pagination">
-                <li th:classappend="${users.first} ? 'disabled'" class="page-item">
-                    <a th:href="@{/stats(page=${users.number - 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Trước</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" th:text="'Trang ' + (${users.number + 1}) + '/' + ${users.totalPages}"></a>
-                </li>
-                <li th:classappend="${users.last} ? 'disabled'" class="page-item">
-                    <a th:href="@{/stats(page=${users.number + 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Sau</a>
-                </li>
-            </ul>
-        </nav>
+
+        <div class="d-flex justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li th:classappend="${users.first} ? 'disabled'" class="page-item">
+                        <a th:href="@{/stats(page=${users.number - 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Trước</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" th:text="'Trang ' + (${users.number + 1}) + '/' + ${users.totalPages}"></a>
+                    </li>
+                    <li th:classappend="${users.last} ? 'disabled'" class="page-item">
+                        <a th:href="@{/stats(page=${users.number + 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+
+    <!-- Thống kê Post -->
+    <div th:if="${statsRequest.type == 'post'}">
+        <div th:if="${posts.content.size() == 0}" class="alert alert-warning">
+            Không có dữ liệu thống kê
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Ngày tạo</th>
+                <th>Chi tiết</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.title}"></td>
+                <td th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}"></td>
+                <td>
+                    <a href="#" th:attr="data-id=${post.id}" class="btn btn-info btn-sm btn-detail">Xem</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <div class="d-flex justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li th:classappend="${posts.first} ? 'disabled'" class="page-item">
+                        <a th:href="@{/stats(page=${posts.number - 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Trước</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" th:text="'Trang ' + (${posts.number + 1}) + '/' + ${posts.totalPages}"></a>
+                    </li>
+                    <li th:classappend="${posts.last} ? 'disabled'" class="page-item">
+                        <a th:href="@{/stats(page=${posts.number + 1}, year=${statsRequest.year}, month=${statsRequest.month}, quarter=${statsRequest.quarter})}" class="page-link">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    </div>
+
+
+
+
 
     <div class="mt-5">
         <canvas id="statsChart" height="100"></canvas>
