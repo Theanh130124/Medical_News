@@ -4,6 +4,7 @@ package com.theanh1301.SpringBoot_Medical_News.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.StatsRequest;
+import com.theanh1301.SpringBoot_Medical_News.entity.Post;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.service.StatsService;
@@ -34,19 +35,32 @@ public class StatsController {
                             @RequestParam(required = false) Integer size) throws Exception {
         try {
             Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
-            Page<User> users = statsService.findUsersByStats(pageable, statsRequest);
-            List<Object[]> stats = statsService.countUsersStats(statsRequest);
 
-            ObjectMapper mapper = new ObjectMapper();
-            String statsJson = mapper.writeValueAsString(stats); //Json
+            if("post".equals(statsRequest.getType())){
+                Page<Post> posts = statsService.findPostsByStats(pageable,statsRequest);
+                List<Object[]> postStats = statsService.countPostStats(statsRequest);
+                ObjectMapper mapper = new ObjectMapper();
+                String statsJson = mapper.writeValueAsString(postStats);
 
-            model.addAttribute("users", users);
-            model.addAttribute("statsJson", statsJson);
-            System.out.println(statsJson);
+                model.addAttribute("posts", posts);
+                model.addAttribute("statsJson", statsJson);
+
+            }
+            else {
+                Page<User> users = statsService.findUsersByStats(pageable, statsRequest);
+                List<Object[]> stats = statsService.countUsersStats(statsRequest);
+
+                ObjectMapper mapper = new ObjectMapper();
+                String statsJson = mapper.writeValueAsString(stats); //Json
+
+                model.addAttribute("users", users);
+                model.addAttribute("statsJson", statsJson);
+            }
         } catch (AppException e) {
             // Gửi thông báo lỗi sang view
             model.addAttribute("errorMessage", e.getErrorCode().getMsg());
             model.addAttribute("users", Page.empty());
+            model.addAttribute("posts", Page.empty());
             model.addAttribute("statsJson", "[]");
         }
         return "stats";

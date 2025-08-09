@@ -53,7 +53,7 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
             "GROUP BY FUNCTION('YEAR', u.createdAt), " +
             "FUNCTION('QUARTER', u.createdAt), " +
             "FUNCTION('MONTH', u.createdAt) " +
-            "ORDER BY FUNCTION('YEAR', u.createdAt) ASC, FUNCTION('MONTH', u.createdAt) ASC"
+            "ORDER BY FUNCTION('YEAR', u.createdAt) DESC , FUNCTION('MONTH', u.createdAt) DESC"
     )
     List<Object[]> countUsersStats(@Param("month") Integer month,
                                    @Param("quarter") Integer quarter,
@@ -64,7 +64,7 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
             "(:year IS NULL OR FUNCTION('YEAR' , u.createdAt) =:year )" +
             "AND (:quarter IS NULL OR FUNCTION('QUARTER' , u.createdAt) =:quarter )" +
             "AND (:month IS NULL OR FUNCTION('MONTH' ,u.createdAt) =:month )" +
-            "ORDER BY u.createdAt ASC ")
+            "ORDER BY u.createdAt DESC ")
     Page<User> findUsersByStats(Pageable pageable,
                                 @Param("month") Integer month,
                                 @Param("quarter") Integer quarter,
