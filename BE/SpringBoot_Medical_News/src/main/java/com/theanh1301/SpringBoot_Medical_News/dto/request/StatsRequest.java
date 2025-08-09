@@ -13,4 +13,5 @@ public class StatsRequest {
     Integer month;
     Integer quarter;
     Integer year;
+    String type; //user hoặc post
 }

@@ -1,9 +1,11 @@
 package com.theanh1301.SpringBoot_Medical_News.service.impl;
 
 import com.theanh1301.SpringBoot_Medical_News.dto.request.StatsRequest;
+import com.theanh1301.SpringBoot_Medical_News.entity.Post;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
+import com.theanh1301.SpringBoot_Medical_News.repository.PostRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.StatsService;
 import lombok.AccessLevel;
@@ -25,6 +27,7 @@ public class StatsServiceImpl implements StatsService {
 
 
     UserRepository userRepository;
+    PostRepository postRepository;
 
 
 
@@ -47,5 +50,23 @@ public class StatsServiceImpl implements StatsService {
     public List<Object[]> countUsersStats(StatsRequest request) {
         validateRequest(request);
         return userRepository.countUsersStats(request.getMonth(),request.getQuarter(),request.getYear());
+    }
+
+    @Override
+    public List<Object[]> countPostStats(StatsRequest request) {
+        validateRequest(request);
+        return postRepository.countPostStats(request.getMonth(),request.getQuarter(),request.getYear());
+    }
+
+    @Override
+    public Page<Post> findPostsByStats(Pageable pageable, StatsRequest request) {
+        validateRequest(request);
+        return postRepository.findPostsByStats(pageable,request.getMonth(),request.getQuarter(),request.getYear());
+    }
+
+    @Override
+    public Object[] getCommentAndReactionCountByPost(String postId) {
+        Post post = postRepository.findById(postId).orElseThrow(()-> new AppException(ErrorCode.POST_NOT_FOUND));
+        return postRepository.getCommentAndReactionCountByPost(post);
     }
 }
