@@ -15,6 +15,16 @@
     <form method="get" th:object="${statsRequest}" class="row g-3 mb-4">
 
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+
+
+        <div th:if="${users.content.size() == 0}" class="alert alert-warning">
+            Không có dữ liệu thống kê
+        </div>
+
+
+
+
         <div class="col-md-3">
             <label>Năm</label>
             <input type="number" th:field="*{year}" class="form-control" placeholder="VD: 2025">
@@ -71,9 +81,12 @@
     </div>
 
     <script th:inline="javascript">
-        const statsData = /*[[${statsJson}]]*/ [];
+        const statsData = JSON.parse(/*[[${statsJson}]]*/ '[]');
     </script>
-    <script src="/js/stats.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--    Phải là th:src đối với file trong SpringBoot-->
+    <script th:src="@{/js/stats.js}"></script>
 
 </section>
 

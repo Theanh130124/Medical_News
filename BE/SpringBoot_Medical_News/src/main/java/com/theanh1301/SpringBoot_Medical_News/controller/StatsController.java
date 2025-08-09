@@ -42,6 +42,7 @@ public class StatsController {
 
             model.addAttribute("users", users);
             model.addAttribute("statsJson", statsJson);
+            System.out.println(statsJson);
         } catch (AppException e) {
             // Gửi thông báo lỗi sang view
             model.addAttribute("errorMessage", e.getErrorCode().getMsg());

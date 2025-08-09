@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const values = [];
 
         statsData.forEach(item => {
-            // Giả sử stats trả về [label, count]
-            labels.push(item[0]);
-            values.push(item[1]);
+            // Format label: Năm-Tháng (Quý)
+            labels.push(item[0] + "-" + item[2] + " (Q" + item[1] + ")");
+            values.push(item[3]); // count nằm ở index 3
         });
 
         const ctx = document.getElementById("statsChart").getContext("2d");
