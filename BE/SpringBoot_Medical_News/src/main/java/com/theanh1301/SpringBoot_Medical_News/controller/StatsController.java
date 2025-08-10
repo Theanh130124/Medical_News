@@ -31,40 +31,42 @@ public class StatsController {
     PaginationProperties paginationProperties;
 
     @GetMapping("/stats")
-    public String statsForm(@ModelAttribute("statsRequest") StatsRequest statsRequest, Model model, @RequestParam(required = false) Integer page,
+    public String statsForm(@ModelAttribute("statsRequest") StatsRequest statsRequest,
+                            Model model,
+                            @RequestParam(required = false) Integer page,
                             @RequestParam(required = false) Integer size) throws Exception {
         try {
             Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+            ObjectMapper mapper = new ObjectMapper();
 
-            if("post".equals(statsRequest.getType())){
-                Page<Post> posts = statsService.findPostsByStats(pageable,statsRequest);
+            if ("post".equals(statsRequest.getType())) {
+
+                Page<Post> posts = statsService.findPostsByStats(pageable, statsRequest);
                 List<Object[]> postStats = statsService.countPostStats(statsRequest);
-                ObjectMapper mapper = new ObjectMapper();
-                String statsJson = mapper.writeValueAsString(postStats);
 
                 model.addAttribute("posts", posts);
-                model.addAttribute("statsJson", statsJson);
+                model.addAttribute("statsPostJson", mapper.writeValueAsString(postStats));
+                model.addAttribute("statsUserJson", "[]"); // để tránh null bên view
+            } else {
 
-            }
-            else {
                 Page<User> users = statsService.findUsersByStats(pageable, statsRequest);
-                List<Object[]> stats = statsService.countUsersStats(statsRequest);
-
-                ObjectMapper mapper = new ObjectMapper();
-                String statsJson = mapper.writeValueAsString(stats); //Json
+                List<Object[]> userStats = statsService.countUsersStats(statsRequest);
 
                 model.addAttribute("users", users);
-                model.addAttribute("statsJson", statsJson);
+                model.addAttribute("statsUserJson", mapper.writeValueAsString(userStats));
+                model.addAttribute("statsPostJson", "[]"); // để tránh null bên view
             }
         } catch (AppException e) {
-            // Gửi thông báo lỗi sang view
+
             model.addAttribute("errorMessage", e.getErrorCode().getMsg());
             model.addAttribute("users", Page.empty());
             model.addAttribute("posts", Page.empty());
-            model.addAttribute("statsJson", "[]");
+            model.addAttribute("statsUserJson", "[]");
+            model.addAttribute("statsPostJson", "[]");
         }
         return "stats";
 
 
-    }
+
+}
 }

@@ -62,6 +62,7 @@ public class PostServiceImpl implements PostService {
         }).collect(Collectors.toList());
     }
 
+
     @Override
     public PostResponse createPost(PostCreationRequest request) {
         User user = userRepository.findById(request.getUserId())
