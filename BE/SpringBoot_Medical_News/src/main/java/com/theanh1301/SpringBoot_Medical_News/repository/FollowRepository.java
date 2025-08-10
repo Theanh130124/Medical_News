@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.repository;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.theanh1301.SpringBoot_Medical_News.entity.Follow;
 import com.theanh1301.SpringBoot_Medical_News.entity.FollowId;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
@@ -16,9 +17,9 @@ public interface FollowRepository extends JpaRepository<Follow,String> {
     boolean existsById(FollowId followId);
     void deleteById(FollowId followId);
 
-    Page<Follow> findAllByFollowerId(User follower , Pageable pageable); // nguười đang theo dõi
+    Page<Follow> findAllByFollower(User follower , Pageable pageable); // nguười đang theo dõi
 
-    Page<Follow> findAllByFollowingId(User following, Pageable pageable); //Đang theo dõi
+    Page<Follow> findAllByFollowing(User following, Pageable pageable); //Đang theo dõi
 
     Optional<Follow> findById(FollowId followId);
 
@@ -28,4 +29,8 @@ public interface FollowRepository extends JpaRepository<Follow,String> {
 
     @Query("select count(f) From Follow  f where f.follower = :user")
     long countFollowing(@Param("user")User user);
+
+    Remapper findWithUsersById(FollowId id);
+
+
 }

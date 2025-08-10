@@ -1,38 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
-    if (typeof statsData !== "undefined" && statsData.length > 0) {
-        const labels = [];
-        const values = [];
-
-        statsData.forEach(item => {
-            // Format label: Năm-Tháng (Quý)
-            labels.push(item[0] + "-" + item[2] + " (Q" + item[1] + ")");
-            values.push(item[3]); // count nằm ở index 3
-        });
-
-        const ctx = document.getElementById("statsChart").getContext("2d");
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Số lượng người dùng",
-                    data: values,
-                    backgroundColor: "rgba(54, 162, 235, 0.6)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
+    function renderChart(canvasId, data, label) {
+        if (data && data.length > 0) {
+            const labels = [];
+            const values = [];
+            data.forEach(item => {
+                labels.push(item[0] + "-" + item[2] + " (Q" + item[1] + ")");
+                values.push(item[3]);
+            });
+            const ctx = document.getElementById(canvasId).getContext("2d");
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
                 }
-            }
-        });
+            });
+        }
+    }
+
+    if (document.getElementById("statsChartUser")) {
+        renderChart("statsChartUser", statsUserData, "Số lượng người dùng");
+    }
+    if (document.getElementById("statsChartPost")) {
+        renderChart("statsChartPost", statsPostData, "Số lượng bài viết");
     }
 });
