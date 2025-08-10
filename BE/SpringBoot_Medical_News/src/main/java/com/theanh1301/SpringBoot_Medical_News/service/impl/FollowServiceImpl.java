@@ -18,8 +18,11 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FollowServiceImpl implements FollowService {
@@ -63,10 +66,11 @@ public class FollowServiceImpl implements FollowService {
     }
 
     //Đang được theo dõi
+    //Đếm tổng số lần xuất hiện trong của follower trong following
     @Override
     public Page<FollowResponse> getFollowers(String userId, Pageable pageable) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
-        return followRepository.findAllByFollowingId(user,pageable).map(followMapper::toFollowResponse);
+        return followRepository.findAllByFollowing(user,pageable).map(followMapper::toFollowResponse);
     }
 
     //Đang theo dõi
@@ -75,7 +79,7 @@ public class FollowServiceImpl implements FollowService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
-        return followRepository.findAllByFollowerId(user, pageable)
+        return followRepository.findAllByFollower(user, pageable)
                 .map(followMapper::toFollowResponse);
     }
 
@@ -90,4 +94,28 @@ public class FollowServiceImpl implements FollowService {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         return followRepository.countFollowing(user);
     }
+
+    //phải là 2 cái á
+    @Override
+    public FollowResponse getFollowResponseById(String followerId, String followingId) {
+        FollowId followId = new FollowId(followerId, followingId);
+        return followMapper.toFollowResponse(followRepository.findById(followId).orElseThrow(() -> new AppException(ErrorCode.FOLLOW_NOT_FOUND)));
+    }
+
+    //So sánh trong page
+    @Override
+    public boolean canAccessAllFollower(Page<FollowResponse> page, String currentUser) {
+        return page.stream().allMatch(follow -> follow.getFollowingId().getUsername().equals(currentUser));
+    }
+
+    @Override
+    public boolean canAccessAllFollowing(Page<FollowResponse> page, String currentUser) {
+        return page.stream().allMatch(follow -> follow.getFollowerId().getUsername().equals(currentUser));
+    }
+
+
+
+
+
+
 }

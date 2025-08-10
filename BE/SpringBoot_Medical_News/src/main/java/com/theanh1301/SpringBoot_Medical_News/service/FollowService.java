@@ -17,6 +17,12 @@ public interface FollowService {
 
     Page<FollowResponse> getFollowings(String userId, Pageable pageable);
 
+    FollowResponse getFollowResponseById(String followerId , String followingId);
+
+    boolean canAccessAllFollower(Page<FollowResponse> page, String currentUser);
+
+    boolean canAccessAllFollowing(Page<FollowResponse> page, String currentUser);
+
     long countFollowers(String userId);
 
     long countFollowing(String userId);
