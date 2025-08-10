@@ -11,6 +11,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FollowResponse {
 
-    UserResponse followerId;
+    UserResponse followerId; // là bản thân
     UserResponse followingId;
 }

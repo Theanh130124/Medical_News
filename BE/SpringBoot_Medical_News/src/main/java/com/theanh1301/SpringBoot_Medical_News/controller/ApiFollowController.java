@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,15 +30,16 @@ public class ApiFollowController {
 
 
     //Chỉ có followerId đúng mới được làm
-//    @PostAuthorize("returnObject.result.followingId.")
+    @PostAuthorize("returnObject.result.followerId.username == authentication.name")
     @PostMapping
     public ApiResponse<FollowResponse> follow(@RequestBody FollowRequest request) {
         var res = followService.follow(request);
         return ApiResponse.<FollowResponse>builder().result(res).message("Theo dõi thành công").build();
 
     }
-
+    //Delete dùng @Pre vì sao xóa mất @Post k lấy được
     //Chỉ có followerId đúng mới được làm
+    @PreAuthorize("@followServiceImpl.getFollowResponseById(#request.followerId,#request.followingId).followerId.username == authentication.name")
     @DeleteMapping
     public ApiResponse<Void> unfollow(@RequestBody FollowRequest request){
         followService.unfollow(request);
@@ -45,6 +47,7 @@ public class ApiFollowController {
     }
 
     //Chỉ có followerId đúng mới được làm
+    @PostAuthorize("@followServiceImpl.canAccessAllFollower(returnObject.result, authentication.name)")
     @GetMapping("/followers/{userId}")
     public ApiResponse<Page<FollowResponse>> getFollowers(@PathVariable String userId , @RequestParam(required = false) Integer size,
                                                           @RequestParam(required = false) Integer page){
@@ -61,6 +64,7 @@ public class ApiFollowController {
     }
 
     //Chỉ có followerId đúng mới được làm
+    @PostAuthorize("@followServiceImpl.canAccessAllFollowing(returnObject.result, authentication.name)")
     @GetMapping("/following/{userId}")
     public ApiResponse<Page<FollowResponse>> getFollowing(@PathVariable String userId , @RequestParam(required = false) Integer size,
                                                           @RequestParam(required = false) Integer page){
