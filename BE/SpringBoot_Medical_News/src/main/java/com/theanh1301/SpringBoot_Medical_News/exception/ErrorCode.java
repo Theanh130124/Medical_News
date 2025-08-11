@@ -44,8 +44,10 @@ public enum ErrorCode {
     DOCTOR_NOT_FOUND(1029 , "Không tìm thấy bác sĩ" , HttpStatus.BAD_REQUEST),
     CERTIFICATE_NOT_FOUND(1030,"Không tìm thấy chứng chỉ hành nghề" , HttpStatus.BAD_REQUEST),
     STATS_YEAR_VALIDATED(1031,"Nếu chọn tháng hoặc quý thì bắt buộc phải có năm" , HttpStatus.BAD_REQUEST),
-    STATS_MONTH_QUARTER_VALID(1032,"Không thể lọc cả tháng và quý cùng lúc",HttpStatus.BAD_REQUEST),;
-
+    STATS_MONTH_QUARTER_VALID(1032,"Không thể lọc cả tháng và quý cùng lúc",HttpStatus.BAD_REQUEST),
+    FRIEND_INVALID(1033,"Không thể tự kết bạn với chính mình",HttpStatus.BAD_REQUEST),
+    FRIEND_ALREADY_EXISTS(1034,"Đã gửi lời mời kết bạn hãy chờ xác nhận",HttpStatus.BAD_REQUEST),
+    FRIEND_NOT_FOUND(1035,"Không tìm thấy lời mời kết bạn", HttpStatus.BAD_REQUEST);
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;
