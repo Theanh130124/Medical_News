@@ -40,7 +40,7 @@ public class FriendServiceImpl implements FriendService {
             throw new AppException(ErrorCode.FRIEND_INVALID);
         }
         FriendId id = new FriendId(request.getFirstUser(),request.getSecondUser());
-        if(friendRepository.existById(id)){
+        if(friendRepository.existsById(id)){
             throw new AppException(ErrorCode.FRIEND_ALREADY_EXISTS);
         }
         User firstUser = userRepository.findById(request.getFirstUser())
@@ -70,7 +70,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public void deleteFriend(String firstUserId, String secondUserId) {
         FriendId id = new FriendId(firstUserId, secondUserId);
-        if (!friendRepository.existById(id)) {
+        if (!friendRepository.existsById(id)) {
             throw new AppException(ErrorCode.FRIEND_NOT_FOUND);
         }
         friendRepository.deleteById(id);
@@ -94,4 +94,18 @@ public class FriendServiceImpl implements FriendService {
                 .map(friendMapper::toFriendResponse);
     }
 
+
+
+    @Override
+    public boolean canAccessFriend(Page<FriendResponse> page, String currentUser) {
+        return page.stream().allMatch(friend -> friend.getFirstUserId().getUsername().equals(currentUser));
+    }
+
+    @Override
+    public FriendResponse getFriendResponseById(String firstUserId, String secondUserId) {
+        FriendId friendId = new FriendId(firstUserId, secondUserId);
+        Friend friend = friendRepository.findById(friendId)
+                .orElseThrow(() -> new AppException(ErrorCode.FRIEND_NOT_FOUND));
+        return friendMapper.toFriendResponse(friend);
+    }
 }

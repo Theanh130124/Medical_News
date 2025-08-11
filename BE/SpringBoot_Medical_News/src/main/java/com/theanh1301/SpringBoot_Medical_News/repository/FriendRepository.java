@@ -12,10 +12,12 @@ import java.util.Optional;
 
 public interface FriendRepository extends JpaRepository<Friend,String> {
 
-    boolean existById(FriendId friendId);
+    boolean existsById(FriendId friendId);
     Optional<Friend> findById(FriendId friendId);
 
     Page<Friend> findAllByFirstUserAndStatus(User user, FriendStatus status, Pageable pageable);
+
+
     Page<Friend> findAllBySecondUserAndStatus(User user, FriendStatus status, Pageable pageable);
 
 
