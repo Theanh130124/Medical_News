@@ -16,4 +16,7 @@ public interface FriendService {
     void deleteFriend(String firstUserId, String secondUserId);
     Page<FriendResponse> getFriends(String userId, Pageable pageable);
     Page<FriendResponse> getPendingRequests(String userId, Pageable pageable);
+    FriendResponse getFriendResponseById(String firstUserId, String secondUserId);
+    boolean canAccessFriend(Page<FriendResponse> page, String currentUser);
+
 }
