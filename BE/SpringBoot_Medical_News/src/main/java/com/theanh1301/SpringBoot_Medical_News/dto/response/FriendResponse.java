@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FriendResponse {
 
-    String firstUser;
-    String secondUser;
+    String firstUserId;
+    String secondUserId;
     String status;
 }
