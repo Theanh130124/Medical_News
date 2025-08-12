@@ -16,4 +16,6 @@ public interface PostService {
     PostResponse getPostReponseById(String id);
     Page<PostResponse> getAllPost(Pageable pageable);//Dung cho PreAuthorize
     void voteSurveyOption(String optionId, String userId);
+
+    Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
 }

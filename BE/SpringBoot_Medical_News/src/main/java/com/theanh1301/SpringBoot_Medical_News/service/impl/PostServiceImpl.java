@@ -12,10 +12,7 @@ import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.ImagePostMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.PostMapper;
-import com.theanh1301.SpringBoot_Medical_News.repository.PostRepository;
-import com.theanh1301.SpringBoot_Medical_News.repository.SurveyOptionRepository;
-import com.theanh1301.SpringBoot_Medical_News.repository.SurveyVoteRepository;
-import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
+import com.theanh1301.SpringBoot_Medical_News.repository.*;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +44,7 @@ public class PostServiceImpl implements PostService {
     SurveyOptionRepository surveyOptionRepository;
     SurveyVoteRepository surveyVoteRepository;
     ImagePostMapper imagePostMapper;
+    FriendRepository friendRepository;
 
 
     private List<ImagePost> mapMultipartFilesToImagePosts(List<MultipartFile> files, Post post) {
@@ -143,23 +141,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostReponseById(String id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
-        PostResponse res = postMapper.toPostResponse(post);
-//        if (post.getType() == TypePost.SURVEY) {
-//            List<SurveyOption> options = surveyOptionRepository.findByPost(post);
-//            res.setSurveyOptions(options.stream().map(opt -> {
-//                long voteCount = surveyVoteRepository.countByOption(opt);
-//                return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
-//            }).toList());
-//        }
-        return res;
+
+        return postMapper.toPostResponse(postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND)));
 
     }
 
     @Override
     public Page<PostResponse> getAllPost(Pageable pageable) {
-       return postRepository.getAllPost(pageable).map(postMapper::toPostResponse);
+        return postRepository.getAllPost(pageable).map(post -> {
+            PostResponse res = postMapper.toPostResponse(post);
+            if (post.getType() == TypePost.SURVEY) {
+                List<SurveyOption> options = surveyOptionRepository.findByPost(post);
+                res.setSurveyOptions(options.stream().map(opt -> {
+                    long voteCount = surveyVoteRepository.countByOption(opt);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+                }).toList());
+            }
+            return res;
+        });
     }
 
     @Override
@@ -181,5 +180,27 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         surveyVoteRepository.save(vote);
+    }
+
+    @Override
+    public Page<PostResponse> getVisiblePosts(String currentUserId, Pageable pageable) {
+        List<String> friendIds = friendRepository.findAcceptedFriends(currentUserId).stream()
+                .map(f -> f.getFirstUser().getId().equals(currentUserId)
+                        ? f.getSecondUser().getId()
+                        : f.getFirstUser().getId())
+                .toList();
+
+        Page<Post> posts = postRepository.findVisiblePosts(currentUserId, friendIds, pageable);
+        return posts.map(post -> {
+            PostResponse res = postMapper.toPostResponse(post);
+            if (post.getType() == TypePost.SURVEY) {
+                List<SurveyOption> options = surveyOptionRepository.findByPost(post);
+                res.setSurveyOptions(options.stream().map(opt -> {
+                    long voteCount = surveyVoteRepository.countByOption(opt);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+                }).toList());
+            }
+            return res;
+        });
     }
 }

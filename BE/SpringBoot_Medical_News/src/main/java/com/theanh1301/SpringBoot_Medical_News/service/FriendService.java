@@ -9,6 +9,8 @@ import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface FriendService {
 
     FriendResponse sendRequest(FriendCreationRequest request);
@@ -18,5 +20,6 @@ public interface FriendService {
     Page<FriendResponse> getPendingRequests(String userId, Pageable pageable);
     FriendResponse getFriendResponseById(String firstUserId, String secondUserId);
     boolean canAccessFriend(Page<FriendResponse> page, String currentUser);
+    List<String> getFriendIds(String userId);
 
 }
