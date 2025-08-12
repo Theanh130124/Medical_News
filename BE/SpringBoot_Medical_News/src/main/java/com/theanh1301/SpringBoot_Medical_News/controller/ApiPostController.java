@@ -58,6 +58,7 @@ public class ApiPostController {
         return ApiResponse.<Void>builder().message("Đã xóa thành công bài viết ID:" + id).build();
 
 
+
     }
 
     @GetMapping("/getAll")
@@ -75,6 +76,18 @@ public class ApiPostController {
     public ApiResponse<Void> voteSurvey(@PathVariable String optionId, @RequestParam String userId) {
         postService.voteSurveyOption(optionId, userId);
         return ApiResponse.<Void>builder().message("Bình chọn thành công").build();
+    }
+
+
+    @GetMapping("/visible")
+    public ApiResponse<Page<PostResponse>> getVisiblePosts(@RequestParam(required = false) Integer size,
+                                                           @RequestParam(required = false) Integer page,
+                                                           @RequestParam String currentUserId) {
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+        return ApiResponse.<Page<PostResponse>>builder()
+                .result(postService.getVisiblePosts(currentUserId, pageable))
+                .message("Lấy danh sách bài viết theo quyền xem thành công")
+                .build();
     }
 
 

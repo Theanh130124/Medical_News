@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, String> {
@@ -50,5 +51,18 @@ public interface PostRepository extends JpaRepository<Post, String> {
             "(SELECT COUNT(r) FROM Reaction r WHERE r.post = p) " +
             "FROM Post p WHERE p = :post")
     Object[] getCommentAndReactionCountByPost(@Param("post") Post post);
+
+
+    @Query("""
+            SELECT p FROM Post p
+            WHERE p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
+               OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.FRIENDS_ONLY
+                   AND p.user.id IN :friendIds)
+               OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PRIVATE
+                   AND p.user.id = :currentUserId)
+            ORDER BY p.createdAt DESC
+            """)
+    Page<Post> findVisiblePosts(@Param("currentUserId") String currentUserId,  @Param("friendIds") List<String> friendIds,
+            Pageable pageable);
 
 }
