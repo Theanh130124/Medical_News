@@ -7,7 +7,10 @@ import com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FriendRepository extends JpaRepository<Friend,String> {
@@ -19,6 +22,14 @@ public interface FriendRepository extends JpaRepository<Friend,String> {
 
 
     Page<Friend> findAllBySecondUserAndStatus(User user, FriendStatus status, Pageable pageable);
+
+
+    @Query("""
+        SELECT f FROM Friend f
+        WHERE (f.firstUser.id = :userId OR f.secondUser.id = :userId)
+          AND f.status = com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus.ACCEPTED
+        """)
+    List<Friend> findAcceptedFriends(@Param("userId") String userId);
 
 
     long countByFirstUserAndStatus(User user, FriendStatus status);
