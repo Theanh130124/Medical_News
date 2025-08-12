@@ -20,4 +20,7 @@ public class PostUpdateRequest {
     String visibility;
     Boolean allowComments;
     List<MultipartFile> imagePosts;
+
+    //type = SURVEY
+    List<String> surveyOptions;
 }
