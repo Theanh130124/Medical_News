@@ -34,6 +34,8 @@ public class ApiPostController {
     PaginationProperties paginationProperties;
 
 
+
+
     @PostMapping
     public ApiResponse<PostResponse> createPost(@ModelAttribute @Valid PostCreationRequest request){
         var res = postService.createPost(request);
@@ -68,5 +70,12 @@ public class ApiPostController {
                 .message("Lấy danh sách tất cả bài viết thành công").build();
 
     }
+
+    @PostMapping("/survey/vote/{optionId}")
+    public ApiResponse<Void> voteSurvey(@PathVariable String optionId, @RequestParam String userId) {
+        postService.voteSurveyOption(optionId, userId);
+        return ApiResponse.<Void>builder().message("Bình chọn thành công").build();
+    }
+
 
 }
