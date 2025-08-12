@@ -28,7 +28,7 @@ public class PostResponse {
     Instant updatedAt;
     List<ImagePostResponse> imagePostResponses;// cái này ManyToOne -> đã đổi thành LAZY
 
-
+    List<SurveyOptionResponse> surveyOptions;
 
 
 }

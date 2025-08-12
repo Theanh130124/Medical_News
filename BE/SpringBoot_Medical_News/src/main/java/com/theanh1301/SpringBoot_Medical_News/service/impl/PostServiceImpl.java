@@ -5,14 +5,16 @@ import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
-import com.theanh1301.SpringBoot_Medical_News.entity.ImagePost;
-import com.theanh1301.SpringBoot_Medical_News.entity.Post;
-import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.SurveyOptionResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.*;
+import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.mapper.ImagePostMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.PostMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.PostRepository;
+import com.theanh1301.SpringBoot_Medical_News.repository.SurveyOptionRepository;
+import com.theanh1301.SpringBoot_Medical_News.repository.SurveyVoteRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.UserRepository;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import lombok.AccessLevel;
@@ -23,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.Instant;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +44,8 @@ public class PostServiceImpl implements PostService {
     PostMapper postMapper;
     UserRepository userRepository;
     Cloudinary cloudinary;
+    SurveyOptionRepository surveyOptionRepository;
+    SurveyVoteRepository surveyVoteRepository;
     ImagePostMapper imagePostMapper;
 
 
@@ -67,13 +73,24 @@ public class PostServiceImpl implements PostService {
     public PostResponse createPost(PostCreationRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
         Post post = postMapper.toPost(request);
         post.setUser(user);
 
-
-        List<ImagePost> imagePosts = mapMultipartFilesToImagePosts(request.getImagePosts() , post);
+        List<ImagePost> imagePosts = mapMultipartFilesToImagePosts(request.getImagePosts(), post);
         if (imagePosts != null) {
             post.setImagePosts(imagePosts);
+        }
+
+        // Nếu là survey thì set options luôn vào post
+        if (TypePost.SURVEY.equals(post.getType()) && request.getSurveyOptions() != null) {
+            List<SurveyOption> options = request.getSurveyOptions().stream()
+                    .map(opt -> SurveyOption.builder()
+                            .post(post)
+                            .optionText(opt)
+                            .build())
+                    .toList();
+            post.setSurveyOptions(options);
         }
 
         postRepository.save(post);
@@ -83,8 +100,10 @@ public class PostServiceImpl implements PostService {
         if (imagePosts != null) {
             postResponse.setImagePostResponses(imagePostMapper.toImagePostResponse(imagePosts));
         }
-        return  postResponse;
+
+        return postResponse;
     }
+
 
     @Override
     public PostResponse updatePost(String postId , PostUpdateRequest request) {
@@ -95,9 +114,21 @@ public class PostServiceImpl implements PostService {
         if (imagePosts != null) {
             post.setImagePosts(imagePosts);
         }
+        //Ngta đã chọn rồi nên phải xóa surveyoption cũ luôn
+        if (post.getType() == TypePost.SURVEY && request.getSurveyOptions() != null) {
+            // Xóa options cũ
+            surveyOptionRepository.deleteAll(surveyOptionRepository.findByPost(post));
 
+            // Thêm options mới
+            List<SurveyOption> options = request.getSurveyOptions().stream()
+                    .map(opt -> SurveyOption.builder()
+                            .post(post)
+                            .optionText(opt)
+                            .build())
+                    .toList();
+            surveyOptionRepository.saveAll(options);
+        }
         postRepository.save(post);
-
         PostResponse postResponse = postMapper.toPostResponse(post);
         if (imagePosts != null) {
             postResponse.setImagePostResponses(imagePostMapper.toImagePostResponse(imagePosts));
@@ -112,11 +143,43 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostReponseById(String id) {
-       return postMapper.toPostResponse(postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND)));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        PostResponse res = postMapper.toPostResponse(post);
+//        if (post.getType() == TypePost.SURVEY) {
+//            List<SurveyOption> options = surveyOptionRepository.findByPost(post);
+//            res.setSurveyOptions(options.stream().map(opt -> {
+//                long voteCount = surveyVoteRepository.countByOption(opt);
+//                return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+//            }).toList());
+//        }
+        return res;
+
     }
 
     @Override
     public Page<PostResponse> getAllPost(Pageable pageable) {
        return postRepository.getAllPost(pageable).map(postMapper::toPostResponse);
+    }
+
+    @Override
+    public void voteSurveyOption(String optionId, String userId) {
+        SurveyOption option = surveyOptionRepository.findById(optionId)
+                .orElseThrow(() -> new AppException(ErrorCode.SURVEY_OPTION_NOT_FOUND));
+
+        //Mỗi người 1 vote
+        SurveyVoteId id = new SurveyVoteId(userId, optionId);
+        if (surveyVoteRepository.existsById(id)) {
+            throw new AppException(ErrorCode.ALREADY_VOTED);
+        }
+        SurveyVote vote = SurveyVote.builder()
+                .id(id)
+                .user(userRepository.findById(userId)
+                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS)))
+                .option(option)
+                .votedAt(Instant.now())
+                .build();
+
+        surveyVoteRepository.save(vote);
     }
 }
