@@ -21,7 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.List;
 
 
 @Service
@@ -107,5 +107,15 @@ public class FriendServiceImpl implements FriendService {
         Friend friend = friendRepository.findById(friendId)
                 .orElseThrow(() -> new AppException(ErrorCode.FRIEND_NOT_FOUND));
         return friendMapper.toFriendResponse(friend);
+    }
+
+    @Override
+    public List<String> getFriendIds(String userId) {
+        List<Friend> friends = friendRepository.findAcceptedFriends(userId);
+        return friends.stream()
+                .map(f -> f.getFirstUser().getId().equals(userId)
+                        ? f.getSecondUser().getId()
+                        : f.getFirstUser().getId())
+                .toList();
     }
 }
