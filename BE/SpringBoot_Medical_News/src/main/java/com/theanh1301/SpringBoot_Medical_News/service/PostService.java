@@ -15,4 +15,5 @@ public interface PostService {
     void deletePost(String postId);
     PostResponse getPostReponseById(String id);
     Page<PostResponse> getAllPost(Pageable pageable);//Dung cho PreAuthorize
+    void voteSurveyOption(String optionId, String userId);
 }

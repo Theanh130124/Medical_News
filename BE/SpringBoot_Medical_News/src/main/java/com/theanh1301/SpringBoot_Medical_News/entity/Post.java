@@ -71,13 +71,16 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<ImagePost> imagePosts;
 
+    // "post" bên surveyOption -> để map
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<SurveyOption> surveyOptions;
+
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
-        this.visibility = VisibilityPost.PUBLIC;
-        this.type = TypePost.NORMAL;
-        this.allowComments = true;
+        this.allowComments = false; // luôn mở cmt
     }
 
     @PreUpdate
