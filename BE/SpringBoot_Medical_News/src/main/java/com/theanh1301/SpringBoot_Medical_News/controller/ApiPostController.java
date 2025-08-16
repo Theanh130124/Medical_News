@@ -78,7 +78,8 @@ public class ApiPostController {
         return ApiResponse.<Void>builder().message("Bình chọn thành công").build();
     }
 
-
+//Khi gọi sẽ thấy public , friend và của chính mình
+    //Authen?
     @GetMapping("/visible")
     public ApiResponse<Page<PostResponse>> getVisiblePosts(@RequestParam(required = false) Integer size,
                                                            @RequestParam(required = false) Integer page,
