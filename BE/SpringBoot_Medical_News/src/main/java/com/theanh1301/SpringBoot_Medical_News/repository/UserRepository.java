@@ -69,5 +69,6 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
                                 @Param("month") Integer month,
                                 @Param("quarter") Integer quarter,
                                 @Param("year") Integer year);
-
+    @Query("SELECT u FROM User u WHERE CONCAT(u.firstName, ' ', u.lastName) LIKE %:keyword%")
+    Page<User> searchUserByFullName(@Param("keyword") String keyword, Pageable pageable);
 }
