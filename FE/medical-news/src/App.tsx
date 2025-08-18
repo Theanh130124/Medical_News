@@ -4,6 +4,7 @@ import Header from './component/layout/Header';
 import Footer from './component/layout/Footer';
 import Home from './component/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Register from './component/auth/Register';
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
 
         <Routes>
           <Route path='/' element={<Home/>} />
+          <Route path='/register' element ={<Register/>} />
 
         </Routes>
 
