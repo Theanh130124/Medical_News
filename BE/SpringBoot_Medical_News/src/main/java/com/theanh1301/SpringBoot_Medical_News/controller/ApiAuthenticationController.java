@@ -35,7 +35,7 @@ public class ApiAuthenticationController {
     public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         var res = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder().result(res).message("Đăng nhập thành công").build();
-    }
+    } 
 
     @PostMapping("/introspect")
     public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws ParseException , JOSEException {

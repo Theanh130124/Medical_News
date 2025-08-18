@@ -4,7 +4,7 @@ import {  useNavigate } from "react-router-dom";
 import Apis, { endpoint } from "../../configs/Apis";
 import { Alert, Button, Col, Container,Form, FloatingLabel, Image, Row } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
-import { showCustomToast } from "../layout/MyToaster";
+import MyToaster, { showCustomToast } from "../layout/MyToaster";
 
 import styles from "./Styles/register.module.css";
 
@@ -32,7 +32,6 @@ const Register = () => {
     ];
 
     const [user, setUser] = useState<any>({});
-    const [msg, setMsg] = useState();
     const [loading, setLoading] = useState(false);
     const avatar = useRef<any>(null);
     const nav = useNavigate();
@@ -79,10 +78,10 @@ const Register = () => {
             //Data
             const { code, message } = res?.data || {};
             if (code === 0) {
-                showCustomToast(message || "Đăng ký tài khoản thành công");
+                showCustomToast(message); //Thành công
                 setTimeout(() => nav("/login"), 800); //800ms   
             } else {
-                showCustomToast(message || "Đăng ký thất bại");
+                showCustomToast(message);//Thất bại
             }
         }
         catch (ex:any) {
@@ -123,8 +122,10 @@ const Register = () => {
         </Col>
 
         <Col lg={5} md={6} sm={12}>
+        <MyToaster />
           <Container className="p-3 shadow rounded bg-light me-5">
             <h1 className="text-center text-success mb-4">ĐĂNG KÝ</h1>
+        
             <Form onSubmit={register}>
               <Row>
                 {/* Cột 1 */}
