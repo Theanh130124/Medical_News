@@ -3,17 +3,28 @@ import { Container } from 'react-bootstrap';
 import Header from './component/layout/Header';
 import Footer from './component/layout/Footer';
 import Home from './component/Home';
+import cookie from 'react-cookies'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from './component/auth/Register';
 import Login from './component/auth/Login';
+import { useEffect, useReducer } from 'react';
+import MyUserReducer from './reducers/MyUserReducer';
+import { MyDipatcherContext, MyUserContext } from './configs/MyContexts';
 
 
 const App = () => {
 
+  //dispatch nhận action.type bên MyUserReducer.tsx-> F5 sẽ không mất vì đã lưu cookie
+
+  const [user, dispatch] = useReducer(MyUserReducer, cookie.load('user') || null);
+
+
+
 
 
   return (
-
+    <MyUserContext.Provider value={user}>
+       <MyDipatcherContext.Provider value={dispatch}>
     <BrowserRouter>
       <Header/> 
       <Container fluid>
@@ -33,7 +44,8 @@ const App = () => {
 
 
     </BrowserRouter>
-
+    </MyDipatcherContext.Provider>
+ </MyUserContext.Provider>
 
   )
 }

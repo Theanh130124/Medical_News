@@ -15,7 +15,7 @@ public enum ErrorCode {
     USER_EXISTS(1001, "Tên tài khoản đã tồn tại",HttpStatus.BAD_REQUEST),
     USERNAME_INVALID(1003,"Tên tài khoản không được nhỏ hơn {min} ký tự",HttpStatus.BAD_REQUEST),
     PASSWORD_INVALID(1004,"Mật khẩu không được nhỏ hơn {min} ký tự",HttpStatus.BAD_REQUEST),
-    USER_NOT_EXISTS(1005,"User không tồn tại",HttpStatus.NOT_FOUND),
+    USER_NOT_EXISTS(1005,"Tài khoản không tồn tại",HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006,"Không đăng nhập thành công",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1006,"Không có quyền thực hiện",HttpStatus.FORBIDDEN),
     INVALID_DOB(1007 ,"Bạn phải trên {min} tuổi ",HttpStatus.BAD_REQUEST),
