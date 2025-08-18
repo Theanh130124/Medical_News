@@ -5,6 +5,7 @@ import styles from "./Styles/header.module.css";
 const Header = () => {
     return (
 
+
         <Navbar collapseOnSelect expand="lg" variant="light" bg="light" className={styles.header}>
             <Container className="p-0">
                 <Navbar.Brand as={Link} to="/" className={styles.logoLink}>
