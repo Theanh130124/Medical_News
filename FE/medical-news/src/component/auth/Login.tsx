@@ -47,9 +47,7 @@ const Login = () => {
             let res = await Apis.post(endpoint['login'], {
                 ...user
             });
-
             const {code,message,result} = res.data;
-
             if (code !== 0) {
             showCustomToast(message);  //Thất bại
             return;
@@ -59,26 +57,30 @@ const Login = () => {
 
 
             let u = await authApis().get(endpoint['current_user']);
-            console.info(u.data);
-            if(u.data.role === "DOCTOR" && !u.data.isActive){
-                sessionStorage.setItem("doctorId", u.data.userId); // không lưu user vì sẽ hiện header 
+            const userData = u.data.result;
+            if(userData.role?.name === "DOCTOR" && !userData.isActive){
+                sessionStorage.setItem("doctorId", userData.id);
                 showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!");
                 nav("/uploadLicense");
                 return;
             }
-            //Luu lai cookie chỉ khi bác sĩ đã  đc duyệt 
-            cookie.save('user', u.data, { path: '/' }); //path = / dùng cookie mọi trang ts bắt buộc
-            //bác sĩ chưa đăng nhập không lưu context
+            cookie.save('user', userData, { path: '/' });
             dispatch({
                 "type": "login",
-                "payload": u.data
+                "payload": userData
             });
             showCustomToast(message); //Đăng nhập thành công
             nav("/");
 
         }catch (ex: any) {
         console.error("Lỗi đăng nhập:", ex);
-        showCustomToast("Đã xảy ra lỗi. Vui lòng thử lại sau!");
+        if (ex.response && ex.response.data) {
+            showCustomToast(ex.response.data.message || "Có lỗi xảy ra!");
+            return;
+        } else {
+            showCustomToast("Không thể kết nối đến server!");
+            return;
+        }
     } finally {
         setLoading(false);
     }
