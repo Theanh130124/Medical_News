@@ -1,14 +1,84 @@
+import { Carousel, Col, Container, Image, Row } from "react-bootstrap";
+import styles from "./Styles/home.module.css";
 
-
+const slideItems = [
+    { id: 1, title: "Đặt lịch khám", desc: "Nhanh chóng, dễ dàng mọi lúc mọi nơi" },
+    { id: 2, title: "Bác sĩ tư vấn", desc: "Tư vấn trực tuyến với bác sĩ giàu kinh nghiệm" },
+    { id: 3, title: "Đặt lịch xét nghiệm", desc: "Lên lịch xét nghiệm tận nơi linh hoạt" },
+    { id: 4, title: "Thanh toán viện phí", desc: "Thanh toán không tiền mặt tiện lợi" },
+    { id: 5, title: "Quản lý hồ sơ y tế", desc: "Lưu trữ và xem lại lịch sử khám chữa bệnh" },
+    { id: 6, title: "Theo dõi đơn thuốc", desc: "Xem và nhắc nhở uống thuốc đúng giờ" },
+    { id: 7, title: "Hỗ trợ y tế 24/7", desc: "Luôn có nhân viên hỗ trợ bất kể thời gian" },
+    { id: 8, title: "Tái khám dễ dàng", desc: "Đặt lịch tái khám chỉ trong vài bước" },
+];
 
 const Home = () => {
-    
-
     return (
-        <>
-        Home page
-        </>
-    )
+        <Container fluid className="p-0">
+            <Row className={`align-items-center justify-content-center mt-5 ${styles.customRow}`}>
+                <Col xs={12} md={7} lg={6} className={styles.homeText}>
+                    <h2 className="text-white">Tin tức y tế chính thống, từ hơn 500 bác sĩ uy tín</h2>
+                    <span>
+                        Theo dõi các thông tin y tế mới nhất được tổng hợp và xác thực bởi đội ngũ chuyên gia và bác sĩ hàng đầu từ hệ thống MEDICAL NEWS
+                    </span>
+                </Col>
+                <Col xs={12} md={5} lg={4} className="text-center mt-4 mt-md-0">
+                    <Image src="/assets/images/doctor.jpg" alt="Doctor" className={styles.doctorImage} />
+                </Col>
+            </Row>
+
+            <Row className="align-items-center justify-content-center mt-5">
+                <Col xs={12} md={8} lg={6} className={`text-center mt-4 ${styles.homeText}`}>
+                    <h2>Dịch vụ</h2>
+                    <hr className="my-4 border border-dark" />
+                </Col>
+            </Row>
+            <Row className="align-items-center justify-content-center mt-2">
+                <Carousel className={styles.customCarousel}>
+                    <Carousel.Item>
+                        <Row className="justify-content-center">
+                            {slideItems.slice(0, 4).map((item) => (
+                                <Col key={item.id} xs={12} sm={6} md={3} className="mb-4">
+                                    <div className={styles.cardWrapper}>
+                                        <Image
+                                            src="/assets/images/service.png"
+                                            alt={item.title}
+                                            className={styles.carouselImage}
+                                            fluid
+                                        />
+                                        <Carousel.Caption className={styles.carouselCaption}>
+                                            <h5>{item.title}</h5>
+                                            <p>{item.desc}</p>
+                                        </Carousel.Caption>
+                                    </div>
+                                </Col>
+                            ))}
+                        </Row>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <Row className="justify-content-center">
+                            {slideItems.slice(4, 8).map((item) => (
+                                <Col key={item.id} xs={12} sm={6} md={3} className="mb-4">
+                                    <div className={styles.cardWrapper}>
+                                        <Image
+                                            src="/assets/images/service.png"
+                                            alt={item.title}
+                                            className={styles.carouselImage}
+                                            fluid
+                                        />
+                                        <Carousel.Caption className={styles.carouselCaption}>
+                                            <h5>{item.title}</h5>
+                                            <p>{item.desc}</p>
+                                        </Carousel.Caption>
+                                    </div>
+                                </Col>
+                            ))}
+                        </Row>
+                    </Carousel.Item>
+                </Carousel>
+            </Row>
+        </Container>
+    );
 }
 
 export default Home;

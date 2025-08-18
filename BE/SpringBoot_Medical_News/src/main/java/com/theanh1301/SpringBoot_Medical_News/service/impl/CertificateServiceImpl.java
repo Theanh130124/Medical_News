@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.util.logging.Logger;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CertificateServiceImpl implements CertificateService {
@@ -112,9 +114,7 @@ public class CertificateServiceImpl implements CertificateService {
     public void rejectCertificate(String id, String reason) {
         Certificate cert = certificateRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CERTIFICATE_NOT_FOUND));
         cert.setStatus(CertificateStatus.REJECTED);
-
         certificateRepository.save(cert);
-
         User user = cert.getDoctor().getUser();
 
 

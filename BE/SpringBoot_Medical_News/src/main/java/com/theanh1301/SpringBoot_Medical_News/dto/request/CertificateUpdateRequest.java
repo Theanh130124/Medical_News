@@ -15,8 +15,8 @@ import lombok.experimental.FieldDefaults;
 public class CertificateUpdateRequest {
 
 
-
-    CertificateStatus certificateStatus;
+    //mapstruct map khi field đúng tên
+    CertificateStatus status;
 
 
 }

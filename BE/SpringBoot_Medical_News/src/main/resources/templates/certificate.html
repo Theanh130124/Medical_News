@@ -81,20 +81,20 @@
             </td>
             <td th:text="${cert.status}"></td>
             <td>
-                <form th:action="@{'/certificate/approve/' + ${cert.id}}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-success btn-sm">Xác nhận</button>
-                </form>
+                <div th:if="${cert.status != APPROVED and cert.status != REJECTED}">
+                    <form th:action="@{'/certificate/approve/' + ${cert.id}}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Xác nhận</button>
+                    </form>
 
-                <button type="button" class="btn btn-danger btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#rejectModal"
-                        th:attr="data-id=${cert.id}">
-<!--                    gán id vào modal-->
-                    Từ chối
-
-                </button>
-
+                    <button type="button" class="btn btn-danger btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#rejectModal"
+                            th:attr="data-id=${cert.id}">
+                        Từ chối
+                    </button>
+                </div>
             </td>
+
         </tr>
         </tbody>
     </table>
