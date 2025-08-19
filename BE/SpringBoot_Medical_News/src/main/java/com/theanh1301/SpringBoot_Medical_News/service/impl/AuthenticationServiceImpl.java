@@ -15,6 +15,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.InvalidatedToken;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
 import com.theanh1301.SpringBoot_Medical_News.repository.InvalidatedTokenRepository;
@@ -147,8 +148,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(!authenticated) {
             throw new AppException(ErrorCode.PASSWORD_FAIL);
         }
-        if(!user.getIsActive())
-        {
+        if (!user.getIsActive() && !user.getRole().getName().equals(RoleName.DOCTOR)) {
             throw new AppException(ErrorCode.IS_ACTIVEFALSE);
         }
 

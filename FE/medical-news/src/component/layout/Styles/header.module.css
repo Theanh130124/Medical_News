@@ -18,6 +18,48 @@
   margin-right: 2rem;
 }
 
+.loginBtn {
+  display: inline-block;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.375rem 1.25rem;
+  min-width: 100px;
+  font-size: 1rem;
+  color: #fff !important;
+  border: none;
+  background: linear-gradient(45deg, #dc2626, #ef4444) !important;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+
+.loginBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+  background: linear-gradient(45deg, #ef4444, #f87171) !important;
+}
+
+
+.registerBtn {
+  display: inline-block;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.375rem 1.25rem;
+  min-width: 100px;
+  font-size: 1rem;
+  color: #fff !important;
+  border: none;
+  background: linear-gradient(135deg, #3963ce, #2a51b2) !important;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.registerBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(36, 74, 171, 0.4);
+  background: linear-gradient(135deg, #2a51b2, #3c5ed9) !important;
+}
+
 .logoHealth {
   font-size: 2rem;
   font-weight: 800;
