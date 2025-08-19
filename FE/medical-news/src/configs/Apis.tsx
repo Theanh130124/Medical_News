@@ -15,7 +15,7 @@ export const endpoint = {
     'register': '/users',
     'login': '/auth/login',
     'current_user': '/users/secure/profile',
-    'upload_certificate': '/api/certificate',
+    'upload_certificate': '/certificate',
 
 
 } 

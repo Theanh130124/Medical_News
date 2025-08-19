@@ -28,5 +28,6 @@ public class UserResponse {
     LocalDate dateOfBirth;
     RoleResponse role;
     Instant createdAt;
+    DoctorResponseForUser doctor;
 
 }

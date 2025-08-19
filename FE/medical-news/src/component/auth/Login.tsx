@@ -58,8 +58,9 @@ const Login = () => {
 
             let u = await authApis().get(endpoint['current_user']);
             const userData = u.data.result;
+            console.log(userData);
             if(userData.role?.name === "DOCTOR" && !userData.isActive){
-                sessionStorage.setItem("doctorId", userData.id);
+                sessionStorage.setItem("doctorId", userData.doctor.id);
                 showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!","error");
                 nav("/uploadCertification");
                 console.log(userData);

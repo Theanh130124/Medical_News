@@ -13,6 +13,7 @@ import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
+import com.theanh1301.SpringBoot_Medical_News.mapper.DoctorMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.UserMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.DoctorRepository;
 import com.theanh1301.SpringBoot_Medical_News.repository.RoleRepository;
@@ -59,6 +60,7 @@ public class UserServiceImpl implements  UserService {
     Cloudinary cloudinary;
     EmailService emailService;
     DoctorRepository doctorRepository;
+    DoctorMapper doctorMapper;
 
 
     //Clean code lại -> xử lý image
@@ -178,10 +180,19 @@ public class UserServiceImpl implements  UserService {
 
     @Override
     public UserResponse getUserResponseByUsername(String username) {
-        User user = userRepository.getUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
-        return userMapper.toUserResponse(user);
-    }
+        User user = userRepository.getUserByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
+        UserResponse response = userMapper.toUserResponse(user);
+
+        // nếu user là bác sĩ thì set doctor
+        Doctor doctor = doctorRepository.findByUser(user);
+        if (doctor != null) {
+            response.setDoctor(doctorMapper.toDoctorResponseForUser(doctor));
+        }
+
+        return response;
+    }
     @Override
     public Page<UserResponse> getAllUsers(Pageable pageable)  {
         return userRepository.getAllUsers(pageable).map(userMapper::toUserResponse);

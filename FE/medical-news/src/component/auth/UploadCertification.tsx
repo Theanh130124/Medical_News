@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Apis from "../../configs/Apis"; // axios instance
+import Apis, { endpoint } from "../../configs/Apis"; // axios instance
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import MyToaster, { showCustomToast } from "../layout/MyToaster";
@@ -9,7 +9,7 @@ import styles from "./Styles/certifcation.module.css";
 
 const UploadCertification = () => {
   const [loading, setLoading] = useState(false);
-  const [license, setLicense] = useState<any>({});
+  const [certifcation, setCertifcation] = useState<any>({});
   const [file, setFile] = useState<File | null>(null);
   const nav = useNavigate();
 
@@ -23,52 +23,54 @@ const UploadCertification = () => {
   ];
 
   const setState = (value: string, field: string) => {
-    setLicense({ ...license, [field]: value });
+    setCertifcation({ ...certifcation, [field]: value });
   };
 
-  const uploadLicense = async (e: any) => {
-    e.preventDefault();
-    if (!doctorId) {
-      showCustomToast("Không tìm thấy doctorId trong session!","error");
-      return;
-    }
-    if (!file) {
-      showCustomToast("Vui lòng chọn file chứng chỉ!","error");
-      return;
-    }
+        const uploadCertification= async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    setLoading(true);
-    try {
+        if (!doctorId) {
+            showCustomToast("Không tìm thấy doctorId trong session!", "error");
+            return;
+        }
+        if (!file) {
+            showCustomToast("Vui lòng chọn file chứng chỉ!", "error");
+            return;
+        }
 
-      let payload = { doctorId, ...license, imageCertificate: file, };
-      
-      let formData = new FormData(); 
+        setLoading(true);
+        try {
+            let formData = new FormData();
+            formData.append("doctorId", doctorId);
+            formData.append("certificateNumber", certifcation.certificateNumber || "");
+            formData.append("issueDate", certifcation.issueDate || "");
+            formData.append("expiryDate", certifcation.expiryDate || "");
 
-      //Object.entries trả về mảng các cặp key-value
 
-        Object.entries(license).forEach(([key, value]) => {
-        formData.append(key, value != null ? String(value) : ""); 
-        });
+            formData.append("imageCertificate", file);
 
-        // Append doctorId và file riêng
-        formData.append("doctorId", doctorId);
-        formData.append("imageCertificate", file);
-      let res = await Apis.post("/api/certificate", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+            let res = await Apis.post(endpoint['upload_certificate'], formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+            });
 
-      if (res.data.code === 0) {
-        showCustomToast("Gửi chứng chỉ hành nghề thành công!","success");
-        nav("/login");
-      } else {
-        showCustomToast(res.data.message,"error");
-      }
-    } catch (ex: any) {
-      showCustomToast("Lỗi khi upload: " + ex.message,"error");
-    } finally {
-      setLoading(false);
-    }
-  };
+
+            if (res.data.code === 0) {
+            showCustomToast("Gửi chứng chỉ hành nghề thành công!", "success");
+            nav("/login");
+            } else {
+            showCustomToast(res.data.message, "error");
+            }
+        } catch (ex: any) {
+            showCustomToast("Lỗi khi upload: " + ex.message, "error");
+              console.error("Chi tiết lỗi khi upload:", ex);  // In full object
+  console.error("Response:", ex.response);        // Nếu có response từ server
+  console.error("Message:", ex.message);          // Message lỗi
+  console.error("Stack:", ex.stack);              // Stack trace
+            
+        } finally {
+            setLoading(false);
+        }
+        };
 
   return (
 
@@ -79,7 +81,7 @@ const UploadCertification = () => {
             Gửi chứng chỉ hành nghề
           </h1>
 
-          <Form onSubmit={uploadLicense}>
+          <Form onSubmit={uploadCertification}>
             {info.map((f, idx) => (
               <Form.Group className="mb-3" key={idx}>
                 <Form.Label>{f.label}</Form.Label>
