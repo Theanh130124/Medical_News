@@ -26,6 +26,7 @@ public interface UserMapper {
 
 
     //fields nào userResponse có thì map từ user vào
+    @Mapping(target = "isActive", source = "isActive", defaultValue = "true")
     UserResponse toUserResponse(User user);
 
     User toUserforSearch(DoctorSearchRequest request);

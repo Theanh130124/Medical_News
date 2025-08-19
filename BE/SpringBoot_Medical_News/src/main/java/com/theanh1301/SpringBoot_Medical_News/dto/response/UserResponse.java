@@ -21,6 +21,7 @@ public class UserResponse {
     String firstName;
     String lastName;
     String phoneNumber;
+    Boolean isActive;
     String address;
     String email;
     Gender gender;

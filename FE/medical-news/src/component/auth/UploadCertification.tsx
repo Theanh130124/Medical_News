@@ -53,19 +53,23 @@ const UploadCertification = () => {
             headers: { "Content-Type": "multipart/form-data" },
             });
 
+            const { code, message } = res?.data || {};
 
-            if (res.data.code === 0) {
-            showCustomToast("Gửi chứng chỉ hành nghề thành công!", "success");
+            if (code === 0) {
+            showCustomToast(message, "success");
             nav("/login");
             } else {
-            showCustomToast(res.data.message, "error");
+            showCustomToast(message, "error");
             }
         } catch (ex: any) {
-            showCustomToast("Lỗi khi upload: " + ex.message, "error");
-              console.error("Chi tiết lỗi khi upload:", ex);  // In full object
-  console.error("Response:", ex.response);        // Nếu có response từ server
-  console.error("Message:", ex.message);          // Message lỗi
-  console.error("Stack:", ex.stack);              // Stack trace
+            const beMsg =
+                ex?.response?.data?.message ||
+                ex?.message ||
+                "Đã có lỗi xảy ra khi gửi chứng chỉ";
+            showCustomToast(beMsg,"error");
+            //   console.error("Chi tiết lỗi khi upload:", ex);  // In full object
+            // console.error("Response:", ex.response);        // Nếu có response từ server
+
             
         } finally {
             setLoading(false);
