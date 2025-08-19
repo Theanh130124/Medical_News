@@ -49,7 +49,7 @@ const Login = () => {
             });
             const {code,message,result} = res.data;
             if (code !== 0) {
-            showCustomToast(message);  //Thất bại
+            showCustomToast(message,"error");  //Thất bại
             return;
             }
             //thành công
@@ -60,8 +60,9 @@ const Login = () => {
             const userData = u.data.result;
             if(userData.role?.name === "DOCTOR" && !userData.isActive){
                 sessionStorage.setItem("doctorId", userData.id);
-                showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!");
-                nav("/uploadLicense");
+                showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!","error");
+                nav("/uploadCertification");
+                console.log(userData);
                 return;
             }
             cookie.save('user', userData, { path: '/' });
@@ -69,16 +70,16 @@ const Login = () => {
                 "type": "login",
                 "payload": userData
             });
-            showCustomToast(message); //Đăng nhập thành công
+            showCustomToast(message,"success"); //Đăng nhập thành công
+            console.log(userData);
             nav("/");
 
         }catch (ex: any) {
-        console.error("Lỗi đăng nhập:", ex);
         if (ex.response && ex.response.data) {
-            showCustomToast(ex.response.data.message || "Có lỗi xảy ra!");
+            showCustomToast(ex.response.data.message || "Có lỗi xảy ra!","error");
             return;
         } else {
-            showCustomToast("Không thể kết nối đến server!");
+            showCustomToast("Không thể kết nối đến server!","error");
             return;
         }
     } finally {
@@ -91,7 +92,7 @@ const Login = () => {
 
     return (
         <Container fluid className="p-0">
-            <MyToaster />
+
             <Row className={`justify-content-center mt-4 ${styles["custom-row-primary"]}`}>
                 <Col lg={6} md={4} sm={12} >
                     <h1 className="text-center text-success mb-4">ĐĂNG NHẬP</h1>

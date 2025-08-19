@@ -1,0 +1,71 @@
+.custom-row-primary {
+  background: linear-gradient(135deg, #9aabff, #d7e0ff);
+  border-radius: 16px; /* bo góc mềm mại */
+  padding: 60px 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Animation xuất hiện */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tiêu đề */
+.custom-row-primary h1 {
+  font-weight: bold;
+  color: #2d6a4f;
+  letter-spacing: 1px;
+}
+
+/* Label */
+.custom-row-primary label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+/* Input */
+.custom-row-primary input[type="text"],
+.custom-row-primary input[type="date"],
+.custom-row-primary input[type="file"] {
+  border: 2px solid #cdd5ff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+.custom-row-primary input:focus {
+  border-color: #5a73e6;
+  box-shadow: 0 0 8px rgba(90, 115, 230, 0.3);
+}
+
+/* Button */
+.custom-row-primary .btn-success {
+  background: #40916c;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.custom-row-primary .btn-success:hover {
+  background: #2d6a4f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.custom-row-primary .btn-success:disabled {
+  background: #9fb6aa;
+  cursor: not-allowed;
+}

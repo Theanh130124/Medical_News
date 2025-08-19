@@ -54,7 +54,7 @@ const Register = () => {
         }
 
         if (userData.password !== userData.confirm) {
-            showCustomToast("Mật khẩu không khớp");
+            showCustomToast("Mật khẩu không khớp","error");
             return;
         }
 
@@ -78,10 +78,10 @@ const Register = () => {
             //Data
             const { code, message } = res?.data || {};
             if (code === 0) {
-                showCustomToast(message); //Thành công
+                showCustomToast(message,"success"); //Thành công
                 setTimeout(() => nav("/login"), 800); //800ms   
             } else {
-                showCustomToast(message);//Thất bại
+                showCustomToast(message,"error");//Thất bại
             }
         }
         catch (ex:any) {
@@ -91,7 +91,7 @@ const Register = () => {
                 ex?.response?.data?.message ||
                 ex?.message ||
                 "Đã có lỗi xảy ra khi đăng ký";
-            showCustomToast(beMsg);
+            showCustomToast(beMsg,"error");
         } finally {
             setLoading(false);
         }
@@ -122,7 +122,6 @@ const Register = () => {
         </Col>
 
         <Col lg={5} md={6} sm={12}>
-        <MyToaster />
           <Container className="p-3 shadow rounded bg-light me-5">
             <h1 className="text-center text-success mb-4">ĐĂNG KÝ</h1>
         

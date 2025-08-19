@@ -10,6 +10,10 @@ import Login from './component/auth/Login';
 import { useEffect, useReducer } from 'react';
 import MyUserReducer from './reducers/MyUserReducer';
 import { MyDipatcherContext, MyUserContext } from './configs/MyContexts';
+import MyToaster from './component/layout/MyToaster';
+import UploadCertification from './component/auth/UploadCertification';
+
+
 
 
 const App = () => {
@@ -28,11 +32,12 @@ const App = () => {
     <BrowserRouter>
       <Header/> 
       <Container fluid>
-
+        <MyToaster />
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
+          <Route path='/uploadCertification' element ={<UploadCertification/>} />
 
         </Routes>
 
