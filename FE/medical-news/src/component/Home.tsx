@@ -72,8 +72,7 @@ const Home = () => {
                     <h2>Dịch vụ</h2>
                     <hr className="my-4 border border-dark" />
                 </Col>
-            </Row>
-            <Row className="align-items-center justify-content-center mt-2">
+            </Row>   <Row className="align-items-center justify-content-center mt-2">
                 <Carousel className={styles.customCarousel}>
                     <Carousel.Item>
                         <Row className="justify-content-center">
@@ -117,7 +116,7 @@ const Home = () => {
                     </Carousel.Item>
                 </Carousel>
             </Row>
-
+         
             {/* Bài viết nổi bật */}
             <Row className="align-items-center justify-content-center mt-5">
                 <Col xs={12} md={8} lg={6} className="text-center">
@@ -126,55 +125,56 @@ const Home = () => {
                 </Col>
             </Row>
 
-            <Row className="justify-content-center mt-3">
+                <Row className="justify-content-center mt-3">
                 {topPosts.length === 0 && !loading ? (
-                <p className="text-center">Không có bài viết nào.</p>
+                    <p className="text-center">Không có bài viết nào.</p>
                 ) : (
-                topPosts.map((post, idx) => (
+                    topPosts.map((post, idx) => (
                     <Col key={idx} xs={12} md={6} lg={4} className="mb-4">
-                    <Card className="shadow-sm h-100">
-                        <Card.Body>
-                        <div className="d-flex align-items-center mb-3">
+                        <Card className={styles.postCard}>
+                        {/* Nếu có ảnh thì show ở trên */}
+                        {post.imagePostResponses && post.imagePostResponses.length > 0 && (
+                            <Card.Img
+                            variant="top"
+                            src={post.imagePostResponses[0].postImageUrl}
+                            className={styles.postImage}
+                            />
+                        )}
+
+                        <Card.Body className={styles.postContent}>
+                            <div className={styles.authorInfo}>
                             <Image
-                            src={post.userResponse.avatar}
-                            roundedCircle
-                            width={40}
-                            height={40}
-                            alt={post.userResponse.username}
+                                src={post.userResponse.avatar}
+                                roundedCircle
+                                width={40}
+                                height={40}
+                                alt={post.userResponse.username}
                             />
                             <div className="ms-2">
-                            <strong>
+                                <div className={styles.authorName}>
                                 {post.userResponse.firstName} {post.userResponse.lastName}
-                            </strong>
-                            <div className="text-muted" style={{ fontSize: "0.9rem" }}>
+                                </div>
+                                <div className={styles.postDate}>
                                 {new Date(post.createdAt).toLocaleDateString("vi-VN")}
+                                </div>
                             </div>
                             </div>
-                        </div>
 
-                        <Card.Title>{post.title}</Card.Title>
-                        <Card.Text>{post.content.slice(0, 120)}...</Card.Text>
+                            <Card.Title className={styles.postTitle}>{post.title}</Card.Title>
+                            <Card.Text className={styles.postText}>
+                            {post.content.slice(0, 120)}...
+                            </Card.Text>
 
-                   
-                        {post.imagePostResponses && post.imagePostResponses.length > 0 && (
-                            <div className="mt-2">
-                            {post.imagePostResponses.map((img, i) => (
-                                <Image
-                                key={i}
-                                src={img.postImageUrl}
-                                alt={`Post image ${i + 1}`}
-                                fluid
-                                className="rounded mb-2"
-                                />
-                            ))}
-                            </div>
-                        )}
+                            <Button variant="outline-primary" size="sm">
+                            Xem chi tiết
+                            </Button>
                         </Card.Body>
-                    </Card>
+                        </Card>
                     </Col>
-                ))
+                    ))
                 )}
-            </Row>
+                </Row>
+
 
                   <Row className="justify-content-center mt-4 mb-5">
                     {hasMore && !loading && (
@@ -191,6 +191,7 @@ const Home = () => {
                     <MySpinner/>
                     </div>
                 )}
+            
 
 
 

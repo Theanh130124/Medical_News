@@ -56,11 +56,11 @@
 }
 
 .carouselImage {
-  width: 100%;
-  max-width: 160px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  max-width: 150px; /* hoặc 150px tùy bạn muốn */
+  max-height: 150px;
+  object-fit: contain; /* giữ tỉ lệ ảnh */
+  margin: 0 auto; /* căn giữa */
+  display: block;
 }
 
 .cardWrapper {
@@ -77,4 +77,59 @@
   color: #fff;
   text-align: center;
   padding: 10px;
+}
+.postCard {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.postCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.postImage {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.postContent {
+  padding: 16px;
+}
+
+.postTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #183e9f;
+}
+
+.postText {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.authorInfo img {
+  border: 2px solid #ddd;
+}
+
+.authorName {
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.postDate {
+  font-size: 0.85rem;
+  color: #777;
 }

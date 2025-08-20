@@ -12,6 +12,7 @@ import MyUserReducer from './reducers/MyUserReducer';
 import { MyDipatcherContext, MyUserContext } from './configs/MyContexts';
 import MyToaster from './component/layout/MyToaster';
 import UploadCertification from './component/auth/UploadCertification';
+import TimeLine from './component/post/TimeLine';
 
 
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
           <Route path='/uploadCertification' element ={<UploadCertification/>} />
+          <Route path='/timeline'  element ={<TimeLine/>}/>
 
         </Routes>
 
