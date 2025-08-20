@@ -100,6 +100,8 @@ const Register = () => {
 
 
 
+
+
     return (
     <Container fluid className="p-0">
       <Row className={`justify-content-center mt-4 ${styles["custom-row-primary"]}`}>

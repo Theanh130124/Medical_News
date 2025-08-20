@@ -46,7 +46,8 @@ public class SecurityConfig {
             "/api/auth/logout",
             "/api/auth/introspect",
             "/api/auth/refresh",
-            "/api/certificate"
+            "/api/certificate",
+            "/api/posts/public/normal/doctor/top-reactions"
 
 
 
