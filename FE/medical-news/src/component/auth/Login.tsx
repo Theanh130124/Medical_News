@@ -73,7 +73,7 @@ const Login = () => {
             });
             showCustomToast(message,"success"); //Đăng nhập thành công
             console.log(userData);
-            nav("/");
+            nav("/timeline");
 
         }catch (ex: any) {
         if (ex.response && ex.response.data) {

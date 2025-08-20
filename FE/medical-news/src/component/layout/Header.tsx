@@ -25,14 +25,33 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
+
+          
           <Nav className={`me-auto ${styles.headerMenu} text-center`}>
-            <Link to="/calendar" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+
+            <Link to="/" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+              <i className="bi bi-house me-1"></i>
+              <span className={styles.navText}>Trang chủ</span>
+              <span className={styles.subText}>Home</span>
+            </Link>
+
+            {/* Timeline */}
+
+            {user !== null ? <>
+            
+            <Link to="/timeline" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+              <i className="bi bi-clock-history me-1"></i>
+              <span className={styles.navText}>Hoạt động</span>
+              <span className={styles.subText}>Timeline</span>
+            </Link>
+            </> :<></>}
+            
+
+            {/* Tin tức */}
+            <Link to="/news" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
+              <i className="bi bi-newspaper me-1"></i>
               <span className={styles.navText}>Tin tức</span>
               <span className={styles.subText}>Xem ngay</span>
-            </Link>
-            <Link to="/calendar" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-              <span className={styles.navText}>Trang cá nhân</span>
-              <span className={styles.subText}>Thông tin</span>
             </Link>
           </Nav>
 
