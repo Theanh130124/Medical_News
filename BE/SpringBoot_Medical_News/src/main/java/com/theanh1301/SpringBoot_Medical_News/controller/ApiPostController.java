@@ -91,5 +91,21 @@ public class ApiPostController {
                 .build();
     }
 
+    @GetMapping("/public/normal/doctor/top-reactions")
+    public ApiResponse<Page<PostResponse>> getPublicNormalDoctorPostsOrderByReactions(
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer page) {
+
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+
+        return ApiResponse.<Page<PostResponse>>builder()
+                .result(postService.getPublicNormalDoctorPostsOrderByReactions(pageable))
+                .message("Lấy danh sách bài viết NORMAL (public, của doctor) có nhiều reaction nhất thành công")
+                .build();
+    }
+
+
+
+
 
 }

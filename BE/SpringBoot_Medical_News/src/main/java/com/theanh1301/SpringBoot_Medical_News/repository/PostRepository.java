@@ -65,4 +65,18 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> findVisiblePosts(@Param("currentUserId") String currentUserId,  @Param("friendIds") List<String> friendIds,
             Pageable pageable);
 
+
+
+    @Query("""
+    SELECT p
+    FROM Post p
+    LEFT JOIN Reaction r ON r.post = p
+    WHERE p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
+      AND p.type = com.theanh1301.SpringBoot_Medical_News.enums.TypePost.NORMAL
+      AND p.user.role.name = 'DOCTOR'
+    GROUP BY p
+    ORDER BY COUNT(r) DESC
+    """)
+    Page<Post> findPublicNormalDoctorPostsOrderByReactionCount(Pageable pageable);
+
 }

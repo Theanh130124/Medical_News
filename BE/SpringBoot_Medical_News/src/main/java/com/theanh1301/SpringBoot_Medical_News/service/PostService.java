@@ -18,4 +18,5 @@ public interface PostService {
     void voteSurveyOption(String optionId, String userId);
 
     Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
+    Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable);
 }

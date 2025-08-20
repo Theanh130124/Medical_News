@@ -203,4 +203,11 @@ public class PostServiceImpl implements PostService {
             return res;
         });
     }
+
+    @Override
+    public Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable) {
+        return postRepository.findPublicNormalDoctorPostsOrderByReactionCount(pageable)
+                .map(postMapper::toPostResponse);
+    }
+
 }

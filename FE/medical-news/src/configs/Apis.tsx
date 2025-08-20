@@ -18,6 +18,9 @@ export const endpoint = {
     'upload_certificate': '/certificate',
 
 
+    'top_posts': '/posts/public/normal/doctor/top-reactions',
+
+
 } 
 
 //json -> có token

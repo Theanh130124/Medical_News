@@ -24,7 +24,7 @@ public interface PostMapper {
     @Mapping(target = "surveyOptions", expression = "java(mapSurveyOptionStrings(request.getSurveyOptions()))")
     Post toPost(PostCreationRequest request); // tư map từ String -? Enum
 
-    @Mapping(target="imagePostResponses" , ignore = true)
+    @Mapping(target="imagePostResponses" , source = "imagePosts")
     @Mapping(target = "userResponse" ,source = "user")
     @Mapping(target = "surveyOptions", expression = "java(mapSurveyOptions(post.getSurveyOptions()))")
     PostResponse toPostResponse(Post post);
