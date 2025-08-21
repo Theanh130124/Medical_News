@@ -62,4 +62,13 @@ public class CertificateController {
         return "redirect:/certificate";
     }
 
+
+    //delete
+
+    @PostMapping("/certificate/delete/{id}")
+    public String deleteCertificate(@PathVariable String id) {
+        certificateService.deleteCertificate(id);
+        return "redirect:/certificate";
+    }
+
 }
