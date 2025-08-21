@@ -29,7 +29,7 @@ const Home = () => {
     const loadTopPosts = async () => {
         try {
         setLoading(true);
-        const res = await Apis.get(`${endpoint["top_posts"]}?page=${page}`);
+        const res = await Apis.get(`${endpoint["top_posts"]}&page=${page}`);
         const newPosts: Post[] = res.data.result.content;
 
         if (page === 0) {

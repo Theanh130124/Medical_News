@@ -1,9 +1,9 @@
 import { JSX } from "react";
 
 export const reactionIcons: Record<string, JSX.Element> = {
-    LIKE: <span>👍</span>,
-    HAHA: <span>😄</span>,
-    LOVE: <span>❤️</span>,
-    SAD: <span>😢</span>,
-    ANGRY: <span>😠</span>,
+    LIKE: <span>LIKE</span>,
+    HAHA: <span>HAHA</span>,
+    LOVE: <span>LOVE</span>,
+    SAD: <span>SAD</span>,
+    ANGRY: <span>ANGRY</span>,
 };
