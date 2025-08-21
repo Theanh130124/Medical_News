@@ -21,6 +21,11 @@ export const endpoint = {
     'top_posts': '/posts/public/normal/doctor/top-reactions',
 
 
+    //Post
+    'create_post': '/posts',
+    get_posts_timeline: (currentUserId: string) => `/posts/visible?currentUserId=${currentUserId}`,
+
+
 } 
 
 //json -> có token

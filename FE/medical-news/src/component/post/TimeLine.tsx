@@ -1,10 +1,179 @@
+import { JSX, use, useContext, useEffect, useState } from "react";
+import { MyUserContext } from "../../configs/MyContexts";
+import { authApis, endpoint } from "../../configs/Apis";
+import { Card, Col, Container, Image, Row, Form, Button, Badge } from "react-bootstrap";
+import MySpinner from "../layout/MySpinner";
+import { reactionIcons } from "../../types/reactionIcons";
+import styles from "./Styles/timeline.module.css";
+
 
 const TimeLine = () => {
+
+    const user = useContext(MyUserContext);
+    const [posts, setPosts] = useState<any>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedOption, setSelectedOption] = useState<{ [key: string]: string }>({}); // postId -> optionId
+
+    const fetchPosts = async () => {
+        if (!user) return;
+        try {
+        setLoading(true);
+        const res = await authApis().get(endpoint.get_posts_timeline(user.id));
+        setPosts(res.data.result.content || []); // nếu backend trả content trong page
+        } catch (error) {
+        console.error("Lỗi lấy timeline:", error);
+        } finally {
+        setLoading(false);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchPosts();
+    }, [user]);
+    
+
+    //Đối với survey 
+
+    
+    const handleVote = async (postId: string) => {
+        try {
+        const optionId = selectedOption[postId];
+        if (!optionId) return alert("Vui lòng chọn một lựa chọn để bình chọn!");
+        await authApis().post(`/posts/survey/vote/${optionId}?userId=${user.id}`);
+        alert("Bình chọn thành công!");
+        fetchPosts(); // cập nhật lại timeline
+        } catch (error) {
+        console.error(error);
+        alert("Bình chọn thất bại!");
+        }
+    };
+
+
+
+
     return (
-        <div className="timeline">
-        <h2>Timeline</h2>
-        {/* Timeline content goes here */}
-        </div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col xs={12} md={8}>
+          {loading && <MySpinner />}
+          {posts.map((post:any) => (
+            <Card className={`mb-4 ${styles.timelineCard}`} key={post.id}>
+              {/* Hình ảnh nếu có */}
+              {post.imagePostResponses && post.imagePostResponses.length > 0 && (
+                <Card.Img
+                    variant="top"
+                    src={post.imagePostResponses[0].postImageUrl}
+                    className={styles.timelineCardImg}
+                    />
+              )}
+               <Card.Body className={styles.timelineCardBody}>
+                {/* Thông tin tác giả */}
+                <div className={styles.authorInfo}>
+                    <Image src={post.userResponse.avatar} alt={post.userResponse.username} />
+                    <div className={styles.authorDetails}>
+                        <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
+                        <br />
+                        <small>{new Date(post.createdAt).toLocaleString("vi-VN")}</small>
+                    </div>
+                    </div>
+
+                <Card.Title>{post.title}</Card.Title>
+                <Card.Text>{post.content}</Card.Text>
+
+                {/* Nếu bài viết là survey */}
+                {post.type === "SURVEY" && post.surveyOptions && (
+                 <Form className={styles.surveyForm}>
+                    {post.surveyOptions.map((option:any) => (
+                      <Form.Check
+                        key={option.id}
+                        type="radio"
+                        label={`${option.optionText} (${option.voteCount} votes)`}
+                        name={`survey-${post.id}`}
+                        checked={selectedOption[post.id] === option.id}
+                        onChange={() =>
+                          setSelectedOption((prev) => ({ ...prev, [post.id]: option.id }))
+                        }
+                      />
+                    ))}
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => handleVote(post.id)}
+                    >
+                      Bình chọn
+                    </Button>
+                  </Form>
+                )}
+
+                
+                {/* Reactions */}
+                {post.reactions?.length > 0 && (
+                <div className="mt-2">
+                    {Object.entries(
+                    post.reactions.reduce((acc: Record<string, number>, r: { type: keyof typeof reactionIcons }) => {
+                        acc[r.type] = acc[r.type] ? acc[r.type] + 1 : 1;
+                        return acc;
+                    }, {} as Record<keyof typeof reactionIcons, number>)
+                    ).map(([type, count]) => {
+                    const icon = reactionIcons[type as keyof typeof reactionIcons] as JSX.Element; // ép kiểu JSX.Element
+                    return (
+                        <Badge
+                        key={type}
+                        bg="light"
+                        text="dark"
+                        className="me-2"
+                        style={{ fontSize: "1rem" }}
+                        >
+                        {icon} {count as number} {/* ép count sang number */}
+                        </Badge>
+                    );
+                    })}
+
+
+                </div>
+                )}
+
+
+                {/* Comments */}
+                {post.comments?.length > 0 && (
+                  <div className="mt-3">
+                    <strong>Bình luận:</strong>
+                    {post.comments.map((c: any) => (
+                      <Card key={c.id} className="mt-2 p-2">
+                        <div className="d-flex align-items-center mb-1">
+                          <Image
+                            src={c.userResponse.avatar}
+                            roundedCircle
+                            width={30}
+                            height={30}
+                            className="me-2"
+                          />
+                          <strong>{c.userResponse.firstName} {c.userResponse.lastName}</strong>
+                          <small className="ms-2 text-muted">
+                            {new Date(c.createdAt).toLocaleString("vi-VN")}
+                          </small>
+                        </div>
+                        <div>{c.content}</div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+
+
+                {/* Nếu bài viết NORMAL */}
+                {post.type === "NORMAL" && (
+                 <Button className={styles.normalButton} variant="outline-primary" size="sm">
+                    Xem chi tiết
+                </Button>
+                )}
+              </Card.Body>
+            </Card>
+          ))}
+        </Col>
+      </Row>
+    </Container>
     );
     }
 

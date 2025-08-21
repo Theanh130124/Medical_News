@@ -26,6 +26,11 @@ public class PostResponse {
     Boolean allowComments;
     Instant createdAt;
     Instant updatedAt;
+
+    List<CommentResponse> comments;
+    long countComment;
+    List<ReactionResponse> reactions;
+    long countReaction;
     List<ImagePostResponse> imagePostResponses;// cái này ManyToOne -> đã đổi thành LAZY
 
     List<SurveyOptionResponse> surveyOptions;

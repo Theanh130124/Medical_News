@@ -4,14 +4,18 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.CommentResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.ReactionResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.SurveyOptionResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.*;
 import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
+import com.theanh1301.SpringBoot_Medical_News.mapper.CommentMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.ImagePostMapper;
 import com.theanh1301.SpringBoot_Medical_News.mapper.PostMapper;
+import com.theanh1301.SpringBoot_Medical_News.mapper.ReactionMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.*;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import lombok.AccessLevel;
@@ -45,7 +49,10 @@ public class PostServiceImpl implements PostService {
     SurveyVoteRepository surveyVoteRepository;
     ImagePostMapper imagePostMapper;
     FriendRepository friendRepository;
-
+    CommentRepository commentRepository;
+    ReactionRepository reactionRepository;
+    CommentMapper commentMapper;
+    ReactionMapper reactionMapper;
 
     private List<ImagePost> mapMultipartFilesToImagePosts(List<MultipartFile> files, Post post) {
         if (files == null || files.isEmpty()) return null;
@@ -200,6 +207,18 @@ public class PostServiceImpl implements PostService {
                     return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
                 }).toList());
             }
+
+
+            List<CommentResponse> commentList = commentRepository.getCommentByPost(post)
+                    .stream().map(commentMapper::toCommentResponse).toList();
+            res.setComments(commentList);
+            res.setCountComment(commentRepository.countCommentByPost(post));
+
+            List<ReactionResponse> reactionList = reactionRepository.getReactionByPost(post)
+                    .stream().map(reactionMapper::toReactionResponse).toList();
+            res.setReactions(reactionList);
+            res.setCountReaction(reactionRepository.countReactionByPost(post));
+
             return res;
         });
     }
