@@ -1,0 +1,81 @@
+/* timeline.module.css */
+
+.timeline {
+  margin-top: 2rem;
+}
+
+/* Card chung */
+.timelineCard {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+
+/* Hình ảnh bài viết */
+.timelineCardImg {
+  object-fit: cover;
+  max-height: 300px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Author info */
+.authorInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.authorInfo img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.authorDetails {
+  margin-left: 0.5rem;
+}
+
+.authorDetails strong {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.authorDetails small {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Card body */
+.timelineCardBody {
+  padding: 1rem;
+}
+
+.timelineCardBody h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timelineCardBody p {
+  color: #444;
+}
+
+/* Survey Form */
+.surveyForm {
+  margin-top: 0.5rem;
+}
+
+.surveyForm .form-check {
+  margin-bottom: 0.5rem;
+}
+
+.surveyForm button {
+  margin-top: 0.5rem;
+}
+
+/* Button NORMAL */
+.normalButton {
+  margin-top: 0.5rem;
+  width: 100%;
+}

@@ -66,7 +66,9 @@ public class ReactionServiceImpl implements ReactionService {
     public List<ReactionResponse> getAllReactionsByPost(String postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
-        return reactionRepository.getReactionByPost(post).stream().map(reactionMapper::toReactionResponse).collect(Collectors.toList());
+        return reactionRepository.
+
+                getReactionByPost(post).stream().map(reactionMapper::toReactionResponse).collect(Collectors.toList());
     }
 
 
