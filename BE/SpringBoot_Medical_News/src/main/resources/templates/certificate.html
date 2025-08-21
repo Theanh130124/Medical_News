@@ -93,6 +93,14 @@
                         Từ chối
                     </button>
                 </div>
+
+                <!-- Nếu bị REJECTED thì hiển thị nút Xóa -->
+                <div th:if="${cert.status == REJECTED}">
+                    <form th:action="@{'/certificate/delete/' + ${cert.id}}" method="post" style="display:inline;"
+                          onsubmit="return confirm('Bạn có chắc muốn xóa chứng chỉ này không?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                    </form>
+                </div>
             </td>
 
         </tr>
@@ -120,14 +128,16 @@
 
 
 <script>
+    const contextPath = /*[[@{/}]]*/ ''; // sẽ thành "/SpringBoot_Medical_News/"
     const rejectModal = document.getElementById('rejectModal');
     rejectModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
         const certId = button.getAttribute('data-id');
-        document.getElementById('rejectId').value = certId;
-        document.getElementById('rejectForm').action = `/certificate/reject/${certId}`;
+        document.getElementById('rejectForm').action = contextPath + "certificate/reject/" + certId;
     });
 </script>
+
+
 <div th:replace="layout/footer :: footer"></div>
 </body>
 
