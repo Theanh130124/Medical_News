@@ -78,6 +78,11 @@ const Header = () => {
                 <NavDropdown.Item as={Link} to="/editProfile">
                   Sửa thông tin cá nhân
                 </NavDropdown.Item>
+
+                <NavDropdown.Item as={Link} to="/profile">
+                  Trang cá nhân
+                </NavDropdown.Item>
+                
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right me-2"></i> Đăng xuất

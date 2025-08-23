@@ -61,6 +61,19 @@ public class ApiPostController {
 
     }
 
+    @PostAuthorize("@postServiceImpl.canAccessPost(returnObject.result,authentication.name)")
+    @GetMapping("/user/{userId}")
+    public ApiResponse<Page<PostResponse>> getPostsByUserId(@PathVariable String userId,
+                                                            @RequestParam(required = false) Integer size,
+                                                            @RequestParam(required = false) Integer page) {
+        Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+        return ApiResponse.<Page<PostResponse>>builder()
+                .result(postService.getPostsByUserId(userId, pageable))
+                .message("Lấy danh sách bài viết của user thành công")
+                .build();
+    }
+
+
     @GetMapping("/getAll")
     public ApiResponse<Page<PostResponse>> getAllPost(@RequestParam(required = false) Integer size,
                                                       @RequestParam(required = false) Integer page){
@@ -103,6 +116,8 @@ public class ApiPostController {
                 .message("Lấy danh sách bài viết NORMAL (public, của doctor) có nhiều reaction nhất thành công")
                 .build();
     }
+
+
 
 
 

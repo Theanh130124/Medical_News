@@ -26,6 +26,9 @@ export const endpoint = {
     get_posts_timeline: (currentUserId: string) => `/posts/visible?currentUserId=${currentUserId}`,
 
 
+    //profile
+    get_post_userId : (userId: string) => `posts/user/${userId}`,
+    
 } 
 
 //json -> có token

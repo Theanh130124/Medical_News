@@ -4,10 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.PostUpdateRequest;
-import com.theanh1301.SpringBoot_Medical_News.dto.response.CommentResponse;
-import com.theanh1301.SpringBoot_Medical_News.dto.response.PostResponse;
-import com.theanh1301.SpringBoot_Medical_News.dto.response.ReactionResponse;
-import com.theanh1301.SpringBoot_Medical_News.dto.response.SurveyOptionResponse;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.*;
 import com.theanh1301.SpringBoot_Medical_News.entity.*;
 import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
@@ -229,4 +226,38 @@ public class PostServiceImpl implements PostService {
                 .map(postMapper::toPostResponse);
     }
 
+    @Override
+    public Page<PostResponse> getPostsByUserId(String userId, Pageable pageable) {
+        Page<Post> posts = postRepository.findPostsByUserId(userId, pageable);
+
+        return posts.map(post -> {
+            PostResponse res = postMapper.toPostResponse(post);
+
+            if (post.getType() == TypePost.SURVEY) {
+                List<SurveyOption> options = surveyOptionRepository.findByPost(post);
+                res.setSurveyOptions(options.stream().map(opt -> {
+                    long voteCount = surveyVoteRepository.countByOption(opt);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+                }).toList());
+            }
+
+            // Lấy comments + reactions nếu cần
+            List<CommentResponse> commentList = commentRepository.getCommentByPost(post)
+                    .stream().map(commentMapper::toCommentResponse).toList();
+            res.setComments(commentList);
+            res.setCountComment(commentRepository.countCommentByPost(post));
+
+            List<ReactionResponse> reactionList = reactionRepository.getReactionByPost(post)
+                    .stream().map(reactionMapper::toReactionResponse).toList();
+            res.setReactions(reactionList);
+            res.setCountReaction(reactionRepository.countReactionByPost(post));
+
+            return res;
+        });
+    }
+
+    @Override
+    public boolean canAccessPost(Page<PostResponse> page, String currentUser) {
+        return page.stream().allMatch(post -> post.getUserResponse().getUsername().equals(currentUser));
+    }
 }
