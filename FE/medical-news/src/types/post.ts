@@ -21,3 +21,10 @@ export interface Post {
   surveyOptions: any[];      
   userResponse: UserResponse;
 }
+
+export interface CreatePostProps {
+  onPostCreated?: () => void;
+  // show?: boolean;
+  // onHide?: () => void;
+}
+

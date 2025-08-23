@@ -29,7 +29,7 @@ const Home = () => {
     const loadTopPosts = async () => {
         try {
         setLoading(true);
-        const res = await Apis.get(`${endpoint["top_posts"]}&page=${page}`);
+        const res = await Apis.get(`${endpoint["top_posts"]}?page=${page}`);
         const newPosts: Post[] = res.data.result.content;
 
         if (page === 0) {
@@ -177,7 +177,7 @@ const Home = () => {
 
 
                   <Row className="justify-content-center mt-4 mb-5">
-                    {hasMore && !loading && (
+                    {hasMore && !loading && topPosts.length > 0 && (
                     <Col xs={10} md={6} className="text-center">
                         <Button variant="info" onClick={() => setPage((prev) => prev + 1)}>
                         Xem thêm

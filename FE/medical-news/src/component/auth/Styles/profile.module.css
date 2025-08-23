@@ -1,0 +1,109 @@
+/* profile.module.css */
+
+/* Tổng thể */
+.profile {
+  margin-top: 2rem;
+}
+
+/* Header chứa thông tin cá nhân */
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.profileHeader:hover {
+  transform: translateY(-2px);
+}
+
+.profileAvatar {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid #007bff;
+}
+
+.profileName {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.profileEmail {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.profileMeta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* Danh sách bài viết */
+.profilePosts {
+  margin-top: 1rem;
+}
+
+/* Card bài viết giống timeline */
+.profileCard {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.profileCard:hover {
+  transform: translateY(-3px);
+}
+
+.profileCardImg {
+  object-fit: cover;
+  max-height: 300px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.profileCardBody {
+  padding: 1rem;
+}
+
+/* Tác giả trong card */
+.profileAuthorInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.profileAuthorInfo img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.profileAuthorDetails {
+  margin-left: 0.5rem;
+}
+
+.profileAuthorDetails strong {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.profileAuthorDetails small {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Nút bình thường */
+.normalButton {
+  margin-top: 0.5rem;
+  width: 100%;
+}

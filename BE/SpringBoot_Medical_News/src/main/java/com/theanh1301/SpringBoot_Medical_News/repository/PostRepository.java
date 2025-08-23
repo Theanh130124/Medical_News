@@ -17,6 +17,15 @@ public interface PostRepository extends JpaRepository<Post, String> {
     @Query("SELECT p FROM Post p")
     Page<Post> getAllPost(Pageable pageable);
 
+    @Query("""
+        SELECT p 
+        FROM Post p
+        WHERE p.user.id = :userId
+        ORDER BY p.createdAt DESC
+        """)
+    Page<Post> findPostsByUserId(@Param("userId") String userId, Pageable pageable);
+
+
 
     @Query("SELECT FUNCTION('YEAR', p.createdAt), " +
             "FUNCTION('QUARTER', p.createdAt), " +

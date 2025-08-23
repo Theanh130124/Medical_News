@@ -13,6 +13,7 @@ import { MyDipatcherContext, MyUserContext } from './configs/MyContexts';
 import MyToaster from './component/layout/MyToaster';
 import UploadCertification from './component/auth/UploadCertification';
 import TimeLine from './component/post/TimeLine';
+import Profile from './component/auth/Profile';
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
           <Route path='/login' element ={<Login/>} />
           <Route path='/uploadCertification' element ={<UploadCertification/>} />
           <Route path='/timeline'  element ={<TimeLine/>}/>
+          <Route path='/profile'  element ={<Profile/>}/>
 
         </Routes>
 

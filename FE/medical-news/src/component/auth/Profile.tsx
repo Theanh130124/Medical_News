@@ -4,29 +4,26 @@ import { authApis, endpoint } from "../../configs/Apis";
 import { Card, Col, Container, Image, Row, Form, Button, Badge } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
 import { reactionIcons } from "../../types/reactionIcons";
-import styles from "./Styles/timeline.module.css";
+import styles from "./Styles/profile.module.css";
 import { showCustomToast } from "../layout/MyToaster";
-import CreatePost from "./CreatePost";
 
-const TimeLine = () => {
+const Profile = () => {
   const user = useContext(MyUserContext);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<{ [key: string]: string }>({});
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [refreshFlag, setRefreshFlag] = useState(0);
 
-  // Fetch posts khi page hoặc user thay đổi
   useEffect(() => {
     if (!user) return;
 
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        // URL phân trang: &page vì đã có ?currentUserId
+        // Gọi API lấy bài viết theo userId
         const res = await authApis().get(
-          endpoint.get_posts_timeline(user.id) + `&page=${page}`
+          endpoint.get_post_userId(user.id) + `?page=${page}`
         );
 
         const newPosts = res.data.result.content || [];
@@ -38,16 +35,16 @@ const TimeLine = () => {
           setPosts((prev) => [...prev, ...newPosts]);
         }
       } catch (error) {
-        console.error("Lỗi lấy timeline:", error);
+        console.error("Lỗi lấy posts của user:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [user, page,refreshFlag]); 
+  }, [user, page]);
 
-  // Reset page khi user thay đổi
+  // Reset page khi đổi user (chẳng hạn khi đăng nhập user khác)
   useEffect(() => {
     setPage(0);
   }, [user]);
@@ -64,7 +61,7 @@ const TimeLine = () => {
       if (!optionId) return alert("Vui lòng chọn một lựa chọn để bình chọn!");
       await authApis().post(`/posts/survey/vote/${optionId}?userId=${user.id}`);
       showCustomToast("Bình chọn thành công!", "success");
-      setPage(0); // reload page 0 sau khi vote
+      setPage(0); // reload lại bài viết
     } catch (error) {
       console.error(error);
       showCustomToast("Bình chọn thất bại!", "error");
@@ -76,9 +73,7 @@ const TimeLine = () => {
       <Row className="justify-content-center">
         <Col xs={12} md={8}>
           {loading && page === 0 && <MySpinner />}
-          {/* Bài viết mới tăng refreshFlag -> re-render */}
-           <CreatePost onPostCreated={() => setRefreshFlag(prev => prev + 1)} />  
-            
+
           {posts.map((post: any) => (
             <Card className={`mb-4 ${styles.timelineCard}`} key={post.id}>
               {post.imagePostResponses?.length > 0 && (
@@ -202,4 +197,4 @@ const TimeLine = () => {
   );
 };
 
-export default TimeLine;
+export default Profile;

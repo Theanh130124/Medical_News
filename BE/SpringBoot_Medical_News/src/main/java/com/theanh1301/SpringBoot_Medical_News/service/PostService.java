@@ -12,11 +12,13 @@ import java.util.List;
 public interface PostService {
     PostResponse createPost(PostCreationRequest request);
     PostResponse updatePost(String postId ,PostUpdateRequest request);
+    Page<PostResponse> getPostsByUserId(String userId, Pageable pageable);
+
     void deletePost(String postId);
     PostResponse getPostReponseById(String id);
     Page<PostResponse> getAllPost(Pageable pageable);//Dung cho PreAuthorize
     void voteSurveyOption(String optionId, String userId);
-
+    boolean canAccessPost(Page<PostResponse> page, String currentUser);
     Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
     Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable);
 }
