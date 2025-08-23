@@ -5,6 +5,8 @@ import { Form, Button, Row, Col, Card, Badge, Image } from "react-bootstrap";
 import { X } from "react-bootstrap-icons";
 import { CreatePostProps } from "../../types/post";
 import { showCustomToast } from "../layout/MyToaster";
+import styles from "./Styles/create.module.css";
+
 
 const initialPost = {
   type: "NORMAL" as "NORMAL" | "SURVEY",
@@ -85,8 +87,8 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
   };
 
   return (
-    <Card className="mb-4">
-      <Card.Header>
+    <Card className={`mb-4 ${styles.createCard}`}>
+      <Card.Header className={styles.createHeader}>
         <div className="d-flex align-items-center">
           <Image
             src={user?.avatar}
@@ -112,6 +114,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
               onChange={(e) => setPost({ ...post, title: e.target.value })}
               placeholder="Tiêu đề..."
               required
+              className={styles.createInput}
             />
           </Form.Group>
 
@@ -124,6 +127,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
               onChange={(e) => setPost({ ...post, content: e.target.value })}
               placeholder="Bạn đang nghĩ gì?"
               required
+              className={styles.createTextarea}
             />
           </Form.Group>
 
@@ -134,6 +138,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
               onChange={(e) =>
                 setPost({ ...post, visibility: e.target.value as any })
               }
+              className={styles.createSelect}
             >
               <option value="PUBLIC">Công khai</option>
               <option value="FRIENDS_ONLY">Bạn bè</option>
@@ -221,7 +226,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             </Row>
           )}
 
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className={styles.createButton}>
             {loading ? "Đang đăng..." : "Đăng bài"}
           </Button>
         </Form>

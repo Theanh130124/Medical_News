@@ -28,7 +28,9 @@ export const endpoint = {
 
     //profile
     get_post_userId : (userId: string) => `posts/user/${userId}`,
-    
+    get_list_friends: (userId: string) => `/friends/${userId}`,
+
+
 } 
 
 //json -> có token
