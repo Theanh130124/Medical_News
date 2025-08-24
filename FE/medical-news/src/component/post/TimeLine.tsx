@@ -8,6 +8,7 @@ import styles from "./Styles/timeline.module.css";
 import { showCustomToast } from "../layout/MyToaster";
 import CreatePost from "./CreatePost";
 import { Post } from "../../types/post";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 const TimeLine = () => {
   const user = useContext(MyUserContext);
@@ -210,13 +211,13 @@ return (
                 {/* Nút hành động */}
                 <div className="mt-2 d-flex justify-content-end">
                   {canEditPost && (
-                    <Button size="sm" variant="outline-warning" className="me-2" onClick={() => setEditingPost(post)}>
-                      Sửa bài viết
+                    <Button size="sm" variant="warning" className="me-2" onClick={() => setEditingPost(post)}>
+                        <i className="bi bi-pencil-square"></i>
                     </Button>
                   )}
                   {canDeletePost && (
-                    <Button size="sm" variant="outline-danger" onClick={() => handleDeletePost(post.id)}>
-                      Xóa bài viết
+                    <Button size="sm" variant="danger" onClick={() => handleDeletePost(post.id)}>
+                      <i className="bi bi-trash"></i>
                     </Button>
                   )}
                 </div>
@@ -272,8 +273,9 @@ return (
                 <div className="mt-3">
                   <strong>Bình luận:</strong>
                   {post.comments?.map((c: any, idx: number) => {
-                  const canEditComment = c.userId === user.id;
+                  const canEditComment = c.userResponse?.id === user.id;
                   const canDeleteComment = canEditComment || user.role === "ADMIN";
+
                   return (
                     <Card key={c.id ?? `comment-${post.id}-${idx}`} className="mt-2 p-2">
                       <div className="d-flex justify-content-between align-items-center">
@@ -294,20 +296,20 @@ return (
                           {canEditComment && (
                             <Button
                               size="sm"
-                              variant="outline-warning"
+                              variant="warning"
                               className="me-1"
                               onClick={() => setEditingComment({ id: c.id, content: c.content })}
                             >
-                              Sửa
+                              <i className="bi bi-pencil-square"></i>
                             </Button>
                           )}
                           {canDeleteComment && (
                             <Button
                               size="sm"
-                              variant="outline-danger"
+                              variant="danger"
                               onClick={() => handleDeleteComment(c.id)}
                             >
-                              Xóa
+                              <i className="bi bi-trash"></i>
                             </Button>
                           )}
                         </div>

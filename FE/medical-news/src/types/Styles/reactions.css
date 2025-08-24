@@ -1,0 +1,13 @@
+.reaction-icon {
+  width: 28px;      /* kích thước đồng bộ */
+  height: 28px;
+  object-fit: contain;  /* không méo hình */
+  cursor: pointer;
+  margin: 0 4px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.reaction-icon:hover {
+  transform: scale(1.3);
+  filter: brightness(1.2);
+}
