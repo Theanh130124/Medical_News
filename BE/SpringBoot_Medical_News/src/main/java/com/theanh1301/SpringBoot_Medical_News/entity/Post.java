@@ -80,7 +80,7 @@ public class Post {
     protected void onCreate() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
-        this.allowComments = false; // luôn mở cmt
+        this.allowComments = true; // luôn mở cmt
     }
 
     @PreUpdate
