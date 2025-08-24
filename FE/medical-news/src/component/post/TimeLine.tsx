@@ -51,12 +51,19 @@ const TimeLine = () => {
 
 
     const handleReaction = async (postId: string, type: string) => {
+        if (!user) return;
+
+
         try {
           const post = posts.find(p => p.id === postId);
           const existingReaction = post.reactions?.find((r: any) => r.userId === user.id);
 
           if (!existingReaction) {
-            await authApis().post(endpoint['create_reaction'], { postId, userId: user.id, type });
+              await authApis().post(endpoint["create_reaction"], {
+                postId,
+                userId: user.id,
+                type
+              });
             showCustomToast("Đã thả reaction!", "success");
           } else if (existingReaction.type === type) {
             await authApis().delete(endpoint.delete_reaction(existingReaction.id));
@@ -67,12 +74,14 @@ const TimeLine = () => {
           }
           setRefreshFlag(prev => prev + 1);
         } catch (error) {
-          console.error(error);
+          console.log(error);
           showCustomToast("Thao tác reaction thất bại!", "error");
         }
       };
 
   const handleCreateComment = async (postId: string) => {
+    if (!user) return;
+
     try {
       const content = commentContent[postId];
       if (!content) return;
@@ -87,6 +96,7 @@ const TimeLine = () => {
   };
 
   const handleUpdateComment = async (commentId: string, content: string) => {
+
     try {
       await authApis().put(endpoint.update_comment(commentId), { content });
       showCustomToast("Cập nhật bình luận thành công!", "success");
@@ -141,8 +151,8 @@ const TimeLine = () => {
           {/* Tạo bài viết mới */}
           <CreatePost onPostCreated={() => setRefreshFlag(prev => prev + 1)} />
 
-          {posts.map((post: any) => (
-            <Card className={`mb-4 ${styles.timelineCard}`} key={post.id}>
+          {posts.map((post: any, index: number) => (
+            <Card className={`mb-4 ${styles.timelineCard}`} key={post.id ?? `post-${index}`}>
               {post.imagePostResponses?.length > 0 && (
                 <Card.Img
                   variant="top"
