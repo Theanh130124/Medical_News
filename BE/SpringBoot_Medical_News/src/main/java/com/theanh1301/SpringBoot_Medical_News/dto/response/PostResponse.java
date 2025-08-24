@@ -18,6 +18,7 @@ import java.util.List;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class PostResponse {
 
+    String id;
     UserResponse userResponse; // tự map
     String title;
     String content;
