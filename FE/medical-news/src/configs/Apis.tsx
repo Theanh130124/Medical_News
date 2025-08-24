@@ -24,6 +24,7 @@ export const endpoint = {
 
     //Post
     'create_post': '/posts',
+    'update_post': (postId: string) => `/posts/${postId}`,
     get_posts_timeline: (currentUserId: string) => `/posts/visible?currentUserId=${currentUserId}`,
 
 
