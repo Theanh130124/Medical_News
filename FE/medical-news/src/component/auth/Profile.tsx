@@ -95,7 +95,6 @@ const Profile = () => {
               <Card.Body className="text-center">
                 <Image src={user.avatar} roundedCircle width={120} height={120} />
                 <h5 className="mt-3">{user.firstName} {user.lastName}</h5>
-                <p className="text-muted">@{user.username}</p>
               </Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item><strong>Email:</strong> {user.email}</ListGroup.Item>

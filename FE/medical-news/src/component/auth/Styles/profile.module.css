@@ -18,9 +18,6 @@
   transition: transform 0.2s;
 }
 
-.profileHeader:hover {
-  transform: translateY(-2px);
-}
 
 .profileAvatar {
   border-radius: 50%;
