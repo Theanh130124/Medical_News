@@ -1,4 +1,5 @@
 import axios from "axios"
+import { create } from "domain";
 import cookie from 'react-cookies';
 
 
@@ -31,6 +32,16 @@ export const endpoint = {
     get_list_friends: (userId: string) => `/friends/${userId}`,
 
 
+
+    //Comment
+    'create_comment':'/comments',
+    update_comment: (commentId: string) => `/comments/${commentId}`,
+    delete_comment: (commentId: string) => `/comments/${commentId}`,
+
+    //reaction
+    'create_reaction': '/reactions',
+    update_reaction: (reactionId: string) => `/reactions/${reactionId}`,
+    delete_reaction: (reactionId: string) => `/reactions/${reactionId}`,
 } 
 
 //json -> có token
