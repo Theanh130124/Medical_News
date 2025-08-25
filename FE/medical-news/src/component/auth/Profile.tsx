@@ -3,11 +3,12 @@ import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, authformdataApis, endpoint } from "../../configs/Apis";
 import { Card, Col, Container, Image, Row, Form, Button, Badge, ListGroup, InputGroup, Modal } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
-import { reactionIcons } from "../../types/reactionIcons";
 import styles from "./Styles/profile.module.css";
 import { showCustomToast } from "../layout/MyToaster";
 import CreatePost from "../post/CreatePost";
 import { Post } from "../../types/post";
+import Reaction from "../post/Reaction"
+import Comment from "../post/Comment";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
@@ -18,9 +19,7 @@ const Profile = () => {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [refreshFlag, setRefreshFlag] = useState(0);
-  const [commentContent, setCommentContent] = useState<{ [key: string]: string }>({});
   const [editingPost, setEditingPost] = useState<Post | null>(null);
-  const [editingComment, setEditingComment] = useState<{ id: string; content: string } | null>(null);
 
   // Fetch posts
   useEffect(() => {
@@ -83,65 +82,6 @@ const Profile = () => {
     }
   };
 
-  // Reaction
-  const handleReaction = async (postId: string, type: string) => {
-    if (!user) return;
-    try {
-      const post = posts.find(p => p.id === postId);
-      const existingReaction = post.reactions?.find((r: any) => r.userResponse?.id === user.id);
-
-      if (!existingReaction) {
-        await authApis().post(endpoint["create_reaction"], { postId, userId: user.id, type });
-      } else if (existingReaction.type === type) {
-        await authApis().delete(endpoint.delete_reaction(existingReaction.id));
-      } else {
-        await authApis().patch(endpoint.update_reaction(existingReaction.id), { type });
-      }
-      setRefreshFlag(prev => prev + 1);
-    } catch (error) {
-      console.log(error);
-      showCustomToast("Thao tác reaction thất bại!", "error");
-    }
-  };
-
-  // Comment
-  const handleCreateComment = async (postId: string) => {
-    if (!user) return;
-    try {
-      const content = commentContent[postId];
-      if (!content) return;
-      await authApis().post(endpoint['create_comment'], { postId, userId: user.id, content });
-      setCommentContent(prev => ({ ...prev, [postId]: "" }));
-      setRefreshFlag(prev => prev + 1);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Bình luận thất bại!", "error");
-    }
-  };
-
-  const handleUpdateComment = async (commentId: string, content: string) => {
-    try {
-      await authApis().patch(endpoint.update_comment(commentId), { content });
-      showCustomToast("Cập nhật bình luận thành công!", "success");
-      setRefreshFlag(prev => prev + 1);
-      setEditingComment(null);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Cập nhật bình luận thất bại!", "error");
-    }
-  };
-
-  const handleDeleteComment = async (commentId: string) => {
-    try {
-      await authApis().delete(endpoint.delete_comment(commentId));
-      showCustomToast("Xóa bình luận thành công!", "success");
-      setRefreshFlag(prev => prev + 1);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Xóa bình luận thất bại!", "error");
-    }
-  };
-
   // Post CRUD
   const handleUpdatePost = async (updatedPost: any) => {
     try {
@@ -169,6 +109,10 @@ const Profile = () => {
       console.error(error);
       showCustomToast("Xóa bài viết thất bại!", "error");
     }
+  };
+
+  const handleRefresh = () => {
+    setRefreshFlag(prev => prev + 1);
   };
 
   return (
@@ -212,7 +156,7 @@ const Profile = () => {
         {/* Posts */}
         <Col xs={12} md={8}>
           {loading && page === 0 && <MySpinner />}
-          <CreatePost onPostCreated={() => setRefreshFlag(prev => prev + 1)} />
+          <CreatePost onPostCreated={handleRefresh} />
           <div className={styles.profilePosts}>
             {posts.map((post: any) => {
               const canEditPost = post.userResponse?.id === user?.id;
@@ -268,84 +212,10 @@ const Profile = () => {
                     )}
 
                     {/* Reaction */}
-                    <div className="mt-2">
-                      {Object.entries(
-                        post.reactions?.reduce((acc: Record<string, number>, r: { type: string }) => {
-                          acc[r.type] = acc[r.type] ? acc[r.type] + 1 : 1;
-                          return acc;
-                        }, {} as Record<string, number>) || {}
-                      ).map(([type, count]) => {
-                        const icon = reactionIcons[type as keyof typeof reactionIcons] ?? null;
-                        return (
-                          <Badge key={`${post.id}-reaction-${type}`} bg="light" text="dark" className="me-2">
-                            {icon} {Number(count)}
-                          </Badge>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-2">
-                      {Object.keys(reactionIcons).map((type) => (
-                        <Button
-                          key={`${post.id}-btn-${type}`}
-                          size="sm"
-                          variant="outline-secondary"
-                          className="me-1"
-                          onClick={() => handleReaction(post.id, type)}
-                        >
-                          {reactionIcons[type as keyof typeof reactionIcons]}
-                        </Button>
-                      ))}
-                    </div>
+                    <Reaction post={post} onReactionUpdate={handleRefresh} />
 
                     {/* Comments */}
-                    <div className="mt-3">
-                      <strong>Bình luận:</strong>
-                      {post.comments?.map((c: any, index: number) => {
-                        const canEditComment = c.userResponse?.id === user?.id;
-                        const canDeleteComment = canEditComment || user?.role === "ADMIN";
-                        return (
-                          <Card key={c.id ?? `${post.id}-comment-${index}`} className="mt-2 p-2">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <div className="d-flex align-items-center">
-                                <Image src={c.userResponse.avatar} roundedCircle width={30} height={30} className="me-2" />
-                                <strong>{c.userResponse.firstName} {c.userResponse.lastName}</strong>
-                                <small className="ms-2 text-muted">
-                                  {c.createdAt ? new Date(c.createdAt).toLocaleString("vi-VN") : ""}
-                                </small>
-                              </div>
-                              <div>
-                                {canEditComment && (
-                                  <Button
-                                    size="sm"
-                                    variant="warning"
-                                    className="me-1"
-                                    onClick={() => setEditingComment({ id: c.id, content: c.content })}
-                                  >
-                                    <i className="bi bi-pencil-square"></i>
-                                  </Button>
-                                )}
-                                {canDeleteComment && (
-                                  <Button size="sm" variant="danger" onClick={() => handleDeleteComment(c.id)}>
-                                    <i className="bi bi-trash"></i>
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                            <div>{c.content}</div>
-                          </Card>
-                        );
-                      })}
-
-                      <InputGroup className="mt-2">
-                        <Form.Control
-                          placeholder={post.allowComments ? "Viết bình luận..." : "Bài viết này không cho phép bình luận"}
-                          value={commentContent[post.id] || ""}
-                          onChange={e => post.allowComments && setCommentContent(prev => ({ ...prev, [post.id]: e.target.value }))}
-                          disabled={!post.allowComments}
-                        />
-                        <Button variant="primary" onClick={() => handleCreateComment(post.id)} disabled={!post.allowComments}>Gửi</Button>
-                      </InputGroup>
-                    </div>
+                    <Comment post={post} onCommentUpdate={handleRefresh} />
                   </Card.Body>
                 </Card>
               );
@@ -383,20 +253,6 @@ const Profile = () => {
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setEditingPost(null)}>Hủy</Button>
           <Button variant="primary" onClick={() => handleUpdatePost(editingPost)}>Cập nhật</Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Modal update comment */}
-      <Modal show={!!editingComment} onHide={() => setEditingComment(null)}>
-        <Modal.Header closeButton><Modal.Title>Sửa bình luận</Modal.Title></Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Control as="textarea" value={editingComment?.content || ""} onChange={e => setEditingComment(prev => prev && { ...prev, content: e.target.value })} />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setEditingComment(null)}>Hủy</Button>
-          <Button variant="primary" onClick={() => editingComment && handleUpdateComment(editingComment.id, editingComment.content)}>Cập nhật</Button>
         </Modal.Footer>
       </Modal>
     </Container>
