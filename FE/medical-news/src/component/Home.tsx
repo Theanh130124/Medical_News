@@ -7,14 +7,14 @@ import Apis, { endpoint } from "../configs/Apis";
 import MySpinner from "./layout/MySpinner";
 
 const slideItems = [
-    { id: 1, title: "Đặt lịch khám", desc: "Nhanh chóng, dễ dàng mọi lúc mọi nơi" },
-    { id: 2, title: "Bác sĩ tư vấn", desc: "Tư vấn trực tuyến với bác sĩ giàu kinh nghiệm" },
-    { id: 3, title: "Đặt lịch xét nghiệm", desc: "Lên lịch xét nghiệm tận nơi linh hoạt" },
-    { id: 4, title: "Thanh toán viện phí", desc: "Thanh toán không tiền mặt tiện lợi" },
-    { id: 5, title: "Quản lý hồ sơ y tế", desc: "Lưu trữ và xem lại lịch sử khám chữa bệnh" },
-    { id: 6, title: "Theo dõi đơn thuốc", desc: "Xem và nhắc nhở uống thuốc đúng giờ" },
-    { id: 7, title: "Hỗ trợ y tế 24/7", desc: "Luôn có nhân viên hỗ trợ bất kể thời gian" },
-    { id: 8, title: "Tái khám dễ dàng", desc: "Đặt lịch tái khám chỉ trong vài bước" },
+  { id: 1, title: "Tin tức y tế nóng hổi", desc: "Cập nhật các thông tin y tế mới nhất hàng ngày" },
+  { id: 2, title: "Kiến thức sức khỏe", desc: "Mẹo chăm sóc sức khỏe và phòng bệnh tại nhà" },
+  { id: 3, title: "Cảnh báo dịch bệnh", desc: "Thông tin cảnh báo sớm về dịch bệnh và biện pháp phòng ngừa" },
+  { id: 4, title: "Bác sĩ chia sẻ", desc: "Tư vấn trực tuyến từ các bác sĩ chuyên khoa uy tín" },
+  { id: 5, title: "Hướng dẫn điều trị", desc: "Thông tin về phương pháp điều trị và chăm sóc bệnh nhân" },
+  { id: 6, title: "Tin tức bệnh viện", desc: "Cập nhật hoạt động, chương trình và thông báo từ bệnh viện" },
+  { id: 7, title: "Sức khỏe cộng đồng", desc: "Các chiến dịch, sự kiện và thông tin y tế cộng đồng" },
+  { id: 8, title: "Mẹo sống khỏe", desc: "Lời khuyên, thói quen tốt và chế độ dinh dưỡng hàng ngày" }
 ];
 
 

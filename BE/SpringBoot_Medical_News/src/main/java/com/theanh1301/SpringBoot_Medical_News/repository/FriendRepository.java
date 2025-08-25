@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface FriendRepository extends JpaRepository<Friend,String> {
+public interface FriendRepository extends JpaRepository<Friend,FriendId> {
 
     boolean existsById(FriendId friendId);
     Optional<Friend> findById(FriendId friendId);

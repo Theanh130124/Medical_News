@@ -85,10 +85,19 @@ public class ApiPostController {
 
     }
 
+
+
     @PostMapping("/survey/vote/{optionId}")
     public ApiResponse<Void> voteSurvey(@PathVariable String optionId, @RequestParam String userId) {
         postService.voteSurveyOption(optionId, userId);
         return ApiResponse.<Void>builder().message("Bình chọn thành công").build();
+    }
+
+
+    @DeleteMapping("/survey/vote/{optionId}")
+    public ApiResponse<Void> deleteVote(@PathVariable String optionId, @RequestParam String userId) {
+        postService.deleteSurveyVote(optionId, userId);
+        return ApiResponse.<Void>builder().message("Hủy bỏ bình chọn thành công").build();
     }
 
 //Khi gọi sẽ thấy public , friend và của chính mình

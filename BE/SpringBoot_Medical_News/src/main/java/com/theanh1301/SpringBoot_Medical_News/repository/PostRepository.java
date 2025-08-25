@@ -18,7 +18,7 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> getAllPost(Pageable pageable);
 
     @Query("""
-        SELECT p 
+        SELECT p
         FROM Post p
         WHERE p.user.id = :userId
         ORDER BY p.createdAt DESC
