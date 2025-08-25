@@ -13,7 +13,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentResponse {
 
-
+     String id;
      String content;
      UserResponse userResponse;
      PostResponse postResponse; //maptruct map từ post qua postResponse đc

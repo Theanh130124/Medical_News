@@ -13,7 +13,7 @@ import java.time.Instant;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class ReactionResponse {
 
-
+    String id;
     UserResponse userResponse;
     PostResponse postResponse;
     TypeReaction type;

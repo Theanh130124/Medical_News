@@ -19,6 +19,7 @@ public interface CommentMapper {
     @Mapping(target ="user" , ignore = true)
     Comment toComment(CommentCreationRequest request);
 
+    @Mapping(target="id", expression = "java(comment.getId().toString())")
     @Mapping(target = "userResponse" , source = "user")
     @Mapping(target = "postResponse" , source = "post")
     CommentResponse toCommentResponse(Comment comment);

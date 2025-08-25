@@ -61,7 +61,7 @@ const TimeLine = () => {
         if (!user) return;
         try {
           const post = posts.find(p => p.id === postId);
-          const existingReaction = post.reactions?.find((r: any) => r.userId === user.id);
+          const existingReaction = post.reactions?.find((r: any) => r.userResponse?.id === user.id);
 
           if (!existingReaction) {
               await authApis().post(endpoint["create_reaction"], {
@@ -72,7 +72,7 @@ const TimeLine = () => {
           } else if (existingReaction.type === type) {
             await authApis().delete(endpoint.delete_reaction(existingReaction.id));
           } else {
-            await authApis().put(endpoint.update_reaction(existingReaction.id), { type });
+            await authApis().patch(endpoint.update_reaction(existingReaction.id), { type });
           }
           setRefreshFlag(prev => prev + 1);
         } catch (error) {
@@ -129,9 +129,11 @@ const handleUpdatePost = async (updatedPost: any) => {
   const handleUpdateComment = async (commentId: string, content: string) => {
 
     try {
-      await authApis().put(endpoint.update_comment(commentId), { content });
+      await authApis().patch(endpoint.update_comment(commentId), { content });
       showCustomToast("Cập nhật bình luận thành công!", "success");
       setRefreshFlag(prev => prev + 1);
+      //Đóng modal khi xong 
+      setEditingComment(null);
     } catch (error) {
       console.error(error);
       showCustomToast("Cập nhật bình luận thất bại!", "error");
@@ -182,8 +184,8 @@ return (
         <CreatePost onPostCreated={() => setRefreshFlag(prev => prev + 1)} />
 
         {posts.map((post: any, index: number) => {
-          const canEditPost = post.userResponse.id === user.id;
-          const canDeletePost = canEditPost || user.role === "ADMIN";
+          const canEditPost = post.userResponse?.id === user?.id;
+          const canDeletePost = canEditPost || user?.role === "ADMIN";
           return (
             <Card className={`mb-4 ${styles.timelineCard}`} key={post.id ?? `post-${index}`}>
               {post.imagePostResponses?.length > 0 && (
