@@ -21,4 +21,5 @@ public interface PostService {
     boolean canAccessPost(Page<PostResponse> page, String currentUser);
     Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
     Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable);
+    void deleteSurveyVote(String optionId, String userId);
 }

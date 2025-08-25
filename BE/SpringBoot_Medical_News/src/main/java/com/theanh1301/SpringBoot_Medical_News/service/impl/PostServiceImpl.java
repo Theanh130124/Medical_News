@@ -9,10 +9,7 @@ import com.theanh1301.SpringBoot_Medical_News.entity.*;
 import com.theanh1301.SpringBoot_Medical_News.enums.TypePost;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
 import com.theanh1301.SpringBoot_Medical_News.exception.ErrorCode;
-import com.theanh1301.SpringBoot_Medical_News.mapper.CommentMapper;
-import com.theanh1301.SpringBoot_Medical_News.mapper.ImagePostMapper;
-import com.theanh1301.SpringBoot_Medical_News.mapper.PostMapper;
-import com.theanh1301.SpringBoot_Medical_News.mapper.ReactionMapper;
+import com.theanh1301.SpringBoot_Medical_News.mapper.*;
 import com.theanh1301.SpringBoot_Medical_News.repository.*;
 import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import lombok.AccessLevel;
@@ -50,7 +47,7 @@ public class PostServiceImpl implements PostService {
     ReactionRepository reactionRepository;
     CommentMapper commentMapper;
     ReactionMapper reactionMapper;
-
+    UserMapper userMapper;
     private List<ImagePost> mapMultipartFilesToImagePosts(List<MultipartFile> files, Post post) {
         if (files == null || files.isEmpty()) return null;
 
@@ -158,7 +155,7 @@ public class PostServiceImpl implements PostService {
                 List<SurveyOption> options = surveyOptionRepository.findByPost(post);
                 res.setSurveyOptions(options.stream().map(opt -> {
                     long voteCount = surveyVoteRepository.countByOption(opt);
-                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount,null);
                 }).toList());
             }
             return res;
@@ -201,10 +198,17 @@ public class PostServiceImpl implements PostService {
                 List<SurveyOption> options = surveyOptionRepository.findByPost(post);
                 res.setSurveyOptions(options.stream().map(opt -> {
                     long voteCount = surveyVoteRepository.countByOption(opt);
-                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+
+                    // LẤY DANH SÁCH NGƯỜI BÌNH CHỌN - ĐÂY LÀ PHẦN QUAN TRỌNG
+                    List<UserResponse> userResponses = surveyVoteRepository.findByOption(opt)
+                            .stream()
+                            .map(SurveyVote::getUser)
+                            .map(userMapper::toUserResponse)
+                            .collect(Collectors.toList());
+
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount, userResponses);
                 }).toList());
             }
-
 
             List<CommentResponse> commentList = commentRepository.getCommentByPost(post)
                     .stream().map(commentMapper::toCommentResponse).toList();
@@ -237,7 +241,7 @@ public class PostServiceImpl implements PostService {
                 List<SurveyOption> options = surveyOptionRepository.findByPost(post);
                 res.setSurveyOptions(options.stream().map(opt -> {
                     long voteCount = surveyVoteRepository.countByOption(opt);
-                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount,null);
                 }).toList());
             }
 
@@ -260,4 +264,14 @@ public class PostServiceImpl implements PostService {
     public boolean canAccessPost(Page<PostResponse> page, String currentUser) {
         return page.stream().allMatch(post -> post.getUserResponse().getUsername().equals(currentUser));
     }
+
+    @Override
+    public void deleteSurveyVote(String optionId, String userId) {
+        SurveyVote vote = surveyVoteRepository.findByUserIdAndOptionId(userId, optionId)
+                .orElseThrow(() -> new AppException(ErrorCode.VOTE_NOT_FOUND));
+        surveyVoteRepository.delete(vote);
+    }
+
+
+
 }

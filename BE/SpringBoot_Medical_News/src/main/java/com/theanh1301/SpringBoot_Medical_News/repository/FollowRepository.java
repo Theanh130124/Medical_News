@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface FollowRepository extends JpaRepository<Follow,String> {
+public interface FollowRepository extends JpaRepository<Follow,FollowId> {
     boolean existsById(FollowId followId);
     void deleteById(FollowId followId);
 

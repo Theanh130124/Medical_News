@@ -34,6 +34,11 @@ export const endpoint = {
 
 
 
+    //vote
+    'vote_survey': (postId: string, userId: string) => `/posts/survey/vote/${postId}?userId=${userId}`,
+
+
+
     //Comment
     'create_comment':'/comments',
     update_comment: (commentId: string) => `/comments/${commentId}`,

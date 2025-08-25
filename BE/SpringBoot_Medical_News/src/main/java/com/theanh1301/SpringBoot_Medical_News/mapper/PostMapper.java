@@ -43,6 +43,7 @@ public interface PostMapper {
                                 o.getId(),
                                 o.getOptionText(),
                                 0
+                                ,null
                         ))
                         .toList();
     }

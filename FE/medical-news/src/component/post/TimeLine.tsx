@@ -1,7 +1,7 @@
 import { JSX, useContext, useEffect, useState } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, authformdataApis, endpoint } from "../../configs/Apis";
-import { Card, Col, Container, Image, Row, Form, Button, Badge, InputGroup, Modal } from "react-bootstrap";
+import { Card, Col, Container, Image, Row, Form, Button, Badge, InputGroup, Modal, ProgressBar } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
 import styles from "./Styles/timeline.module.css";
 import { showCustomToast } from "../layout/MyToaster";
@@ -14,7 +14,6 @@ const TimeLine = () => {
   const user = useContext(MyUserContext);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<{ [key: string]: string }>({});
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [refreshFlag, setRefreshFlag] = useState(0);
@@ -54,23 +53,61 @@ const TimeLine = () => {
     setPage(0);
   }, [user]);
 
+  // Hàm kiểm tra xem người dùng hiện tại đã bình chọn option nào chưa
+  const getUserVotedOptions = (surveyOptions: any[]) => {
+    if (!user) return [];
+    
+    const votedOptions = [];
+    for (const option of surveyOptions) {
+      if (option.userResponses && option.userResponses.some((u: any) => u.id === user.id)) {
+        votedOptions.push(option.id);
+      }
+    }
+    return votedOptions;
+  };
+
   const loadMore = () => {
     if (hasMore && !loading) {
       setPage((prev) => prev + 1);
     }
   };
 
-  const handleVote = async (postId: string) => {
+  const handleVote = async (postId: string, optionId: string) => {
     try {
-      const optionId = selectedOption[postId];
-      if (!optionId) return alert("Vui lòng chọn một lựa chọn để bình chọn!");
-      await authApis().post(`/posts/survey/vote/${optionId}?userId=${user.id}`);
-      showCustomToast("Bình chọn thành công!", "success");
-      setPage(0);
+      // Kiểm tra xem người dùng đã bình chọn option này chưa
+      const post = posts.find(p => p.id === postId);
+      if (!post || !user) return;
+      
+      const option = post.surveyOptions.find((o: any) => o.id === optionId);
+      const hasVoted = option.userResponses.some((u: any) => u.id === user.id);
+      
+      if (hasVoted) {
+        // Nếu đã bình chọn thì xóa bình chọn
+        await authApis().delete(endpoint.vote_survey(optionId, user.id));
+        showCustomToast("Đã xóa bình chọn!", "success");
+      } else {
+        // Nếu chưa bình chọn thì thêm bình chọn
+        await authApis().post(endpoint.vote_survey(optionId, user.id));
+        showCustomToast("Đã bình chọn!", "success");
+      }
+      
+      // Cập nhật UI ngay lập tức bằng cách refresh dữ liệu
+      setRefreshFlag(prev => prev + 1);
     } catch (error) {
       console.error(error);
-      showCustomToast("Bình chọn thất bại!", "error");
+      showCustomToast("Thao tác thất bại!", "error");
     }
+  };
+
+  // Hàm tính tổng số vote của một survey
+  const getTotalVotes = (surveyOptions: any[]) => {
+    return surveyOptions.reduce((total, option) => total + option.voteCount, 0);
+  };
+
+  // Hàm tính phần trăm vote
+  const calculatePercentage = (voteCount: number, totalVotes: number) => {
+    if (totalVotes === 0) return 0;
+    return (voteCount / totalVotes) * 100;
   };
 
   const handleUpdatePost = async (updatedPost: any) => {
@@ -115,6 +152,9 @@ const TimeLine = () => {
           {posts.map((post: any, index: number) => {
             const canEditPost = post.userResponse?.id === user?.id;
             const canDeletePost = canEditPost || user?.role === "ADMIN";
+            const totalVotes = post.type === "SURVEY" ? getTotalVotes(post.surveyOptions) : 0;
+            const userVotedOptions = post.type === "SURVEY" ? getUserVotedOptions(post.surveyOptions) : [];
+            
             return (
               <Card className={`mb-4 ${styles.timelineCard}`} key={post.id ?? `post-${index}`}>
                 {post.imagePostResponses?.length > 0 && (
@@ -155,21 +195,42 @@ const TimeLine = () => {
 
                   {/* Survey */}
                   {post.type === "SURVEY" && post.surveyOptions && (
-                    <Form className={styles.surveyForm}>
-                      {post.surveyOptions.map((option: any, idx: number) => (
-                        <Form.Check
-                          key={option.id ?? `option-${post.id}-${idx}`}
-                          type="radio"
-                          label={`${option.optionText} (${option.voteCount} votes)`}
-                          name={`survey-${post.id}`}
-                          checked={selectedOption[post.id] === option.id}
-                          onChange={() => setSelectedOption(prev => ({ ...prev, [post.id]: option.id }))}
-                        />
-                      ))}
-                      <Button variant="primary" size="sm" className="mt-2" onClick={() => handleVote(post.id)}>
-                        Bình chọn
-                      </Button>
-                    </Form>
+                    <div className={styles.surveyForm}>
+                      {post.surveyOptions.map((option: any, idx: number) => {
+                        const percentage = calculatePercentage(option.voteCount, totalVotes);
+                        const isUserVoted = userVotedOptions.includes(option.id);
+                        
+                        return (
+                          <div key={option.id ?? `option-${post.id}-${idx}`} className="mb-2">
+                            <Form.Check
+                              type="checkbox"
+                              label={option.optionText}
+                              name={`survey-${post.id}`}
+                              checked={isUserVoted}
+                              onChange={() => handleVote(post.id, option.id)}
+                              disabled={!user} // Vô hiệu hóa nếu chưa đăng nhập
+                            />
+                            <div className="d-flex align-items-center mt-1">
+                              <ProgressBar 
+                                now={percentage} 
+                                className="flex-grow-1 me-2" 
+                                style={{ height: '8px' }}
+                                label={`${percentage.toFixed(1)}%`}
+                              />
+                              <small className="text-muted">
+                                {option.voteCount} vote{option.voteCount !== 1 ? 's' : ''}
+                              </small>
+                            </div>
+                            {isUserVoted && (
+                              <Badge bg="info" className="mt-1">Bạn đã chọn</Badge>
+                            )}
+                          </div>
+                        );
+                      })}
+                      <div className="mt-1 text-muted">
+                        <small>Tổng số vote: {totalVotes}</small>
+                      </div>
+                    </div>
                   )}
 
                   {/* Reaction */}
