@@ -19,6 +19,7 @@ public interface ReactionMapper {
     @Mapping(target= "post" , ignore = true)
     Reaction toReaction(ReactionCreationRequest request);
 
+    @Mapping(target="id", expression = "java(reaction.getId().toString())")
     @Mapping(target="userResponse" , source = "user")
     @Mapping(target="postResponse", source = "post")
     ReactionResponse toReactionResponse(Reaction reaction);
