@@ -26,6 +26,7 @@ public class ApiFriendController {
     FriendService friendService;
     PaginationProperties paginationProperties;
 
+    //Người first gửi người second
     @PostAuthorize("returnObject.result.firstUserId.username == authentication.name")
     @PostMapping
     public ApiResponse<FriendResponse> sendRequest(@RequestBody FriendCreationRequest request){
@@ -33,7 +34,8 @@ public class ApiFriendController {
         return ApiResponse.<FriendResponse>builder().result(res).message("Gửi lời mời kết bạn thành công").build();
     }
 
-    @PostAuthorize("returnObject.result.firstUserId.username == authentication.name")
+    //ng second chấp nhận
+    @PostAuthorize("returnObject.result.secondUserId.username == authentication.name")
     @PatchMapping("/{firstUserId}/{secondUserId}")
     public ApiResponse<FriendResponse> updateStatus(@RequestBody FriendUpdateRequest request,
                                                     @PathVariable String firstUserId,
@@ -42,6 +44,7 @@ public class ApiFriendController {
         return ApiResponse.<FriendResponse>builder().result(res).message("Cập nhật trạng thái thành công").build();
     }
 
+    //Người first hoặc second có thể hủy
     @PreAuthorize(
             "@friendServiceImpl.getFriendResponseById(#firstUserId, #secondUserId).firstUserId.username == authentication.name" +
                     " or " +
@@ -54,7 +57,7 @@ public class ApiFriendController {
         return ApiResponse.<Void>builder().message("Đã xóa kết bạn thành công").build();
     }
 
-    @PostAuthorize("@friendServiceImpl.canAccessFriend(returnObject.result,authentication.name)")
+    @PostAuthorize("@friendServiceImpl.canAccessListFriend(returnObject.result,authentication.name)")
     @GetMapping("/{userId}")
     public ApiResponse<Page<FriendResponse>> getFriends(@PathVariable String userId,
                                                         @RequestParam(required = false) Integer size,
@@ -66,6 +69,7 @@ public class ApiFriendController {
                 .build();
     }
 
+    //Xem là dùng của secondUser
     @PostAuthorize("@friendServiceImpl.canAccessFriend(returnObject.result,authentication.name)")
     @GetMapping("/pending/{userId}")
     public ApiResponse<Page<FriendResponse>> getPendingRequests(@PathVariable String userId,

@@ -51,9 +51,9 @@ export const endpoint = {
     delete_reaction: (reactionId: string) => `/reactions/${reactionId}`,
 
       // Friend requests
-    // 'friend_pending': (userId) => `/friends/pending/${userId}`,
-    // 'accept_friend': (friendId) => `/friends/${friendId}`,
-    // 'reject_friend': (friendId) => `/friends/${friendId}`,
+    'friend_pending': (userId:string) => `/friends/pending/${userId}`,
+    'accept_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
+    'reject_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
 } 
 
 //json -> có token

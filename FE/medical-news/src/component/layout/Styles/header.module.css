@@ -203,3 +203,18 @@
     font-size: 1.5rem;
   }
 }
+
+
+.notificationBell {
+  position: relative;
+  font-size: 1.25rem;
+  margin-right: 1rem;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.6rem;
+  padding: 0.25em 0.4em;
+}
