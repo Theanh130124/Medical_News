@@ -10,6 +10,7 @@ import { Post } from "../../types/post";
 import Reaction from "../post/Reaction";
 import Comment from "../post/Comment";
 import SurveyVote from "./SurveyVote";
+import { handleApiError } from "../../utils/errorHandler";
 
 const TimeLine = () => {
   const user = useContext(MyUserContext);
@@ -73,7 +74,7 @@ const TimeLine = () => {
       setRefreshFlag(prev => prev + 1);
     } catch (error) {
       console.error(error);
-      showCustomToast("Cập nhật bài viết thất bại!", "error");
+      handleApiError(error, "Cập nhật bài viết thất bại!");
     }
   };
 
@@ -84,7 +85,7 @@ const TimeLine = () => {
       setRefreshFlag(prev => prev + 1);
     } catch (error) {
       console.error(error);
-      showCustomToast("Xóa bài viết thất bại!", "error");
+      handleApiError(error, "Xóa bài viết thất bại!");
     }
   };
 

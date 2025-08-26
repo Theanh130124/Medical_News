@@ -4,6 +4,7 @@ import { authApis, endpoint } from "../../configs/Apis";
 import { Form, Badge, ProgressBar } from "react-bootstrap";
 import { showCustomToast } from "../layout/MyToaster";
 import { SurveyOption, SurveyVoteProps } from "../../types/survey";
+import { handleApiError } from "../../utils/errorHandler";
 
 
 
@@ -52,7 +53,7 @@ const SurveyVote = ({ post, onVoteUpdate }: SurveyVoteProps) => {
       onVoteUpdate();
     } catch (error) {
       console.error(error);
-      showCustomToast("Thao tác thất bại!", "error");
+      handleApiError(error, "Bình chọn thất bại!");
     }
   };
 

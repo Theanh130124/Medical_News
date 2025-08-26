@@ -4,6 +4,7 @@ import { showCustomToast } from "../layout/MyToaster";
 import { authApis, endpoint } from "../../configs/Apis";
 import { useContext } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
+import { handleApiError } from "../../utils/errorHandler";
 
 interface ReactionProps {
   post: any;  // của post nào
@@ -28,7 +29,7 @@ const Reaction = ({ post, onReactionUpdate }: ReactionProps) => {
       onReactionUpdate();
     } catch (error) {
       console.log(error);
-      showCustomToast("Thao tác reaction thất bại!", "error");
+      handleApiError(error, "Thao tác reaction thất bại!");
     }
   };
 

@@ -7,6 +7,7 @@ import { MyDipatcherContext } from "../../configs/MyContexts";
 import {  Button, Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
 import styles from "./Styles/login.module.css";
+import { handleApiError } from "../../utils/errorHandler";
 
 
 
@@ -77,7 +78,7 @@ const Login = () => {
 
         }catch (ex: any) {
         if (ex.response && ex.response.data) {
-            showCustomToast(ex.response.data.message || "Có lỗi xảy ra!","error");
+            handleApiError(ex, "Đăng nhập thất bại");
             return;
         } else {
             showCustomToast("Không thể kết nối đến server!","error");

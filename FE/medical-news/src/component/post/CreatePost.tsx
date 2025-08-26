@@ -6,6 +6,7 @@ import { X } from "react-bootstrap-icons";
 import { CreatePostProps } from "../../types/post";
 import { showCustomToast } from "../layout/MyToaster";
 import styles from "./Styles/create.module.css";
+import { handleApiError } from "../../utils/errorHandler";
 
 
 const initialPost = {
@@ -87,7 +88,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
       showCustomToast("Tạo bài viết thành công!", "success");
     } catch (err) {
       console.error(err);
-      showCustomToast("Tạo bài viết viết thất bại", "error");
+      handleApiError(err, "Tạo bài viết thất bại!");
     } finally {
       setLoading(false);
     }

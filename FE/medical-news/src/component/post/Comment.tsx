@@ -3,6 +3,7 @@ import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, endpoint } from "../../configs/Apis";
 import { Card, Image, Button, InputGroup, Form, Modal } from "react-bootstrap";
 import { showCustomToast } from "../layout/MyToaster";
+import { handleApiError } from "../../utils/errorHandler";
 
 interface CommentProps {
   post: any;
@@ -25,9 +26,9 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       });
       setCommentContent("");
       onCommentUpdate();
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Bình luận thất bại!", "error");
+    } catch (ex) {
+      console.error(ex);
+       handleApiError(ex, "Bình luận thất bại!");
     }
   };
 
@@ -37,9 +38,9 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       showCustomToast("Cập nhật bình luận thành công!", "success");
       onCommentUpdate();
       setEditingComment(null);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Cập nhật bình luận thất bại!", "error");
+    } catch (ex) {
+      console.error(ex);
+      handleApiError(ex, "Cập nhât bình luận thất bại!");
     }
   };
 
@@ -48,9 +49,9 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       await authApis().delete(endpoint.delete_comment(commentId));
       showCustomToast("Xóa bình luận thành công!", "success");
       onCommentUpdate();
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Xóa bình luận thất bại!", "error");
+    } catch (ex) {
+      console.error(ex);
+       handleApiError(ex, "Xóa bình luận thất bại!");
     }
   };
 

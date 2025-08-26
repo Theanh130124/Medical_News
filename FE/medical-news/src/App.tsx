@@ -14,6 +14,7 @@ import MyToaster from './component/layout/MyToaster';
 import UploadCertification from './component/auth/UploadCertification';
 import TimeLine from './component/post/TimeLine';
 import Profile from './component/auth/Profile';
+import ProtectedRoute from './component/wrapper/ProtectedRoute';
 
 
 
@@ -39,9 +40,17 @@ const App = () => {
           <Route path='/' element={<Home/>} />
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
-          <Route path='/uploadCertification' element ={<UploadCertification/>} />
-          <Route path='/timeline'  element ={<TimeLine/>}/>
-          <Route path='/profile'  element ={<Profile/>}/>
+          <Route path='/uploadCertification' element={
+            <ProtectedRoute><UploadCertification/></ProtectedRoute>
+          } />
+
+          <Route path='/timeline' element={
+            <ProtectedRoute><TimeLine/></ProtectedRoute>
+          } />
+
+          <Route path='/profile' element={
+            <ProtectedRoute><Profile/></ProtectedRoute>
+          } />
 
         </Routes>
 

@@ -10,6 +10,7 @@ import { Post } from "../../types/post";
 import Reaction from "../post/Reaction"
 import Comment from "../post/Comment";
 import SurveyVote from "../post/SurveyVote";
+import { handleApiError } from "../../utils/errorHandler";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
@@ -80,9 +81,8 @@ const Profile = () => {
       setEditingPost(null);
       setPage(0);
       setRefreshFlag(prev => prev + 1);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Cập nhật bài viết thất bại!", "error");
+    } catch (ex:any) {
+      handleApiError(ex, "Cập nhật bài viết thất bại!");
     }
   };
 
@@ -91,9 +91,9 @@ const Profile = () => {
       await authApis().delete(endpoint.update_post(postId));
       showCustomToast("Xóa bài viết thành công!", "success");
       setRefreshFlag(prev => prev + 1);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Xóa bài viết thất bại!", "error");
+    } catch (ex:any) {
+      console.error(ex);
+       handleApiError(ex, "Xóa bài viết thất bại!");
     }
   };
 
@@ -127,7 +127,9 @@ const Profile = () => {
               <h6>Bạn bè ({friends.length})</h6>
               {friends.length === 0 && <p className="text-muted">Chưa có bạn bè</p>}
               {friends.map((f: any) => {
+                if (!f.firstUserId || !f.secondUserId || !user) return null;
                 const friendUser = f.firstUserId.id === user.id ? f.secondUserId : f.firstUserId;
+                if (!friendUser) return null;
                 return (
                   <div key={friendUser.id} className="d-flex align-items-center mb-2">
                     <Image src={friendUser.avatar} roundedCircle width={40} height={40} />
