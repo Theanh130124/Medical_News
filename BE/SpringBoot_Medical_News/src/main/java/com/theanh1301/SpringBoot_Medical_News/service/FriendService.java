@@ -21,5 +21,6 @@ public interface FriendService {
     FriendResponse getFriendResponseById(String firstUserId, String secondUserId);
     boolean canAccessFriend(Page<FriendResponse> page, String currentUser);
     List<String> getFriendIds(String userId);
+    boolean canAccessListFriend(Page<FriendResponse> page, String currentUser);
 
 }

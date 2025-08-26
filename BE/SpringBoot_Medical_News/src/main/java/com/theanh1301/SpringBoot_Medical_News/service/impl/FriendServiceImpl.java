@@ -98,6 +98,11 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public boolean canAccessFriend(Page<FriendResponse> page, String currentUser) {
+        return page.stream().allMatch(friend -> friend.getSecondUserId().getUsername().equals(currentUser));
+    }
+
+    @Override
+    public boolean canAccessListFriend(Page<FriendResponse> page, String currentUser) {
         return page.stream().allMatch(friend -> friend.getFirstUserId().getUsername().equals(currentUser));
     }
 
