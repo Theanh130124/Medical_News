@@ -1,7 +1,7 @@
 import { JSX, useContext, useEffect, useState } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, authformdataApis, endpoint } from "../../configs/Apis";
-import { Card, Col, Container, Image, Row, Form, Button, Badge, ListGroup, InputGroup, Modal } from "react-bootstrap";
+import { Card, Col, Container, Image, Row, Form, Button, ListGroup, Modal } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
 import styles from "./Styles/profile.module.css";
 import { showCustomToast } from "../layout/MyToaster";
@@ -9,13 +9,13 @@ import CreatePost from "../post/CreatePost";
 import { Post } from "../../types/post";
 import Reaction from "../post/Reaction"
 import Comment from "../post/Comment";
+import SurveyVote from "../post/SurveyVote";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
   const [posts, setPosts] = useState<any[]>([]);
   const [friends, setFriends] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<{ [key: string]: string }>({});
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [refreshFlag, setRefreshFlag] = useState(0);
@@ -67,20 +67,6 @@ const Profile = () => {
     };
     fetchFriends();
   }, [user]);
-
-  // Vote survey
-  const handleVote = async (postId: string) => {
-    try {
-      const optionId = selectedOption[postId];
-      if (!optionId) return alert("Vui lòng chọn một lựa chọn để bình chọn!");
-      await authApis().post(`/posts/survey/vote/${optionId}?userId=${user.id}`);
-      showCustomToast("Bình chọn thành công!", "success");
-      setPage(0);
-    } catch (error) {
-      console.error(error);
-      showCustomToast("Bình chọn thất bại!", "error");
-    }
-  };
 
   // Post CRUD
   const handleUpdatePost = async (updatedPost: any) => {
@@ -184,32 +170,18 @@ const Profile = () => {
                     <div className="mt-2 d-flex justify-content-end">
                       {canEditPost && (
                         <Button size="sm" variant="warning" className="me-2" onClick={() => setEditingPost(post)}>
-                          <i className="bi bi-pencil-square"></i>
+                          <i className="bi bi-pencil-square"></i> Sửa bài viết
                         </Button>
                       )}
                       {canDeletePost && (
                         <Button size="sm" variant="danger" onClick={() => handleDeletePost(post.id)}>
-                          <i className="bi bi-trash"></i>
+                          <i className="bi bi-trash"></i> Xóa bài viết
                         </Button>
                       )}
                     </div>
 
                     {/* Survey */}
-                    {post.type === "SURVEY" && post.surveyOptions && (
-                      <Form>
-                        {post.surveyOptions.map((option: any) => (
-                          <Form.Check
-                            key={`${post.id}-${option.id}`}
-                            type="radio"
-                            label={`${option.optionText} (${option.voteCount} votes)`}
-                            name={`survey-${post.id}`}
-                            checked={selectedOption[post.id] === option.id}
-                            onChange={() => setSelectedOption(prev => ({ ...prev, [post.id]: option.id }))}
-                          />
-                        ))}
-                        <Button variant="primary" size="sm" className="mt-2" onClick={() => handleVote(post.id)}>Bình chọn</Button>
-                      </Form>
-                    )}
+                    <SurveyVote post={post} onVoteUpdate={handleRefresh} />
 
                     {/* Reaction */}
                     <Reaction post={post} onReactionUpdate={handleRefresh} />

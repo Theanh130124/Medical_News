@@ -67,13 +67,20 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
 
       post.images.forEach((img) => formData.append("imagePosts", img));
       if (post.type === "SURVEY") {
-        post.surveyOptions.forEach(
-          (opt, i) =>
-            opt.trim() &&
-            formData.append(`surveyOptions[${i}].optionText`, opt)
-        );
-      }
+            // Lọc bỏ các option trống trước khi gửi
+            const validOptions = post.surveyOptions.filter(opt => opt.trim() !== "");
+            
+            // Đảm bảo có ít nhất 2 lựa chọn
+            if (validOptions.length < 2) {
+              showCustomToast("Khảo sát cần ít nhất 2 lựa chọn!", "error");
+              setLoading(false);
+              return;
+            }
 
+          validOptions.forEach((option, index) => {
+          formData.append(`surveyOptions[${index}]`, option);
+        });
+      }
       await authformdataApis().post(endpoint['create_post'], formData);
       setPost(initialPost);
       onPostCreated?.();
