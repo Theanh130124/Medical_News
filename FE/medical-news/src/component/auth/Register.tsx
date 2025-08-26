@@ -7,6 +7,7 @@ import MySpinner from "../layout/MySpinner";
 import MyToaster, { showCustomToast } from "../layout/MyToaster";
 
 import styles from "./Styles/register.module.css";
+import { handleApiError } from "../../utils/errorHandler";
 
 
 
@@ -85,13 +86,7 @@ const Register = () => {
             }
         }
         catch (ex:any) {
-            console.error(ex);
-            //ex msg của be
-           const beMsg =
-                ex?.response?.data?.message ||
-                ex?.message ||
-                "Đã có lỗi xảy ra khi đăng ký";
-            showCustomToast(beMsg,"error");
+           handleApiError(ex, "Đăng ký thất bại!");
         } finally {
             setLoading(false);
         }

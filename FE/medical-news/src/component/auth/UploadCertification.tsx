@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import MyToaster, { showCustomToast } from "../layout/MyToaster";
 
 import styles from "./Styles/certifcation.module.css";
+import { handleApiError } from "../../utils/errorHandler";
 
 
 const UploadCertification = () => {
@@ -62,11 +63,7 @@ const UploadCertification = () => {
             showCustomToast(message, "error");
             }
         } catch (ex: any) {
-            const beMsg =
-                ex?.response?.data?.message ||
-                ex?.message ||
-                "Đã có lỗi xảy ra khi gửi chứng chỉ";
-            showCustomToast(beMsg,"error");
+             handleApiError(ex, "Gửi chứng chỉ hành nghề thất bại!");
             //   console.error("Chi tiết lỗi khi upload:", ex);  // In full object
             // console.error("Response:", ex.response);        // Nếu có response từ server
 

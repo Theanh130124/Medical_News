@@ -15,6 +15,7 @@ export const endpoint = {
 
     'register': '/users',
     'login': '/auth/login',
+    'logout':'/auth/logout',
     'current_user': '/users/secure/profile',
     'upload_certificate': '/certificate',
 
@@ -48,6 +49,11 @@ export const endpoint = {
     'create_reaction': '/reactions',
     update_reaction: (reactionId: string) => `/reactions/${reactionId}`,
     delete_reaction: (reactionId: string) => `/reactions/${reactionId}`,
+
+      // Friend requests
+    // 'friend_pending': (userId) => `/friends/pending/${userId}`,
+    // 'accept_friend': (friendId) => `/friends/${friendId}`,
+    // 'reject_friend': (friendId) => `/friends/${friendId}`,
 } 
 
 //json -> có token
