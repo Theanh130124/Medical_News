@@ -4,6 +4,7 @@ package com.theanh1301.SpringBoot_Medical_News.mapper;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.OtherUserResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import org.mapstruct.Mapper;
@@ -28,6 +29,9 @@ public interface UserMapper {
     //fields nào userResponse có thì map từ user vào
     @Mapping(target = "isActive", source = "isActive", defaultValue = "true")
     UserResponse toUserResponse(User user);
+
+    @Mapping(target = "isActive", source = "isActive", defaultValue = "true")
+    OtherUserResponse toOtherUserResponse(User user);
 
     User toUserforSearch(DoctorSearchRequest request);
 

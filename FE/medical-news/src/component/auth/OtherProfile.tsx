@@ -29,7 +29,7 @@ const OtherProfile = () => {
     
     const fetchProfileUser = async () => {
       try {
-        const res = await authApis().get(endpoint.get_user_by_id(userId));
+        const res = await authApis().get(endpoint.get_otheruser_by_id(userId));
         setProfileUser(res.data.result);
       } catch (error) {
         console.error("Lỗi lấy thông tin người dùng:", error);
@@ -383,7 +383,8 @@ const OtherProfile = () => {
                   <div 
                     className={styles.profileAuthorInfo}
                     style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/profile/${post.userResponse.id}`)}
+                    onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                  
                   >
                     <Image src={post.userResponse.avatar} className={styles.profileAuthorAvatar} />
                     <div className={styles.profileAuthorDetails}>

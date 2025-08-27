@@ -6,6 +6,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.OtherUserResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.Doctor;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
@@ -204,6 +205,13 @@ public class UserServiceImpl implements  UserService {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
     }
+
+    @Override
+    public OtherUserResponse getOtherUserById(String id) {
+        return userMapper.toOtherUserResponse(userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS) ));
+    }
+
     @Override
     public void deleteUserById(String id){
         userRepository.deleteById(id);

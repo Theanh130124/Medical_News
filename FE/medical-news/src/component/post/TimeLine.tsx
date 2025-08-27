@@ -119,7 +119,13 @@ const TimeLine = () => {
                   {/* Thông tin tác giả */}
                   <div className={styles.authorInfo}
                   style={{ cursor: 'pointer' }}
-                  onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                  onClick={() => {
+                    if (post.userResponse.id === user?.id) {
+                      navigate("/profile");
+                    } else {
+                      navigate(`/otherprofile/${post.userResponse.id}`);
+                    }
+                  }}
                   >
                     <Image src={post.userResponse.avatar} alt={post.userResponse.username} />
                     <div className={styles.authorDetails}>
