@@ -81,7 +81,7 @@ public class FriendServiceImpl implements FriendService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
-        return friendRepository.findAllByFirstUserAndStatus(user, FriendStatus.ACCEPTED , pageable)
+        return friendRepository.findAllByUserAndStatus(user, FriendStatus.ACCEPTED , pageable)
                 .map(friendMapper::toFriendResponse);
     }
 
@@ -103,7 +103,10 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public boolean canAccessListFriend(Page<FriendResponse> page, String currentUser) {
-        return page.stream().allMatch(friend -> friend.getFirstUserId().getUsername().equals(currentUser));
+        return page.stream().allMatch(friend ->
+                friend.getFirstUserId().getUsername().equals(currentUser) ||
+                        friend.getSecondUserId().getUsername().equals(currentUser)
+        );
     }
 
     @Override

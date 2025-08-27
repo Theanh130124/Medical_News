@@ -20,6 +20,10 @@ export const endpoint = {
     'upload_certificate': '/certificate',
 
 
+    //Chỉ current 
+    get_user_by_id: (userId:string) => `/users/${userId}`,
+
+
     'top_posts': '/posts/public/normal/doctor/top-reactions',
 
 
@@ -45,15 +49,22 @@ export const endpoint = {
     update_comment: (commentId: string) => `/comments/${commentId}`,
     delete_comment: (commentId: string) => `/comments/${commentId}`,
 
+
     //reaction
     'create_reaction': '/reactions',
     update_reaction: (reactionId: string) => `/reactions/${reactionId}`,
     delete_reaction: (reactionId: string) => `/reactions/${reactionId}`,
 
       // Friend requests
+    
+    'send_friend' :"/friends",
     'friend_pending': (userId:string) => `/friends/pending/${userId}`,
     'accept_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
     'reject_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
+
+    //Follow
+    'follow' : "/follows",
+    
 } 
 
 //json -> có token
