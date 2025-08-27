@@ -160,7 +160,13 @@ const Profile = () => {
                   <Card.Body className={styles.profileCardBody}>
                     <div className={styles.profileAuthorInfo}
                     style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                    onClick={() => {
+                      if (post.userResponse.id === user?.id) {
+                        navigate("/profile");
+                      } else {
+                        navigate(`/otherprofile/${post.userResponse.id}`);
+                      }
+                    }}
                     >
                       <Image src={post.userResponse.avatar} className={styles.profileAuthorAvatar} />
                       <div className={styles.profileAuthorDetails}>

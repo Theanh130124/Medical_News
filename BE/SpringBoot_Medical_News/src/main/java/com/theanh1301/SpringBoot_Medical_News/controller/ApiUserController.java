@@ -73,9 +73,20 @@ public class ApiUserController {
     }
 
     //Sau method run  -> returnObject -> là ApiResponse<UserResponse> nếu UserResponse thì  returnObject.username
-//    @PostAuthorize("returnObject.result.username == authentication.name") //Chỉ current_user
+    @PostAuthorize("returnObject.result.username == authentication.name") //Chỉ current_user -> này nó chi tiết
     @GetMapping("/{userId}")
     public ApiResponse<UserResponse> getUserById(@PathVariable(value = "userId") String id){
+
+
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(id))
+                .message("Lấy thông tin tài khoản thành công").build();
+    }
+
+
+    //Lấy otherUser -> Ai cũng nhìn đc
+    @GetMapping("/otherUser/{userId}")
+    public ApiResponse<UserResponse> getOtherUserById(@PathVariable(value = "userId") String id){
 
 
         return ApiResponse.<UserResponse>builder()

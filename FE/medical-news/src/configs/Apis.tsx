@@ -23,6 +23,8 @@ export const endpoint = {
     //Chỉ current 
     get_user_by_id: (userId:string) => `/users/${userId}`,
 
+    get_otheruser_by_id : (userId:string) => `/users/otherUser/${userId}`,
+
 
     'top_posts': '/posts/public/normal/doctor/top-reactions',
 

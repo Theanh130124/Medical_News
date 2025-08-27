@@ -3,6 +3,7 @@ package com.theanh1301.SpringBoot_Medical_News.service;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.OtherUserResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
@@ -20,6 +21,7 @@ public interface UserService extends UserDetailsService {
     User getUserByUsername(String username);
     Page<UserResponse> getAllUsers(Pageable pageable); //Page đã có List
     UserResponse getUserById(String id);
+    OtherUserResponse getOtherUserById(String id);
     void deleteUserById(String id);
     UserResponse getUserResponseByUsername(String username);
     Page<UserResponse> findAllUserIsActive(Pageable pageable);
@@ -29,4 +31,6 @@ public interface UserService extends UserDetailsService {
     Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable);
 
     UserUpdateRequest getUserUpdateRequestById(String id);
+
+
 }
