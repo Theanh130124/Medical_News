@@ -11,6 +11,7 @@ import Reaction from "../post/Reaction"
 import Comment from "../post/Comment";
 import SurveyVote from "../post/SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
@@ -21,6 +22,7 @@ const Profile = () => {
   const [hasMore, setHasMore] = useState(true);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const navigate = useNavigate();
 
   // Fetch posts
   useEffect(() => {
@@ -156,7 +158,10 @@ const Profile = () => {
                     <Card.Img variant="top" src={post.imagePostResponses[0].postImageUrl} className={styles.profileCardImg} />
                   )}
                   <Card.Body className={styles.profileCardBody}>
-                    <div className={styles.profileAuthorInfo}>
+                    <div className={styles.profileAuthorInfo}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                    >
                       <Image src={post.userResponse.avatar} className={styles.profileAuthorAvatar} />
                       <div className={styles.profileAuthorDetails}>
                         <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>

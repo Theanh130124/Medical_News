@@ -11,6 +11,7 @@ import Reaction from "../post/Reaction";
 import Comment from "../post/Comment";
 import SurveyVote from "./SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
+import { useNavigate } from "react-router-dom";
 
 const TimeLine = () => {
   const user = useContext(MyUserContext);
@@ -20,6 +21,7 @@ const TimeLine = () => {
   const [hasMore, setHasMore] = useState(true);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const navigate = useNavigate();
 
   // Fetch posts khi page hoặc user thay đổi
   useEffect(() => {
@@ -115,7 +117,10 @@ const TimeLine = () => {
                 )}
                 <Card.Body className={styles.timelineCardBody}>
                   {/* Thông tin tác giả */}
-                  <div className={styles.authorInfo}>
+                  <div className={styles.authorInfo}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                  >
                     <Image src={post.userResponse.avatar} alt={post.userResponse.username} />
                     <div className={styles.authorDetails}>
                       <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>

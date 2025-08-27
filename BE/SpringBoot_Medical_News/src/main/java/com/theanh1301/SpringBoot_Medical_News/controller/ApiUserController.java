@@ -73,7 +73,7 @@ public class ApiUserController {
     }
 
     //Sau method run  -> returnObject -> là ApiResponse<UserResponse> nếu UserResponse thì  returnObject.username
-    @PostAuthorize("returnObject.result.username == authentication.name") //Chỉ current_user
+//    @PostAuthorize("returnObject.result.username == authentication.name") //Chỉ current_user
     @GetMapping("/{userId}")
     public ApiResponse<UserResponse> getUserById(@PathVariable(value = "userId") String id){
 

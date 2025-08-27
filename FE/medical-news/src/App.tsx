@@ -15,6 +15,7 @@ import UploadCertification from './component/auth/UploadCertification';
 import TimeLine from './component/post/TimeLine';
 import Profile from './component/auth/Profile';
 import ProtectedRoute from './component/wrapper/ProtectedRoute';
+import OtherProfile from './component/auth/OtherProfile';
 
 
 
@@ -42,6 +43,10 @@ const App = () => {
           <Route path='/login' element ={<Login/>} />
           <Route path='/uploadCertification' element={
             <ProtectedRoute><UploadCertification/></ProtectedRoute>
+          } />
+
+            <Route path='/otherprofile/:userId' element={
+            <ProtectedRoute><OtherProfile/></ProtectedRoute>
           } />
 
           <Route path='/timeline' element={
