@@ -77,4 +77,17 @@ public class ApiFollowController {
 
     }
 
+    // Thêm endpoint kiểm tra trạng thái follow
+    @GetMapping("/check")
+    public ApiResponse<Boolean> checkFollowStatus(
+            @RequestParam String followerId,
+            @RequestParam String followingId) {
+
+        boolean isFollowing = followService.isFollowing(followerId, followingId);
+        return ApiResponse.<Boolean>builder()
+                .result(isFollowing)
+                .message("Kiểm tra trạng thái follow thành công")
+                .build();
+    }
+
 }
