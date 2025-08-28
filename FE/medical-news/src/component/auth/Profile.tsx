@@ -12,6 +12,7 @@ import Comment from "../post/Comment";
 import SurveyVote from "../post/SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
 import { useNavigate } from "react-router-dom";
+import PrivacyIcon from "../../utils/privacyIcon";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
@@ -173,7 +174,14 @@ const Profile = () => {
                       <div className={styles.profileAuthorDetails}>
                         <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
                         <br />
-                        <small>{new Date(post.createdAt).toLocaleString("vi-VN")}</small>
+                        <small>{new Date(post.createdAt).toLocaleString("vi-VN")}
+                            {/* SỬA Ở ĐÂY: thay privacyMode bằng visibility */}
+                            <PrivacyIcon
+                          privacyMode={post.visibility} 
+                          size="0.8rem" 
+                          className="ms-1" 
+                        />
+                        </small>
                       </div>
                     </div>
 
