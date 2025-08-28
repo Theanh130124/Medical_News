@@ -66,6 +66,7 @@ const Profile = () => {
         setFriends(res.data.result.content || []);
       } catch (error) {
         console.error("Lỗi lấy bạn bè:", error);
+        handleApiError(error);
       }
     };
     fetchFriends();

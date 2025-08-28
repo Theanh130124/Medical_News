@@ -14,7 +14,6 @@ const OtherProfile = () => {
   const navigate = useNavigate();
   const [profileUser, setProfileUser] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
-  const [friends, setFriends] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -116,22 +115,6 @@ const OtherProfile = () => {
   const loadMore = () => {
     if (hasMore && !loading) setPage((prev) => prev + 1);
   };
-
-  // Lấy bạn bè
-  useEffect(() => {
-    if (!profileUser) return;
-    
-    const fetchFriends = async () => {
-      try {
-        const res = await authApis().get(endpoint.get_list_friends(profileUser.id));
-        setFriends(res.data.result.content || []);
-      } catch (error) {
-        console.error("Lỗi lấy bạn bè:", error);
-      }
-    };
-    
-    fetchFriends();
-  }, [profileUser]);
 
   // Xử lý gửi lời mời kết bạn
   const handleSendFriendRequest = async () => {
@@ -342,30 +325,6 @@ const OtherProfile = () => {
               <ListGroup.Item><strong>Địa chỉ:</strong> {profileUser.address || "Chưa cập nhật"}</ListGroup.Item>
               <ListGroup.Item><strong>Ngày sinh:</strong> {profileUser.dateOfBirth || "Chưa cập nhật"}</ListGroup.Item>
             </ListGroup>
-          </Card>
-
-          {/* Friends */}
-          <Card className={`mt-4 ${styles.profileSidebar}`}>
-            <Card.Body>
-              <h6>Bạn bè ({friends.length})</h6>
-              {friends.length === 0 && <p className="text-muted">Chưa có bạn bè</p>}
-              {friends.map((f: any) => {
-                if (!f.firstUserId || !f.secondUserId || !profileUser) return null;
-                const friendUser = f.firstUserId.id === profileUser.id ? f.secondUserId : f.firstUserId;
-                if (!friendUser) return null;
-                return (
-                  <div 
-                    key={friendUser.id} 
-                    className="d-flex align-items-center mb-2"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/profile/${friendUser.id}`)}
-                  >
-                    <Image src={friendUser.avatar} roundedCircle width={40} height={40} />
-                    <span className="ms-2">{friendUser.firstName} {friendUser.lastName}</span>
-                  </div>
-                );
-              })}
-            </Card.Body>
           </Card>
         </Col>
 

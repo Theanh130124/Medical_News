@@ -88,4 +88,13 @@ public interface PostRepository extends JpaRepository<Post, String> {
     """)
     Page<Post> findPublicNormalDoctorPostsOrderByReactionCount(Pageable pageable);
 
+
+    @Query("""
+    SELECT p
+    FROM Post p
+    WHERE p.user.id = :userId
+    AND p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
+    ORDER BY p.createdAt DESC
+    """)
+    Page<Post> findPublicPostsByUserId(@Param("userId") String userId, Pageable pageable);
 }
