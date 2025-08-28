@@ -231,8 +231,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponse> getPostsByUserId(String userId, Pageable pageable) {
-        Page<Post> posts = postRepository.findPostsByUserId(userId, pageable);
+    public Page<PostResponse> getPostsByUserId(String userId, Pageable pageable, String currentUsername) {
+        User targetUser = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+        Page<Post> posts;
+
+        // Kiểm tra nếu currentUsername là null (chưa đăng nhập) hoặc không phải chính mình
+        if (currentUsername == null || !userId.equals(getUserIdFromUsername(currentUsername))) {
+            // Chỉ lấy bài viết PUBLIC
+            posts = postRepository.findPublicPostsByUserId(userId, pageable);
+        } else {
+            // Nếu là chính mình, lấy tất cả bài viết
+            posts = postRepository.findPostsByUserId(userId, pageable);
+        }
 
         return posts.map(post -> {
             PostResponse res = postMapper.toPostResponse(post);
@@ -241,11 +253,11 @@ public class PostServiceImpl implements PostService {
                 List<SurveyOption> options = surveyOptionRepository.findByPost(post);
                 res.setSurveyOptions(options.stream().map(opt -> {
                     long voteCount = surveyVoteRepository.countByOption(opt);
-                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount,null);
+                    return new SurveyOptionResponse(opt.getId(), opt.getOptionText(), voteCount, null);
                 }).toList());
             }
 
-            // Lấy comments + reactions nếu cần
+            // Lấy comments + reactions
             List<CommentResponse> commentList = commentRepository.getCommentByPost(post)
                     .stream().map(commentMapper::toCommentResponse).toList();
             res.setComments(commentList);
@@ -260,6 +272,13 @@ public class PostServiceImpl implements PostService {
         });
     }
 
+    // Helper method để lấy userId từ username
+    private String getUserIdFromUsername(String username) {
+        User user = userRepository.getUserByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return user.getId();
+    }
+
     @Override
     public boolean canAccessPost(Page<PostResponse> page, String currentUser) {
         return page.stream().allMatch(post -> post.getUserResponse().getUsername().equals(currentUser));
@@ -271,7 +290,6 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new AppException(ErrorCode.VOTE_NOT_FOUND));
         surveyVoteRepository.delete(vote);
     }
-
 
 
 }

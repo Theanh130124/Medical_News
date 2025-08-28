@@ -12,7 +12,7 @@ import java.util.List;
 public interface PostService {
     PostResponse createPost(PostCreationRequest request);
     PostResponse updatePost(String postId ,PostUpdateRequest request);
-    Page<PostResponse> getPostsByUserId(String userId, Pageable pageable);
+    Page<PostResponse> getPostsByUserId(String userId, Pageable pageable,String currentUserId);
 
     void deletePost(String postId);
     PostResponse getPostReponseById(String id);
@@ -22,4 +22,5 @@ public interface PostService {
     Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
     Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable);
     void deleteSurveyVote(String optionId, String userId);
+
 }

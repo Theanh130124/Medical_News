@@ -17,6 +17,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
@@ -61,14 +65,25 @@ public class ApiPostController {
 
     }
 
-    @PostAuthorize("@postServiceImpl.canAccessPost(returnObject.result,authentication.name)")
+//    @PostAuthorize("@postServiceImpl.canAccessPost(returnObject.result,authentication.name)")
     @GetMapping("/user/{userId}")
     public ApiResponse<Page<PostResponse>> getPostsByUserId(@PathVariable String userId,
                                                             @RequestParam(required = false) Integer size,
                                                             @RequestParam(required = false) Integer page) {
+
+        // Lấy current user từ SecurityContext (có thể null nếu chưa đăng nhập)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = null;
+
+        if (authentication != null && authentication.isAuthenticated() &&
+                !authentication.getName().equals("anonymousUser")) {
+            currentUsername = authentication.getName();
+        }
+    
         Pageable pageable = PaginationUtils.createPageable(page, size, paginationProperties);
+
         return ApiResponse.<Page<PostResponse>>builder()
-                .result(postService.getPostsByUserId(userId, pageable))
+                .result(postService.getPostsByUserId(userId, pageable, currentUsername))
                 .message("Lấy danh sách bài viết của user thành công")
                 .build();
     }
