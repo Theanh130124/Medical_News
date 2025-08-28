@@ -1,3 +1,4 @@
+// components/timeline/TimeLine.tsx
 import { JSX, useContext, useEffect, useState } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, authformdataApis, endpoint } from "../../configs/Apis";
@@ -12,8 +13,9 @@ import Comment from "../post/Comment";
 import SurveyVote from "./SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
 import { useNavigate } from "react-router-dom";
+import PrivacyIcon from "../../utils/privacyIcon"; // Import component mới
 
-const TimeLine = () => {
+const TimeLine = (): JSX.Element => {
   const user = useContext(MyUserContext);
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -129,8 +131,11 @@ const TimeLine = () => {
                   >
                     <Image src={post.userResponse.avatar} alt={post.userResponse.username} />
                     <div className={styles.authorDetails}>
-                      <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
-                      <br />
+                      <div className="d-flex align-items-center">
+                        <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
+                        {/* Sử dụng PrivacyIcon component */}
+                        <PrivacyIcon privacyMode={post.visibility} />
+                      </div>
                       <small>{new Date(post.createdAt).toLocaleString("vi-VN")}</small>
                     </div>
                   </div>

@@ -7,6 +7,7 @@ import { Card, Col, Container, Image, Row, Button, ListGroup, Badge } from "reac
 import MySpinner from "../layout/MySpinner";
 import styles from "./Styles/profile.module.css";
 import { showCustomToast } from "../layout/MyToaster";
+import PrivacyIcon from "../../utils/privacyIcon";
 
 const OtherProfile = () => {
   const currentUser = useContext(MyUserContext);
@@ -349,7 +350,13 @@ const OtherProfile = () => {
                     <div className={styles.profileAuthorDetails}>
                       <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
                       <br />
-                      <small>{new Date(post.createdAt).toLocaleString("vi-VN")}</small>
+                      <small>{new Date(post.createdAt).toLocaleString("vi-VN")}
+                          <PrivacyIcon
+                          privacyMode={post.visibility} 
+                          size="0.8rem" 
+                          className="ms-1" 
+                        />
+                      </small>
                     </div>
                   </div>
 
