@@ -113,6 +113,12 @@ public class FollowServiceImpl implements FollowService {
         return page.stream().allMatch(follow -> follow.getFollowerId().getUsername().equals(currentUser));
     }
 
+    @Override
+    public boolean isFollowing(String followerId, String followingId) {
+        FollowId followId = new FollowId(followerId, followingId);
+        return followRepository.existsById(followId);
+    }
+
 
 
 

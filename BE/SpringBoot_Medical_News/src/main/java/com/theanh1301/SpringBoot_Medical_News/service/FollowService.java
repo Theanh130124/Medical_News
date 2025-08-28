@@ -26,4 +26,6 @@ public interface FollowService {
     long countFollowers(String userId);
 
     long countFollowing(String userId);
+
+    boolean isFollowing(String followerId, String followingId);
 }
