@@ -44,7 +44,7 @@ const OtherProfile = () => {
 
   // Fetch relationship status
   useEffect(() => {
-    if (!currentUser || !profileUser) return;
+    if (!currentUser || !profileUser || currentUser.id === profileUser.id) return;
     
     const fetchRelationshipStatus = async () => {
       try {
@@ -58,7 +58,7 @@ const OtherProfile = () => {
         );
         
         if (isFriend) {
-          setFriendStatus("FRIEND");
+          setFriendStatus("ACCEPTED");
           setPendingRequestFrom(null);
           return;
         }
@@ -200,7 +200,7 @@ const OtherProfile = () => {
     try {
       await authApis().patch(endpoint.accept_friend(profileUser.id, currentUser.id));
       
-      setFriendStatus("FRIEND");
+      setFriendStatus("ACCEPTED");
       setPendingRequestFrom(null);
       showCustomToast("Đã chấp nhận lời mời kết bạn!", "success");
       refreshData();
@@ -291,7 +291,7 @@ const OtherProfile = () => {
               {/* Các nút hành động */}
               {currentUser && currentUser.id !== profileUser.id && (
                 <div className="mt-3 d-flex flex-wrap justify-content-center gap-2">
-                  {/* Nút kết bạn - chỉ hiện khi không có quan hệ nào */}
+                  {/* Nút kết bạn - chỉ hiện khi không có lời mời nào giữa 2 người */}
                   {friendStatus === null && (
                     <Button 
                       variant="primary" 
@@ -303,7 +303,7 @@ const OtherProfile = () => {
                     </Button>
                   )}
                   
-                  {/* Nút hủy lời mời - khi bạn là người gửi */}
+                  {/* Nút hủy lời mời - khi bạn là người gửi và đang ở trạng thái PENDING */}
                   {friendStatus === "PENDING" && pendingRequestFrom === "YOU" && (
                     <Button 
                       variant="outline-danger" 
@@ -337,15 +337,8 @@ const OtherProfile = () => {
                     </>
                   )}
                   
-                  {/* Badge thông báo trạng thái */}
-                  {friendStatus === "PENDING" && (
-                    <Badge bg="warning" text="dark">
-                      {pendingRequestFrom === "YOU" ? "Đã gửi lời mời" : "Đã nhận lời mời"}
-                    </Badge>
-                  )}
-                  
-                  {/* Nút hủy kết bạn - khi đã là bạn */}
-                  {friendStatus === "FRIEND" && (
+                  {/* Nút hủy kết bạn - khi đã là bạn (trạng thái ACCEPTED) */}
+                  {friendStatus === "ACCEPTED" && (
                     <Button 
                       variant="outline-danger" 
                       size="sm" 
@@ -354,6 +347,19 @@ const OtherProfile = () => {
                     >
                       {isLoadingAction ? "Đang xử lý..." : "Hủy kết bạn"}
                     </Button>
+                  )}
+                  
+                  {/* Badge thông báo trạng thái */}
+                  {friendStatus === "PENDING" && (
+                    <Badge bg="warning" text="dark" className="mt-2">
+                      {pendingRequestFrom === "YOU" ? "Đã gửi lời mời" : "Đã nhận lời mời"}
+                    </Badge>
+                  )}
+                  
+                  {friendStatus === "ACCEPTED" && (
+                    <Badge bg="success" className="mt-2">
+                      Bạn bè
+                    </Badge>
                   )}
                   
                   {/* Nút theo dõi/bỏ theo dõi */}
