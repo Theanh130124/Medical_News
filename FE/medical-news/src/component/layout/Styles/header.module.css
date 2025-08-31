@@ -127,6 +127,12 @@
   width: 100%;
 }
 
+.customToggle::after {
+  margin-left: 0.1rem !important; /* giảm khoảng cách */
+  vertical-align: 0.05em;           /* chỉnh caret cùng hàng với chuông */
+}
+
+
 
 
 .subText {
@@ -210,11 +216,12 @@
   font-size: 1.25rem;
   margin-right: 1rem;
 }
-
 .notificationBadge {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 0;
+  right: 0;
+  transform: translate(-30%, -60%); /* đẩy vào trái và lên trên */
   font-size: 0.6rem;
   padding: 0.25em 0.4em;
 }
+

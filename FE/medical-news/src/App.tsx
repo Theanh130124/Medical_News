@@ -16,6 +16,7 @@ import TimeLine from './component/post/TimeLine';
 import Profile from './component/auth/Profile';
 import ProtectedRoute from './component/wrapper/ProtectedRoute';
 import OtherProfile from './component/auth/OtherProfile';
+import RoomChat from './component/RoomChat';
 
 
 
@@ -55,6 +56,10 @@ const App = () => {
 
           <Route path='/profile' element={
             <ProtectedRoute><Profile/></ProtectedRoute>
+          } />
+
+                    <Route path='/chat' element={
+            <ProtectedRoute><RoomChat/></ProtectedRoute>
           } />
 
         </Routes>

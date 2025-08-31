@@ -127,14 +127,14 @@ const Header = () => {
                 >
                   <Dropdown.Toggle 
                     variant="light" 
-                    className="position-relative border-0 bg-transparent"
+                    className={`position-relative border-0 bg-transparent ${styles.customToggle}`}
                   >
                     <i className="bi bi-bell fs-5"></i>
                     {friendRequests.length > 0 && (
                       <Badge 
                         pill 
                         bg="danger" 
-                        className="position-absolute top-0 start-100 translate-middle"
+                        className={styles.notificationBadge}
                         style={{ fontSize: '0.6rem' }}
                       >
                         {friendRequests.length}
@@ -179,7 +179,7 @@ const Header = () => {
                               />
                               <div className="flex-grow-1">
                                 <div className="fw-bold">{request.firstUserId.firstName} {request.firstUserId.lastName}</div>
-                                <small className="text-muted">@{request.firstUserId.username}</small>
+                                
                               </div>
                             </div>
                             <div className="d-flex justify-content-end mt-2 gap-1">

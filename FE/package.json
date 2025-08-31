@@ -2,6 +2,13 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
-    "@fortawesome/react-fontawesome": "^0.2.3"
+    "@fortawesome/react-fontawesome": "^0.2.3",
+    "peerjs": "^1.5.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/form-data": "^2.5.2",
+    "@types/multer": "^2.0.0",
+    "@types/peerjs": "^1.1.0"
   }
 }

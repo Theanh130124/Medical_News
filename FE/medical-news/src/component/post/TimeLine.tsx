@@ -14,6 +14,7 @@ import SurveyVote from "./SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
 import { useNavigate } from "react-router-dom";
 import PrivacyIcon from "../../utils/privacyIcon"; // Import component mới
+import ChatSidebar from "../chat/ChatSidebar";
 
 const TimeLine = (): JSX.Element => {
   const user = useContext(MyUserContext);
@@ -24,6 +25,8 @@ const TimeLine = (): JSX.Element => {
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const navigate = useNavigate();
+  const [showSidebar, setShowSidebar] = useState(true);
+
 
   // Fetch posts khi page hoặc user thay đổi
   useEffect(() => {
@@ -100,7 +103,8 @@ const TimeLine = (): JSX.Element => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col xs={12} md={8}>
+        <Col md={3}></Col>
+        <Col md={6}>
           {loading && page === 0 && <MySpinner />}
           <CreatePost onPostCreated={handleRefresh} />
 
@@ -218,6 +222,9 @@ const TimeLine = (): JSX.Element => {
             </Modal.Footer>
           </Modal>
         </Col>
+        <Col md={3} className="d-none d-md-block">
+            <ChatSidebar />
+          </Col>
       </Row>
     </Container>
   );

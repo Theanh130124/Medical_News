@@ -13,6 +13,7 @@ import SurveyVote from "../post/SurveyVote";
 import { handleApiError } from "../../utils/errorHandler";
 import { useNavigate } from "react-router-dom";
 import PrivacyIcon from "../../utils/privacyIcon";
+import ChatSidebar from "../chat/ChatSidebar";
 
 const Profile = () => {
   const user = useContext(MyUserContext);
@@ -223,6 +224,9 @@ const Profile = () => {
               </Button>
             </div>
           )}
+        </Col>
+        <Col md={4} className="d-none d-md-block">
+          <ChatSidebar />
         </Col>
       </Row>
 
