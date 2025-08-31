@@ -138,3 +138,47 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 [debug] [2025-08-31T16:12:22.608Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
 [info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
 [debug] [2025-08-31T16:13:25.592Z] File E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\chatApis.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\chatApis.ts changed, reloading triggers"}}
+[debug] [2025-08-31T16:13:26.602Z] Validating nodejs source
+[debug] [2025-08-31T16:13:28.233Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "firebase": "^12.2.1",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2025-08-31T16:13:28.234Z] Building nodejs source
+[debug] [2025-08-31T16:13:28.234Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-08-31T16:13:28.238Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-31T16:13:28.252Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8177
+
+[debug] [2025-08-31T16:13:28.741Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
