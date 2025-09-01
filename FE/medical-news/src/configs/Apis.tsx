@@ -67,6 +67,8 @@ export const endpoint = {
     //Follow
     'follow' : "/follows",
     check_follow_status: (followerId: string, followingId: string) => `/follows/check?followerId=${followerId}&followingId=${followingId}`,
+
+    'chats': '/chats',
     chatMessages: (chatId:string) => `/chats/${chatId}/messages`,
     
 } 

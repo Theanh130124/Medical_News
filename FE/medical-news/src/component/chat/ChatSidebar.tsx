@@ -1,7 +1,7 @@
 // components/chat/ChatSidebar.tsx
 import { JSX, useContext, useEffect, useState } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
-import { authApis, endpoint } from "../../configs/Apis";
+import { authApis, endpoint, fbApis } from "../../configs/Apis";
 import { Card, ListGroup, Badge, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styles from "./Styles/chatsidebar.module.css";
@@ -55,17 +55,34 @@ const ChatSidebar = (): JSX.Element => {
     fetchFriends();
   }, [user]);
 
-  const handleChatClick = async (friendUser: any) => {
-    // Tạo room chat dựa trên ID của 2 người
-    const chatId = [user.id, friendUser.id].sort().join('_');
-    
-    navigate('/chat', { 
-      state: { 
-        room: { chatId },
-        otherUser: friendUser
-      } 
-    });
-  };
+const handleChatClick = async (friendUser: any) => {
+    try {
+        // Gọi API để tạo/kiểm tra chat
+        const response = await fbApis().post(endpoint.chats, {
+            userId1: user.id,
+            userId2: friendUser.id
+        });
+        
+        const chatId = response.data.chatId;
+        
+        navigate('/chat', { 
+            state: { 
+                room: { chatId },
+                otherUser: friendUser
+            } 
+        });
+    } catch (error) {
+        console.error('Lỗi khi tạo chat:', error);
+        // Fallback: vẫn tạo chatId theo logic cũ nếu API fail
+        const chatId = [user.id, friendUser.id].sort().join('_');
+        navigate('/chat', { 
+            state: { 
+                room: { chatId },
+                otherUser: friendUser
+            } 
+        });
+    }
+};
 
   const handleVideoCall = (friendUser: any, e: React.MouseEvent) => {
     e.stopPropagation(); // Ngăn sự kiện click lan ra parent
