@@ -1,75 +1,80 @@
-[debug] [2025-08-31T16:05:39.081Z] ----------------------------------------------------------------------
-[debug] [2025-08-31T16:05:39.084Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\thean\AppData\Local\Yarn\Data\global\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
-[debug] [2025-08-31T16:05:39.084Z] CLI Version:   14.15.1
-[debug] [2025-08-31T16:05:39.084Z] Platform:      win32
-[debug] [2025-08-31T16:05:39.084Z] Node Version:  v22.15.0
-[debug] [2025-08-31T16:05:39.085Z] Time:          Sun Aug 31 2025 23:05:39 GMT+0700 (GMT+07:00)
-[debug] [2025-08-31T16:05:39.085Z] ----------------------------------------------------------------------
+[debug] [2025-09-01T08:40:11.970Z] ----------------------------------------------------------------------
+[debug] [2025-09-01T08:40:11.973Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\thean\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2025-09-01T08:40:11.973Z] CLI Version:   14.15.1
+[debug] [2025-09-01T08:40:11.973Z] Platform:      win32
+[debug] [2025-09-01T08:40:11.973Z] Node Version:  v22.15.0
+[debug] [2025-09-01T08:40:11.974Z] Time:          Mon Sep 01 2025 15:40:11 GMT+0700 (GMT+07:00)
+[debug] [2025-09-01T08:40:11.974Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2025-08-31T16:05:39.325Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2025-08-31T16:05:39.325Z] > authorizing via signed-in user (theanhtran13012004@gmail.com)
+[debug] [2025-09-01T08:40:12.198Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-01T08:40:12.199Z] > authorizing via signed-in user (theanhtran13012004@gmail.com)
 [info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
-[debug] [2025-08-31T16:05:39.334Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-31T16:05:39.334Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
-[debug] [2025-08-31T16:05:39.338Z] [hub] writing locator at C:\Users\thean\AppData\Local\Temp\hub-healthapp-a5a6d.json
-[debug] [2025-08-31T16:05:39.365Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-31T16:05:39.365Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-31T16:05:39.365Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-31T16:05:39.365Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[debug] [2025-09-01T08:40:12.209Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-01T08:40:12.210Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-09-01T08:40:12.215Z] [hub] writing locator at C:\Users\thean\AppData\Local\Temp\hub-healthapp-a5a6d.json
+[debug] [2025-09-01T08:40:12.236Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-01T08:40:12.236Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-01T08:40:12.236Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-01T08:40:12.236Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
 [warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
-[debug] [2025-08-31T16:05:39.379Z] defaultcredentials: writing to file C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json
-[debug] [2025-08-31T16:05:39.380Z] Setting GAC to C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\thean\\AppData\\Roaming\\firebase\\theanhtran13012004_gmail_com_application_default_credentials.json"}}
-[debug] [2025-08-31T16:05:39.381Z] Checked if tokens are valid: true, expires at: 1756659632610
-[debug] [2025-08-31T16:05:39.381Z] Checked if tokens are valid: true, expires at: 1756659632610
-[debug] [2025-08-31T16:05:39.382Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig [none]
-[debug] [2025-08-31T16:05:41.111Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig 200
-[debug] [2025-08-31T16:05:41.111Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig {"projectId":"healthapp-a5a6d","databaseURL":"https://healthapp-a5a6d-default-rtdb.firebaseio.com","storageBucket":"healthapp-a5a6d.firebasestorage.app"}
+[debug] [2025-09-01T08:40:12.250Z] defaultcredentials: writing to file C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json
+[debug] [2025-09-01T08:40:12.252Z] Setting GAC to C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\thean\\AppData\\Roaming\\firebase\\theanhtran13012004_gmail_com_application_default_credentials.json"}}
+[debug] [2025-09-01T08:40:12.253Z] Checked if tokens are valid: false, expires at: 1756716899099
+[debug] [2025-09-01T08:40:12.253Z] Checked if tokens are valid: false, expires at: 1756716899099
+[debug] [2025-09-01T08:40:12.253Z] > refreshing access token with scopes: []
+[debug] [2025-09-01T08:40:12.255Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-09-01T08:40:12.255Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-01T08:40:13.283Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-09-01T08:40:13.283Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-01T08:40:13.289Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig [none]
+[debug] [2025-09-01T08:40:14.650Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig 200
+[debug] [2025-09-01T08:40:14.651Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig {"projectId":"healthapp-a5a6d","databaseURL":"https://healthapp-a5a6d-default-rtdb.firebaseio.com","storageBucket":"healthapp-a5a6d.firebasestorage.app"}
 [info] i  functions: Watching "E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\" for Cloud Functions..."}}
-[debug] [2025-08-31T16:05:41.140Z] Validating nodejs source
-[debug] [2025-08-31T16:05:42.462Z] > [functions] package.json contents: {
+[debug] [2025-09-01T08:40:14.677Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-09-01T08:40:15.879Z] > [functions] package.json contents: {
   "name": "functions",
+  "description": "Cloud Functions for Firebase",
   "scripts": {
-    "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run serve",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "engines": {
     "node": "22"
   },
-  "main": "lib/index.js",
+  "main": "chatApis.js",
   "dependencies": {
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "firebase": "^12.2.1",
-    "firebase-admin": "^13.5.0",
-    "firebase-functions": "^6.4.0"
+    "firebase": "^11.6.1",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "form-data": "^4.0.2",
+    "multer": "^1.4.5-lts.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.15.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.25.4",
-    "firebase-functions-test": "^3.1.0",
-    "typescript": "^4.9.0"
+    "firebase-functions-test": "^3.1.0"
   },
   "private": true
 }
-[debug] [2025-08-31T16:05:42.462Z] Building nodejs source
-[debug] [2025-08-31T16:05:42.463Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
+[debug] [2025-09-01T08:40:15.879Z] Building nodejs source
+[debug] [2025-09-01T08:40:15.880Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
 [info] +  functions: Using node@22 from host. 
-[debug] [2025-08-31T16:05:42.466Z] Could not find functions.yaml. Must use http discovery
-[debug] [2025-08-31T16:05:42.475Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
-[info] Serving at port 8902
+[debug] [2025-09-01T08:40:15.883Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-09-01T08:40:15.891Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8029
 
-[debug] [2025-08-31T16:05:42.765Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
-[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
-[debug] [2025-08-31T16:05:46.802Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[debug] [2025-09-01T08:40:16.848Z] Got response from /__/functions.yaml {"endpoints":{"app":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] +  functions[us-central1-app]: http function initialized (http://127.0.0.1:5001/healthapp-a5a6d/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/healthapp-a5a6d/us-central1/app)."}}
+[debug] [2025-09-01T08:40:20.887Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
 [info] 
 ┌─────────────────────────────────────────────────────────────┐
 │ ✔  All emulators ready! It is now safe to connect your app. │
@@ -86,99 +91,109 @@
 
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
-[debug] [2025-08-31T16:05:52.751Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_dfbae9ed-5360-48ea-b2f2-276a3b73196a/messages-2025-08-31T16:05:52.751Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
-[debug] [2025-08-31T16:05:52.752Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_dfbae9ed-5360-48ea-b2f2-276a3b73196a/messages-2025-08-31T16:05:52.751Z"],"workRunningCount":1}
-[debug] [2025-08-31T16:05:52.754Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
-[debug] [2025-08-31T16:12:14.924Z] File E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\chatApis.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\chatApis.ts changed, reloading triggers"}}
-[debug] [2025-08-31T16:12:15.961Z] Validating nodejs source
-[debug] [2025-08-31T16:12:18.743Z] > [functions] package.json contents: {
+[debug] [2025-09-01T08:40:38.082Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/api/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:40:38.082Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:40:38.083Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/api/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:40:38.082Z"],"workRunningCount":1}
+[debug] [2025-09-01T08:40:38.085Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:45:17.991Z] File E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\chatApis.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\chatApis.js changed, reloading triggers"}}
+[debug] [2025-09-01T08:45:19.022Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-09-01T08:45:21.923Z] > [functions] package.json contents: {
   "name": "functions",
+  "description": "Cloud Functions for Firebase",
   "scripts": {
-    "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run serve",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "engines": {
     "node": "22"
   },
-  "main": "lib/index.js",
+  "main": "chatApis.js",
   "dependencies": {
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "firebase": "^12.2.1",
-    "firebase-admin": "^13.5.0",
-    "firebase-functions": "^6.4.0"
+    "firebase": "^11.6.1",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "form-data": "^4.0.2",
+    "multer": "^1.4.5-lts.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.15.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.25.4",
-    "firebase-functions-test": "^3.1.0",
-    "typescript": "^4.9.0"
+    "firebase-functions-test": "^3.1.0"
   },
   "private": true
 }
-[debug] [2025-08-31T16:12:18.744Z] Building nodejs source
-[debug] [2025-08-31T16:12:18.745Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
+[debug] [2025-09-01T08:45:21.924Z] Building nodejs source
+[debug] [2025-09-01T08:45:21.924Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
 [info] +  functions: Using node@22 from host. 
-[debug] [2025-08-31T16:12:18.758Z] Could not find functions.yaml. Must use http discovery
-[debug] [2025-08-31T16:12:18.782Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
-[info] Serving at port 8056
+[debug] [2025-09-01T08:45:21.929Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-09-01T08:45:21.945Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8901
 
-[debug] [2025-08-31T16:12:19.180Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
-[debug] [2025-08-31T16:12:22.605Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_dfbae9ed-5360-48ea-b2f2-276a3b73196a/messages-2025-08-31T16:12:22.604Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
-[debug] [2025-08-31T16:12:22.605Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_dfbae9ed-5360-48ea-b2f2-276a3b73196a/messages-2025-08-31T16:12:22.604Z"],"workRunningCount":1}
-[debug] [2025-08-31T16:12:22.608Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
-[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
-[debug] [2025-08-31T16:13:25.592Z] File E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\chatApis.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\chatApis.ts changed, reloading triggers"}}
-[debug] [2025-08-31T16:13:26.602Z] Validating nodejs source
-[debug] [2025-08-31T16:13:28.233Z] > [functions] package.json contents: {
-  "name": "functions",
-  "scripts": {
-    "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "22"
-  },
-  "main": "lib/index.js",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "firebase": "^12.2.1",
-    "firebase-admin": "^13.5.0",
-    "firebase-functions": "^6.4.0"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.25.4",
-    "firebase-functions-test": "^3.1.0",
-    "typescript": "^4.9.0"
-  },
-  "private": true
-}
-[debug] [2025-08-31T16:13:28.234Z] Building nodejs source
-[debug] [2025-08-31T16:13:28.234Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
-[info] +  functions: Using node@22 from host. 
-[debug] [2025-08-31T16:13:28.238Z] Could not find functions.yaml. Must use http discovery
-[debug] [2025-08-31T16:13:28.252Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
-[info] Serving at port 8177
-
-[debug] [2025-08-31T16:13:28.741Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
-[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
+[debug] [2025-09-01T08:45:22.816Z] Got response from /__/functions.yaml {"endpoints":{"app":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2025-09-01T08:46:09.390Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:09.389Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:46:09.390Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:09.389Z"],"workRunningCount":1}
+[debug] [2025-09-01T08:46:09.390Z] Accepted request OPTIONS /healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages --> us-central1-app
+[debug] [2025-09-01T08:46:09.434Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-09-01T08:46:09.438Z] [functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages"}}
+[debug] [2025-09-01T08:46:09.493Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2025-09-01T08:46:09.497Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2025-09-01T08:46:11.209Z] [runtime-status] [8276] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.210Z] [runtime-status] [8276] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.210Z] [runtime-status] [8276] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-09-01T08:46:11.211Z] [runtime-status] [8276] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.723Z] [runtime-status] [8276] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-09-01T08:46:11.724Z] [runtime-status] [8276] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.3.2","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}}"}}
+[debug] [2025-09-01T08:46:11.725Z] [runtime-status] [8276] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.735Z] [runtime-status] [8276] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.739Z] [runtime-status] [8276] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-09-01T08:46:11.741Z] [runtime-status] [8276] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"12.7.0","resolution":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2025-09-01T08:46:12.105Z] [runtime-status] [8276] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"healthapp-a5a6d","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCZFvdoi3yE4aIq\nVZz3DF6XIQ9CyQ8osL+BxeCh+5ciEMYa3APST893H4A81CxGElAIyCIjmdiKLYsV\nR4hekDXhZ4KVDAH6QOO9Ap1WkXe9yrFTKTIQPRORBPXwR4fgkHOkX4DNu6KDgXov\nDr1N/fWq89jumfs+o1Aw72q536LCifzDKkBCjxQdEcIul3nAVSKmKXuQ/Q0lcv38\nnzcu9O6PlNPElub3L7w8fmr/3ImbFCfTNRZG4+TRTay+zaqFXX38D4Uxw1ojhKLm\nK4KKGb0jZH11Nvt2loo9Uri39g5TAWS9V8uxwz3TehGS0rFpUwDx8hP99SGLm0Wm\n3DARjNLZAgMBAAECggEAG7SM1OY9hDzjYL76t7kM21P305HYhPgryFwb0aTbDqaz\ne4PqyyJ3fOr+BcQuOQYyZsx1ZTT/+83POGwoMVju71qQxtGUAArDTF8PQ23zGi13\nFwJDFa4//sRDkBcZ75mk3BAOmu0EtcD2cFK+DsHRtn0H+vJyBj1/E0QY8AeZiJQx\numLiMfeoBKRz8F07bXm3uj69bHxOXa2sACo+y7oHYye5J8E+16DuIwwWC0m5GDvQ\nYKwEd24XEgEibAaXAZw0YQcsVqw34pdYK/WvEUj5n1p7jNyaVNvJ8HMu7h/msKJv\ngwUMH2r+CvxsH76MqOCcud8txcLklU6K+YX6bW5S6wKBgQDHxpI6uTsfV6bwlXmr\nhsvlI4v5MTjFPxKa7qN5qHWvWK8v99UDT15ObROS/EBnPku8XP9lAaBlFeghBIHz\nCLHBu9m7kisW6ee+m1c2osK5wiWfElwZEjax3+wpG/siqfIN+LA3yHABXMsQjnFz\nr06YHhclEiUMPd0IgUg5AF3GvwKBgQDELMR4/mo4eXlEhEBmGQx1FGVgM4viaT2y\nejZXqLvERwHdhwKQe7y2j3gdu+P1Vq/znZIlRrgpbOPsVdprmm5UEcU9STPcub4o\ngLTpk8lNxhA3Zyhjo7BvMMA/Ac64Ukyfz2yCaEf92+SVocH2U9ehdwjA56H4yV07\nsDx5cuEkZwKBgBkxsLVZMNyWCEalAzAfks01+2wUyg0OFEGXwOQR262eaJGLFsER\nHFqVpPdPeqvKjnCV5duOJfU5mwm28NB+kzRUhXQDTg3Yt9Iw8wG/6wDUPDxga176\nDg3GqJjSn4xSlGUwrMCMNZvmYPGYlTQ6spW6jb6uGCAAGUT+UOZnZmwvAoGAIX+f\ngSW4j7I2gfuvX3/Rf8Ce2wGSVnQwI+T4mJlojsitSd2/E1r9y5LOKQ2njIJkA06Z\n4SGlWvWMKhQy+wLg6hwquR9h6sQQ86ueuPAShORYao2D+Re/jg0eFuRBH3p2OSfb\nWJ1kBbZh3ydDDsQcYycHaKFlKC2CbSnX+ckjJusCgYEAkMCPpFnEBVa5MbZmV+Lo\nRvaXK9yz0FFNCJWEaZXt6jmZknpQYoN+BYU6YDyfaK4SjIEowO4eoDEZzlv5X3Os\nhbiGSo+MM8gr3n/y7zxm2SqI8nsmU40tKy2aTZKwbIXv64ApzIZdomGW5aGyMWEx\nfJT8jBxLw/fIh8WRWmXIBiM=\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-fbsvc@healthapp-a5a6d.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://healthapp-a5a6d.firebaseio.com"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"healthapp-a5a6d\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCZFvdoi3yE4aIq\\nVZz3DF6XIQ9CyQ8osL+BxeCh+5ciEMYa3APST893H4A81CxGElAIyCIjmdiKLYsV\\nR4hekDXhZ4KVDAH6QOO9Ap1WkXe9yrFTKTIQPRORBPXwR4fgkHOkX4DNu6KDgXov\\nDr1N/fWq89jumfs+o1Aw72q536LCifzDKkBCjxQdEcIul3nAVSKmKXuQ/Q0lcv38\\nnzcu9O6PlNPElub3L7w8fmr/3ImbFCfTNRZG4+TRTay+zaqFXX38D4Uxw1ojhKLm\\nK4KKGb0jZH11Nvt2loo9Uri39g5TAWS9V8uxwz3TehGS0rFpUwDx8hP99SGLm0Wm\\n3DARjNLZAgMBAAECggEAG7SM1OY9hDzjYL76t7kM21P305HYhPgryFwb0aTbDqaz\\ne4PqyyJ3fOr+BcQuOQYyZsx1ZTT/+83POGwoMVju71qQxtGUAArDTF8PQ23zGi13\\nFwJDFa4//sRDkBcZ75mk3BAOmu0EtcD2cFK+DsHRtn0H+vJyBj1/E0QY8AeZiJQx\\numLiMfeoBKRz8F07bXm3uj69bHxOXa2sACo+y7oHYye5J8E+16DuIwwWC0m5GDvQ\\nYKwEd24XEgEibAaXAZw0YQcsVqw34pdYK/WvEUj5n1p7jNyaVNvJ8HMu7h/msKJv\\ngwUMH2r+CvxsH76MqOCcud8txcLklU6K+YX6bW5S6wKBgQDHxpI6uTsfV6bwlXmr\\nhsvlI4v5MTjFPxKa7qN5qHWvWK8v99UDT15ObROS/EBnPku8XP9lAaBlFeghBIHz\\nCLHBu9m7kisW6ee+m1c2osK5wiWfElwZEjax3+wpG/siqfIN+LA3yHABXMsQjnFz\\nr06YHhclEiUMPd0IgUg5AF3GvwKBgQDELMR4/mo4eXlEhEBmGQx1FGVgM4viaT2y\\nejZXqLvERwHdhwKQe7y2j3gdu+P1Vq/znZIlRrgpbOPsVdprmm5UEcU9STPcub4o\\ngLTpk8lNxhA3Zyhjo7BvMMA/Ac64Ukyfz2yCaEf92+SVocH2U9ehdwjA56H4yV07\\nsDx5cuEkZwKBgBkxsLVZMNyWCEalAzAfks01+2wUyg0OFEGXwOQR262eaJGLFsER\\nHFqVpPdPeqvKjnCV5duOJfU5mwm28NB+kzRUhXQDTg3Yt9Iw8wG/6wDUPDxga176\\nDg3GqJjSn4xSlGUwrMCMNZvmYPGYlTQ6spW6jb6uGCAAGUT+UOZnZmwvAoGAIX+f\\ngSW4j7I2gfuvX3/Rf8Ce2wGSVnQwI+T4mJlojsitSd2/E1r9y5LOKQ2njIJkA06Z\\n4SGlWvWMKhQy+wLg6hwquR9h6sQQ86ueuPAShORYao2D+Re/jg0eFuRBH3p2OSfb\\nWJ1kBbZh3ydDDsQcYycHaKFlKC2CbSnX+ckjJusCgYEAkMCPpFnEBVa5MbZmV+Lo\\nRvaXK9yz0FFNCJWEaZXt6jmZknpQYoN+BYU6YDyfaK4SjIEowO4eoDEZzlv5X3Os\\nhbiGSo+MM8gr3n/y7zxm2SqI8nsmU40tKy2aTZKwbIXv64ApzIZdomGW5aGyMWEx\\nfJT8jBxLw/fIh8WRWmXIBiM=\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-fbsvc@healthapp-a5a6d.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://healthapp-a5a6d.firebaseio.com\"}"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[debug] [2025-09-01T08:46:12.110Z] [runtime-status] [8276] Functions runtime initialized. {"cwd":"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions","node_version":"22.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Functions runtime initialized. {\"cwd\":\"E:\\\\SpringBoot\\\\DoAnNganh\\\\Medical_News\\\\FE\\\\medical-news\\\\functions\",\"node_version\":\"22.15.0\"}"}}
+[debug] [2025-09-01T08:46:12.110Z] [runtime-status] [8276] Listening to port: \\?\pipe\fire_emu_573bfe533a12cf27 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [8276] Listening to port: \\\\?\\pipe\\fire_emu_573bfe533a12cf27"}}
+[debug] [2025-09-01T08:46:12.222Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE"}}
+[debug] [2025-09-01T08:46:12.223Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2025-09-01T08:46:12.227Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY"}}
+[debug] [2025-09-01T08:46:12.244Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 17.3839ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 17.3839ms"}}
+[debug] [2025-09-01T08:46:12.246Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE"}}
+[debug] [2025-09-01T08:46:12.247Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-09-01T08:46:12.247Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-09-01T08:46:12.248Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:46:12.251Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:12.251Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:46:12.251Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:12.251Z"],"workRunningCount":1}
+[debug] [2025-09-01T08:46:12.252Z] Accepted request POST /healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages --> us-central1-app
+[debug] [2025-09-01T08:46:12.254Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-09-01T08:46:12.255Z] [functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages"}}
+[debug] [2025-09-01T08:46:12.255Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2025-09-01T08:46:12.256Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY"}}
+[debug] [2025-09-01T08:46:13.450Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 1194.9309ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 1194.9309ms"}}
+[debug] [2025-09-01T08:46:13.451Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE"}}
+[debug] [2025-09-01T08:46:13.451Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-09-01T08:46:13.451Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-09-01T08:46:13.451Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:46:14.045Z] [work-queue] {"queuedWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:14.044Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T08:46:14.045Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages-2025-09-01T08:46:14.044Z"],"workRunningCount":1}
+[debug] [2025-09-01T08:46:14.045Z] Accepted request POST /healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages --> us-central1-app
+[debug] [2025-09-01T08:46:14.046Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-09-01T08:46:14.046Z] [functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/healthapp-a5a6d/us-central1/app/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages, mapping to path=/chats/102433a9-6e8f-11f0-9aa5-e6513413554a_b3fb25d5-0af4-4540-b172-24a9f5ce052d/messages"}}
+[debug] [2025-09-01T08:46:14.046Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2025-09-01T08:46:14.047Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: BUSY"}}
+[debug] [2025-09-01T08:46:14.434Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 387.2325ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 387.2325ms"}}
+[debug] [2025-09-01T08:46:14.444Z] [worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-b1abd063-8ae9-4121-9d57-bf49daf630b8]: IDLE"}}
+[debug] [2025-09-01T08:46:14.444Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-09-01T08:46:14.444Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-09-01T08:46:14.445Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}

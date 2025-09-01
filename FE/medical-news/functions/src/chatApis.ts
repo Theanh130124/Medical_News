@@ -1,11 +1,10 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { FieldValue } from "firebase-admin/firestore";
 import express, { Request, Response, NextFunction } from "express";
-import multer from "multer";
 import cors from "cors";
 
 // Cấp quyền dùng db
-import { db } from "./configs/FirebaseConfigs";
+import { db } from "../configs/FirebaseConfigs";
 
 interface ChatParticipants {
   [userId: string]: boolean;
@@ -24,7 +23,9 @@ interface ChatData {
 }
 
 const app = express();
-const storage = multer.memoryStorage();
+
+
+
 
 // CẤU HÌNH CORS ĐÚNG CÁCH - ĐẶT Ở ĐẦU TIÊN
 const corsOptions = {
@@ -307,7 +308,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err.code === "LIMIT_FILE_SIZE") {
     return res.status(400).json({ error: "File quá lớn, giới hạn là 5MB" });
   }
-  res.status(500).json({ error: err.message || "Đã xảy ra lỗi server." });
+
+  return res.status(500).json({ error: err.message || "Đã xảy ra lỗi server." });
 });
+
 
 export const api = onRequest(app);
