@@ -63,16 +63,17 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
 
     @Query("""
-            SELECT p FROM Post p
-            WHERE p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
-               OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.FRIENDS_ONLY
-                   AND p.user.id IN :friendIds)
-               OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PRIVATE
-                   AND p.user.id = :currentUserId)
-            ORDER BY p.createdAt DESC
-            """)
-    Page<Post> findVisiblePosts(@Param("currentUserId") String currentUserId,  @Param("friendIds") List<String> friendIds,
-            Pageable pageable);
+    SELECT p FROM Post p
+    WHERE p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
+       OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.FRIENDS_ONLY
+           AND p.user.id IN :friendIds)
+       OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PRIVATE
+           AND p.user = :currentUser)
+    ORDER BY p.createdAt DESC
+""")
+    Page<Post> findVisiblePosts(@Param("currentUser") User currentUser,
+                                @Param("friendIds") List<String> friendIds,
+                                Pageable pageable);
 
 
 

@@ -844,3 +844,101 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 [debug] [2025-09-01T09:42:33.405Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
 [debug] [2025-09-01T09:42:33.405Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
 [debug] [2025-09-01T09:42:33.405Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-09-01T11:37:24.201Z] [worker-us-central1-app-7b3aceba-3275-48c5-840e-3577ba92c901]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-7b3aceba-3275-48c5-840e-3577ba92c901]: exited"}}
+[debug] [2025-09-01T11:37:24.210Z] [worker-us-central1-app-7b3aceba-3275-48c5-840e-3577ba92c901]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-7b3aceba-3275-48c5-840e-3577ba92c901]: FINISHED"}}
+[debug] [2025-09-01T11:37:24.223Z] [worker-us-central1-app-5bd06d0a-3c3e-4ff0-8266-e4a8c584afa5]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-5bd06d0a-3c3e-4ff0-8266-e4a8c584afa5]: exited"}}
+[debug] [2025-09-01T11:37:24.224Z] [worker-us-central1-app-5bd06d0a-3c3e-4ff0-8266-e4a8c584afa5]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-5bd06d0a-3c3e-4ff0-8266-e4a8c584afa5]: FINISHED"}}
+[debug] [2025-09-02T05:54:28.528Z] ----------------------------------------------------------------------
+[debug] [2025-09-02T05:54:28.532Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\thean\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2025-09-02T05:54:28.532Z] CLI Version:   14.15.1
+[debug] [2025-09-02T05:54:28.532Z] Platform:      win32
+[debug] [2025-09-02T05:54:28.533Z] Node Version:  v22.15.0
+[debug] [2025-09-02T05:54:28.533Z] Time:          Tue Sep 02 2025 12:54:28 GMT+0700 (GMT+07:00)
+[debug] [2025-09-02T05:54:28.534Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-02T05:54:28.969Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-02T05:54:28.970Z] > authorizing via signed-in user (theanhtran13012004@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2025-09-02T05:54:28.986Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-02T05:54:28.987Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[warn] !  emulators: It seems that you are running multiple instances of the emulator suite for project healthapp-a5a6d. This may result in unexpected behavior. 
+[debug] [2025-09-02T05:54:28.998Z] [hub] writing locator at C:\Users\thean\AppData\Local\Temp\hub-healthapp-a5a6d.json
+[debug] [2025-09-02T05:54:29.033Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-02T05:54:29.033Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-02T05:54:29.033Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-09-02T05:54:29.034Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2025-09-02T05:54:29.061Z] defaultcredentials: writing to file C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json
+[debug] [2025-09-02T05:54:29.064Z] Setting GAC to C:\Users\thean\AppData\Roaming\firebase\theanhtran13012004_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\thean\\AppData\\Roaming\\firebase\\theanhtran13012004_gmail_com_application_default_credentials.json"}}
+[debug] [2025-09-02T05:54:29.065Z] Checked if tokens are valid: false, expires at: 1756719612283
+[debug] [2025-09-02T05:54:29.065Z] Checked if tokens are valid: false, expires at: 1756719612283
+[debug] [2025-09-02T05:54:29.066Z] > refreshing access token with scopes: []
+[debug] [2025-09-02T05:54:29.069Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-09-02T05:54:29.069Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-02T05:54:29.262Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-09-02T05:54:29.262Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-09-02T05:54:29.272Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig [none]
+[debug] [2025-09-02T05:54:30.803Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig 200
+[debug] [2025-09-02T05:54:30.804Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/healthapp-a5a6d/adminSdkConfig {"projectId":"healthapp-a5a6d","databaseURL":"https://healthapp-a5a6d-default-rtdb.firebaseio.com","storageBucket":"healthapp-a5a6d.firebasestorage.app"}
+[info] i  functions: Watching "E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"E:\\SpringBoot\\DoAnNganh\\Medical_News\\FE\\medical-news\\functions\" for Cloud Functions..."}}
+[debug] [2025-09-02T05:54:30.855Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-09-02T05:54:32.947Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run serve",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "chatApis.js",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "firebase": "^11.6.1",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "form-data": "^4.0.2",
+    "multer": "^1.4.5-lts.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-09-02T05:54:32.948Z] Building nodejs source
+[debug] [2025-09-02T05:54:32.948Z] Failed to find version of module node: reached end of search path E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-09-02T05:54:32.953Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-09-02T05:54:32.973Z] Found firebase-functions binary at 'E:\SpringBoot\DoAnNganh\Medical_News\FE\medical-news\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8979
+
+[debug] [2025-09-02T05:54:34.640Z] Got response from /__/functions.yaml {"endpoints":{"app":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] +  functions[us-central1-app]: http function initialized (http://127.0.0.1:5001/healthapp-a5a6d/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/healthapp-a5a6d/us-central1/app)."}}
+[debug] [2025-09-02T05:54:38.719Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 

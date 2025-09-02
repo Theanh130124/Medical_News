@@ -119,7 +119,9 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public List<String> getFriendIds(String userId) {
-        List<Friend> friends = friendRepository.findAcceptedFriends(userId);
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        List<Friend> friends = friendRepository.findAcceptedFriends(currentUser);
         return friends.stream()
                 .map(f -> f.getFirstUser().getId().equals(userId)
                         ? f.getSecondUser().getId()

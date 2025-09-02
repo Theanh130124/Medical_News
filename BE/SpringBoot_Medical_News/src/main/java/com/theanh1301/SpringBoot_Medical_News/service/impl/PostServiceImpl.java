@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Stream;
 
 
 @Transactional  // create có transaction
@@ -185,19 +185,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostResponse> getVisiblePosts(String currentUserId, Pageable pageable) {
-        List<String> friendIds = friendRepository.findAcceptedFriends(currentUserId).stream()
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+        List<String> friendIds = friendRepository.findAcceptedFriends(currentUser).stream()
                 .map(f -> f.getFirstUser().getId().equals(currentUserId)
                         ? f.getSecondUser().getId()
                         : f.getFirstUser().getId())
                 .toList();
+        // Thêm chính user vào danh sách để tự thấy bài của mình khi chế độ FRIENDS_ONLY
+        friendIds = Stream.concat(friendIds.stream(), Stream.of(currentUserId))
+                .distinct()
+                .toList();
+        System.out.println("Friend IDs: " + friendIds);
 
-        Page<Post> posts = postRepository.findVisiblePosts(currentUserId, friendIds, pageable);
+        Page<Post> posts = postRepository.findVisiblePosts(currentUser, friendIds, pageable);
         return posts.map(post -> {
             PostResponse res = postMapper.toPostResponse(post);
             if (post.getType() == TypePost.SURVEY) {
                 List<SurveyOption> options = surveyOptionRepository.findByPost(post);
                 res.setSurveyOptions(options.stream().map(opt -> {
                     long voteCount = surveyVoteRepository.countByOption(opt);
+
 
                     // LẤY DANH SÁCH NGƯỜI BÌNH CHỌN - ĐÂY LÀ PHẦN QUAN TRỌNG
                     List<UserResponse> userResponses = surveyVoteRepository.findByOption(opt)

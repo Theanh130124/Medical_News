@@ -20,6 +20,7 @@ import java.util.Objects;
 @Embeddable
 public class FriendId implements Serializable {
     private static final long serialVersionUID = 3290323705609597784L;
+
     @Size(max = 36)
     @NotNull
     @Column(name = "first_user_id", nullable = false, length = 36)
@@ -35,13 +36,12 @@ public class FriendId implements Serializable {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         FriendId entity = (FriendId) o;
-        return Objects.equals(this.secondUserId, entity.secondUserId) &&
-                Objects.equals(this.firstUserId, entity.firstUserId);
+        return Objects.equals(this.firstUserId, entity.firstUserId) &&  // FIRST trước
+                Objects.equals(this.secondUserId, entity.secondUserId);  // SECOND sau
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(secondUserId, firstUserId);
+        return Objects.hash(firstUserId, secondUserId);  // Đúng thứ tự
     }
-
 }

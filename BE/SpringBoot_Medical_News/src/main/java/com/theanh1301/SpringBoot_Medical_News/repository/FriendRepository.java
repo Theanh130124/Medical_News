@@ -34,11 +34,12 @@ public interface FriendRepository extends JpaRepository<Friend,FriendId> {
                                         Pageable pageable);
 
     @Query("""
-        SELECT f FROM Friend f
-        WHERE (f.firstUser.id = :userId OR f.secondUser.id = :userId)
-          AND f.status = com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus.ACCEPTED
-        """)
-    List<Friend> findAcceptedFriends(@Param("userId") String userId);
+    SELECT f FROM Friend f
+    WHERE (f.firstUser = :user OR f.secondUser = :user)
+      AND f.status = com.theanh1301.SpringBoot_Medical_News.enums.FriendStatus.ACCEPTED
+    """)
+    List<Friend> findAcceptedFriends(@Param("user") User user);
+
 
 
     long countByFirstUserAndStatus(User user, FriendStatus status);
