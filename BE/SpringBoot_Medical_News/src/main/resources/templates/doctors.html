@@ -4,37 +4,101 @@
 <head>
     <title>Danh sách bác sĩ</title>
     <th:block th:replace="layout/base :: styles"></th:block>
+    <style>
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 6px 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .filter-item .form-control {
+            border: none;
+            background: transparent;
+            padding: 0 8px;
+            margin: 0;
+            width: auto;
+            min-width: 150px;
+        }
+
+        .filter-item .removeFilter {
+            margin-left: 8px;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-item {
+                width: 100%;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .filter-controls .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <div th:replace="layout/header :: header"></div>
 
-
-
-
 <section class="container mt-4">
     <h2 class="text-center text-primary">Danh sách bác sĩ</h2>
 
-    <form th:action="@{/doctors}" method="get" th:object="${search}" class="row g-2 mb-3">
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Tài khoản" th:field="*{username}" />
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            <strong>Bộ lọc tìm kiếm</strong>
         </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Họ" th:field="*{lastName}" />
+        <div class="card-body">
+            <form th:action="@{/doctors}" method="get" th:object="${search}" id="filterForm">
+                <!-- Dropdown chọn filter -->
+                <div class="mb-3">
+                    <select id="filterSelector" class="form-select">
+                        <option value="">-- Chọn trường lọc --</option>
+                        <option value="username">Tài khoản</option>
+                        <option value="lastName">Họ</option>
+                        <option value="firstName">Tên</option>
+                        <option value="email">Email</option>
+                        <option value="phoneNumber">SĐT</option>
+                    </select>
+                </div>
+
+                <!-- Chỗ hiển thị các filter đã chọn -->
+                <div id="filterInputs" class="filter-container"></div>
+
+                <!-- Nút tìm kiếm và xóa lọc -->
+                <div class="filter-controls">
+                    <button class="btn btn-primary">Tìm kiếm</button>
+                    <a th:href="@{/doctors}" class="btn btn-secondary">Xóa lọc</a>
+                </div>
+            </form>
         </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Tên" th:field="*{firstName}" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Email" th:field="*{email}" />
-        </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="SĐT" th:field="*{phoneNumber}" />
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-primary w-100">Tìm kiếm</button>
-        </div>
-    </form>
+    </div>
 
     <div class="table-responsive mt-3">
         <table class="table table-bordered table-hover">
@@ -97,5 +161,70 @@
 </div>
 <div th:replace="layout/footer :: footer"></div>
 </body>
+<script>
+    const filterSelector = document.getElementById("filterSelector");
+    const filterInputs = document.getElementById("filterInputs");
+
+    const inputTemplates = {
+        username: `<input type="text" name="username" class="form-control" placeholder="Tài khoản" />`,
+        lastName: `<input type="text" name="lastName" class="form-control" placeholder="Họ" />`,
+        firstName: `<input type="text" name="firstName" class="form-control" placeholder="Tên" />`,
+        email: `<input type="text" name="email" class="form-control" placeholder="Email" />`,
+        phoneNumber: `<input type="text" name="phoneNumber" class="form-control" placeholder="SĐT" />`
+    };
+
+    const placeholderTexts = {
+        username: "Tài khoản",
+        lastName: "Họ",
+        firstName: "Tên",
+        email: "Email",
+        phoneNumber: "SĐT"
+    };
+
+    filterSelector.addEventListener("change", function () {
+        const value = this.value;
+        if (value && !filterInputs.querySelector(`[name="${value}"]`)) {
+            // Tạo một filter item mới
+            const div = document.createElement("div");
+            div.classList.add("filter-item");
+
+            // Tạo nhãn cho filter
+            const label = document.createElement("span");
+            label.classList.add("filter-label");
+            label.textContent = placeholderTexts[value] + ": ";
+            label.style.fontSize = "0.9rem";
+            label.style.marginRight = "5px";
+            label.style.fontWeight = "500";
+
+            div.appendChild(label);
+
+            // Thêm input field
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = value;
+            input.classList.add("form-control");
+            input.placeholder = placeholderTexts[value];
+            div.appendChild(input);
+
+            // Thêm nút xóa
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.classList.add("btn", "btn-outline-danger", "btn-sm", "removeFilter");
+            removeBtn.innerHTML = "&times;";
+            removeBtn.title = "Xóa bộ lọc";
+            div.appendChild(removeBtn);
+
+            // Xử lý sự kiện xóa
+            removeBtn.addEventListener("click", function () {
+                div.remove();
+            });
+
+            // Thêm vào container
+            filterInputs.appendChild(div);
+        }
+        // Reset dropdown
+        this.value = "";
+    });
+</script>
 
 </html>
