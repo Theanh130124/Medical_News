@@ -1,0 +1,109 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách thông báo</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<section class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Danh sách thông báo</h2>
+
+    <!-- Thông báo thành công/lỗi -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a th:href="@{/notifications/create}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Tạo thông báo mới
+        </a>
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>Người dùng</th>
+                <th>Nội dung</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="notification : ${notificationPage.content}">
+                <!-- Người dùng -->
+                <td th:text="${notification.userResponse != null ? notification.userResponse.username : 'N/A'}"></td>
+
+                <!-- Nội dung -->
+                <td>
+                    <div style="max-width: 300px; word-wrap: break-word;"
+                         th:text="${#strings.abbreviate(notification.message, 100)}"></div>
+                </td>
+
+                <!-- Trạng thái -->
+                <td>
+                    <span th:if="${notification.isRead}" class="badge bg-success">Đã đọc</span>
+                    <span th:unless="${notification.isRead}" class="badge bg-warning">Chưa đọc</span>
+                </td>
+
+                <!-- Ngày tạo -->
+                <td th:text="${#temporals.format(notification.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+
+                <!-- Thao tác -->
+                <td>
+                    <div class="btn-group" role="group">
+                        <a th:href="@{'/notifications/edit/' + ${notification.id}}"
+                           class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Sửa
+                        </a>
+
+                        <form th:action="@{'/notifications/delete/' + ${notification.id}}"
+                              method="post" style="display:inline;"
+                              th:onsubmit="return confirm('Bạn có chắc muốn xóa thông báo này?')">
+                            <button class="btn btn-danger btn-sm" type="submit">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Nếu không có dữ liệu -->
+        <div th:if="${notificationPage.content.size() == 0}" class="alert alert-warning text-center mt-3">
+            Không có thông báo nào.
+        </div>
+    </div>
+</section>
+
+<!-- Phân trang -->
+<div class="d-flex justify-content-center mt-3">
+    <nav>
+        <ul class="pagination">
+            <li th:classappend="${notificationPage.first} ? 'disabled'" class="page-item">
+                <a th:href="@{'/notifications'(page=${notificationPage.number}, size=${pageSize})}" class="page-link">Trước</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link"
+                   th:text="'Trang ' + (${notificationPage.number + 1}) + '/' + ${notificationPage.totalPages}"></a>
+            </li>
+            <li th:classappend="${notificationPage.last} ? 'disabled'" class="page-item">
+                <a th:href="@{'/notifications'(page=${notificationPage.number + 2}, size=${pageSize})}" class="page-link">Sau</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="layout/footer :: footer"></div>
+</body>
+</html>

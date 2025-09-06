@@ -51,7 +51,8 @@ public enum ErrorCode {
     SURVEY_OPTION_NOT_FOUND(1036,"Không tìm thấy lựa chọn khảo sát", HttpStatus.BAD_REQUEST),
     ALREADY_VOTED(1037,"Bạn đã chọn phương án này rồi", HttpStatus.BAD_REQUEST),
     NOTIFICATION_NOT_FOUND(1038,"Không tìm thấy thông báo", HttpStatus.BAD_REQUEST),
-    VOTE_NOT_FOUND(1039,"Không tìm thấy bình chọn", HttpStatus.BAD_REQUEST);
+    VOTE_NOT_FOUND(1039,"Không tìm thấy bình chọn", HttpStatus.BAD_REQUEST),
+    INVALID_TARGET_TYPE(1040,"Không tìm thấy Type notifications",HttpStatus.BAD_REQUEST);
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;

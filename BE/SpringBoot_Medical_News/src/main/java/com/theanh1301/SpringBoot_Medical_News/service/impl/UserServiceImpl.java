@@ -247,4 +247,10 @@ public class UserServiceImpl implements  UserService {
     public Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable) {
         return userRepository.findAll(UserSpecification.filterByRequest(request), pageable).map(userMapper::toUserResponse);
     }
+
+    @Override
+    public UserResponse getUserResponseById(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return userMapper.toUserResponse(user);
+    }
 }

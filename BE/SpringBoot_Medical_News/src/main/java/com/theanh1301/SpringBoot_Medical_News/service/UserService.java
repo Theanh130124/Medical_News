@@ -29,7 +29,7 @@ public interface UserService extends UserDetailsService {
     long countAllUser();
     Page<UserResponse> getUserByRole(RoleName roleName , Pageable pageable);
     Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable);
-
+    UserResponse getUserResponseById(String id);
     UserUpdateRequest getUserUpdateRequestById(String id);
 
 

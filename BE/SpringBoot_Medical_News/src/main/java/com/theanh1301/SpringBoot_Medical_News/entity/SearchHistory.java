@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -38,6 +39,6 @@ public class SearchHistory {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "searched_at")
-    Instant searchedAt;
+    LocalDateTime searchedAt;
 
 }

@@ -1,0 +1,39 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chỉnh sửa thông báo</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<section class="container mt-4">
+    <h2 class="text-primary text-center mb-4">Chỉnh sửa thông báo</h2>
+
+    <!-- Hiển thị lỗi chung -->
+    <div th:if="${error}" class="alert alert-danger">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{'/notifications/edit/' + ${notificationResponse.id}}"
+          th:object="${notificationRequest}" method="post">
+
+        <!-- KHÔNG cần trường ẩn id vì đã dùng @PathVariable -->
+
+        <!-- Nội dung thông báo -->
+        <div class="mb-3">
+            <label for="message" class="form-label">Nội dung thông báo</label>
+            <textarea id="message" th:field="*{message}"
+                      class="form-control" rows="4" required></textarea>
+            <div class="text-danger" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div>
+        </div>
+
+        <!-- Buttons -->
+        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+        <a th:href="@{/notifications}" class="btn btn-secondary">Hủy</a>
+    </form>
+</section>
+
+<div th:replace="layout/footer :: footer"></div>
+</body>
+</html>

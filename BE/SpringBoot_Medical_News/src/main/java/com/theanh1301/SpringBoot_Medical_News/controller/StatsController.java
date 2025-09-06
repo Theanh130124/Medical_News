@@ -7,6 +7,7 @@ import com.theanh1301.SpringBoot_Medical_News.dto.request.StatsRequest;
 import com.theanh1301.SpringBoot_Medical_News.entity.Post;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.exception.AppException;
+import com.theanh1301.SpringBoot_Medical_News.service.PostService;
 import com.theanh1301.SpringBoot_Medical_News.service.StatsService;
 import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import lombok.AccessLevel;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class StatsController {
 
     StatsService statsService;
     PaginationProperties paginationProperties;
+    PostService postService;
 
     @GetMapping("/stats")
     public String statsForm(@ModelAttribute("statsRequest") StatsRequest statsRequest,
@@ -68,5 +71,14 @@ public class StatsController {
 
 
 
+
+
 }
+    @GetMapping("/posts/{id}")
+    public String getPostDetail(@PathVariable String id, Model model) {
+        Post post = postService.getPostById(id); // hoặc postService nếu bạn có
+        model.addAttribute("post", post);
+        return "post-detail"; // view mới
+    }
+
 }

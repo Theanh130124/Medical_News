@@ -17,12 +17,15 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/}">Hệ thống thông tin y tế trực tuyến</a>
                     </li>
-                    <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'DOCTOR')">
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/stats}">Thống kê</a>
                     </li>
 
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/certificate}">Xét duyệt</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" th:href="@{/notifications}">Quản lý thông báo</a>
                     </li>
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/create_doctor}">Tạo tài khoản bác sĩ</a>

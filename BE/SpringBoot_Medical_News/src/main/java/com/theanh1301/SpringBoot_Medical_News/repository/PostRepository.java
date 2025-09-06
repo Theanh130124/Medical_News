@@ -70,7 +70,7 @@ public interface PostRepository extends JpaRepository<Post, String> {
        OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PRIVATE
            AND p.user = :currentUser)
     ORDER BY p.createdAt DESC
-""")
+    """)
     Page<Post> findVisiblePosts(@Param("currentUser") User currentUser,
                                 @Param("friendIds") List<String> friendIds,
                                 Pageable pageable);
@@ -98,4 +98,35 @@ public interface PostRepository extends JpaRepository<Post, String> {
     ORDER BY p.createdAt DESC
     """)
     Page<Post> findPublicPostsByUserId(@Param("userId") String userId, Pageable pageable);
+
+
+    @Query("""
+    SELECT p FROM Post p
+    WHERE (p.title LIKE %:keyword% OR p.content LIKE %:keyword%)
+    AND (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PUBLIC
+        OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.FRIENDS_ONLY
+            AND p.user.id IN :friendIds)
+        OR (p.visibility = com.theanh1301.SpringBoot_Medical_News.enums.VisibilityPost.PRIVATE
+            AND p.user = :currentUser))
+    ORDER BY p.createdAt DESC
+    """)
+    Page<Post> searchPosts(@Param("keyword") String keyword,
+                           @Param("currentUser") User currentUser,
+                           @Param("friendIds") List<String> friendIds,
+                           Pageable pageable);
+
+    @Query(value = """
+    SELECT p.* FROM post p
+    WHERE (LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+        OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%')))
+      AND p.visibility = 'PUBLIC'
+    ORDER BY p.created_at DESC
+    """, countQuery = """
+    SELECT COUNT(*) FROM post p
+    WHERE (LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+        OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%')))
+      AND p.visibility = 'PUBLIC'
+    """,
+            nativeQuery = true)
+    Page<Post> searchPublicPosts(@Param("keyword") String keyword, Pageable pageable);
 }

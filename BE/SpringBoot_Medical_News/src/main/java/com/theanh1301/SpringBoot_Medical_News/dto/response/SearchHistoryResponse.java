@@ -1,20 +1,20 @@
 package com.theanh1301.SpringBoot_Medical_News.dto.response;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SearchHistoryResponse {
-
-    UserResponse user;
+    String id;
     String keyword;
-    Instant searchedAt;
+    LocalDateTime searchTime;
 
 }

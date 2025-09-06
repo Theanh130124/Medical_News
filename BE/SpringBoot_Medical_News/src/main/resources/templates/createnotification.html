@@ -1,0 +1,75 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tạo thông báo mới</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<section class="container mt-4">
+    <h2 class="text-primary text-center mb-4">Tạo thông báo mới</h2>
+
+    <div th:if="${error}" class="alert alert-danger">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success">
+        <span th:text="${success}"></span>
+    </div>
+
+    <form th:action="@{/notifications/create}" th:object="${notification}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Đối tượng nhận</label>
+            <select th:field="*{targetType}" class="form-select" required>
+                <option value="">-- Chọn đối tượng --</option>
+                <option value="ALL">Tất cả người dùng</option>
+                <option value="DOCTOR">Bác sĩ</option>
+                <option value="USER">Người dùng </option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('targetType')}" th:errors="*{targetType}"></div>
+        </div>
+
+        <div class="mb-3" id="userIdField" style="display: none;">
+            <label class="form-label">ID Người dùng</label>
+            <input type="text" th:field="*{userId}" class="form-control" placeholder="Nhập ID người dùng"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nội dung thông báo</label>
+            <textarea th:field="*{message}" class="form-control" rows="4" required
+                      placeholder="Nhập nội dung thông báo..."></textarea>
+            <div class="text-danger" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-success me-md-2">Tạo thông báo</button>
+            <a th:href="@{/notifications}" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const targetTypeSelect = document.querySelector('select[th\\:field="*{targetType}"]');
+        const userIdField = document.getElementById('userIdField');
+
+        function toggleUserIdField() {
+            if (targetTypeSelect.value === 'SPECIFIC') {
+                userIdField.style.display = 'block';
+            } else {
+                userIdField.style.display = 'none';
+            }
+        }
+
+        targetTypeSelect.addEventListener('change', toggleUserIdField);
+        toggleUserIdField();
+    });
+</script>
+
+<div th:replace="layout/footer :: footer"></div>
+</body>
+</html>

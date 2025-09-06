@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chi tiết bài viết</title>
+    <th:block th:replace="layout/base :: styles"></th:block>
+</head>
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<section class="container mt-4">
+    <!-- Tiêu đề bài viết -->
+    <h2 class="text-primary" th:text="${post.title}"></h2>
+
+    <!-- Thông tin người đăng -->
+    <div class="d-flex align-items-center mb-3">
+        <img th:src="@{${post.user.avatar}}" alt="Avatar" class="rounded-circle me-2"
+             style="width:50px;height:50px;object-fit:cover;">
+        <div>
+            <strong th:text="${post.user.firstName + ' ' + post.user.lastName}"></strong><br>
+            <span class="text-muted" th:text="${post.user.email}"></span>
+        </div>
+    </div>
+
+    <!-- Ngày tạo bài viết -->
+    <p class="text-muted">
+        Ngày tạo: <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}"></span>
+    </p>
+
+    <!-- Nội dung -->
+    <div th:utext="${post.content}"></div>
+
+    <!-- Ảnh trong bài viết -->
+    <div class="mt-3">
+        <div th:each="img : ${post.imagePosts}">
+            <img th:src="@{${img.url}}" class="img-fluid mb-2" style="max-width:100%;border-radius:8px;">
+        </div>
+    </div>
+</section>
+
+<div th:replace="layout/footer :: footer"></div>
+</body>
+</html>

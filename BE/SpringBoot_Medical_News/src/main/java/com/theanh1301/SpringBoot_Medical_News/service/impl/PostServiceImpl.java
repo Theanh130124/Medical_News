@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 @FieldDefaults(level = AccessLevel.PRIVATE , makeFinal = true)
 public class PostServiceImpl implements PostService {
 
+    static String SEARCH_POST_HISTORY_KEY = "search_post_history:";
     PostRepository postRepository;
     PostMapper postMapper;
     UserRepository userRepository;
@@ -300,5 +302,10 @@ public class PostServiceImpl implements PostService {
         surveyVoteRepository.delete(vote);
     }
 
-
+    @Override
+    public Post getPostById(String id) {
+        Post post =  postRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+        return post;
+    }
 }

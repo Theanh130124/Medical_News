@@ -4,6 +4,7 @@ package com.theanh1301.SpringBoot_Medical_News.repository;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.entity.Role;
 import com.theanh1301.SpringBoot_Medical_News.entity.User;
+import com.theanh1301.SpringBoot_Medical_News.enums.RoleName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,8 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
     Optional<User> findByUsername(String username); //Phải tự xử lý trường hợp null
     Optional<User> getUserByUsername(String username);
 
-
+    List<User> findByIsActiveTrue();
+    List<User> findByRoleNameAndIsActiveTrue(RoleName roleName);
     //Check warning
     @Query("SELECT u FROM User u")
     Page<User> getAllUsers(Pageable pageable);

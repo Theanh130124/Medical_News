@@ -22,5 +22,6 @@ public interface PostService {
     Page<PostResponse> getVisiblePosts(String currentUserId ,Pageable pageable);
     Page<PostResponse> getPublicNormalDoctorPostsOrderByReactions(Pageable pageable);
     void deleteSurveyVote(String optionId, String userId);
+    Post getPostById(String id);
 
 }
