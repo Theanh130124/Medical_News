@@ -70,6 +70,7 @@ export const endpoint = {
 
     'chats': '/chats',
     chatMessages: (chatId:string) => `/chats/${chatId}/messages`,
+    search_post : (keyword:string) => `/search/posts?keyword=${keyword}`,
     
 } 
 

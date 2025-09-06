@@ -107,7 +107,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
 
             friendIds.add(userId);
 
-            posts = postRepository.searchPosts(keyword, currentUser, friendIds, pageable);
+            posts = postRepository.searchDoctorPosts(keyword, currentUser, friendIds, pageable);
 
             // Lưu lịch sử tìm kiếm bài viết
             List<SearchHistory> existingHistories = searchHistoryRepository.findByUserAndKeyword(currentUser, keyword);
@@ -125,7 +125,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
                 searchHistoryRepository.save(existingHistory);
             }
         } else {
-            posts = postRepository.searchPublicPosts(keyword, pageable);
+            posts = postRepository.searchPublicDoctorPosts(keyword, pageable);
         }
 
         return convertToPostResponsePage(posts);

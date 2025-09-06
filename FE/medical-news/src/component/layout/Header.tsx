@@ -99,12 +99,13 @@ const Header = () => {
                 <span className={styles.subText}>Timeline</span>
               </Link>
             )}
-
+        
             <Link to="/news" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
               <i className="bi bi-newspaper me-1"></i>
               <span className={styles.navText}>Tin tức</span>
               <span className={styles.subText}>Xem ngay</span>
             </Link>
+         
           </Nav>
 
           <Nav className={styles.headerAuth}>

@@ -17,6 +17,7 @@ import Profile from './component/auth/Profile';
 import ProtectedRoute from './component/wrapper/ProtectedRoute';
 import OtherProfile from './component/auth/OtherProfile';
 import RoomChat from './component/RoomChat';
+import News from './component/News';
 
 
 
@@ -42,6 +43,7 @@ const App = () => {
           <Route path='/' element={<Home/>} />
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
+          <Route path='/news' element={<News/>}/>
           <Route path='/uploadCertification' element={
             <ProtectedRoute><UploadCertification/></ProtectedRoute>
           } />

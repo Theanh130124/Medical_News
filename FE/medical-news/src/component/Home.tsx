@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Post } from "../types/post";
 import Apis, { endpoint } from "../configs/Apis";
 import MySpinner from "./layout/MySpinner";
+import { useNavigate } from "react-router-dom";
 
 const slideItems = [
   { id: 1, title: "Tin tức y tế nóng hổi", desc: "Cập nhật các thông tin y tế mới nhất hàng ngày" },
@@ -25,6 +26,7 @@ const Home = () => {
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const loadTopPosts = async () => {
         try {
@@ -38,9 +40,9 @@ const Home = () => {
             setTopPosts((prev) => [...prev, ...newPosts]);
         }
 
-        // Nếu ít hơn pageSize (ví dụ 5 hay 10 tùy backend) thì coi như hết data
+
         if (newPosts.length === 0) {
-            setHasMore(false);
+            setHasMore(!res.data.result.last);
         }
         } catch (error) {
         console.error("Lỗi khi lấy top posts:", error);
@@ -165,9 +167,13 @@ const Home = () => {
                             {post.content.slice(0, 120)}...
                             </Card.Text>
 
-                            <Button variant="outline-primary" size="sm">
+                        <Button 
+                            variant="outline-primary" 
+                            size="sm"
+                            onClick={() => navigate(`/news?q=${encodeURIComponent(post.title)}`)}
+                        >
                             Xem chi tiết
-                            </Button>
+                        </Button>
                         </Card.Body>
                         </Card>
                     </Col>
