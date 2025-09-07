@@ -43,6 +43,15 @@ public class ApiFriendController {
         var res = friendService.updateRequest(request,firstUserId, secondUserId);
         return ApiResponse.<FriendResponse>builder().result(res).message("Cập nhật trạng thái thành công").build();
     }
+    @GetMapping("/{userId}/sent-requests")
+    public ApiResponse<Page<FriendResponse>> getSentRequests(
+            @PathVariable String userId,
+            Pageable pageable
+    ) {
+        return ApiResponse.<Page<FriendResponse>>builder()
+                .result(friendService.getSentRequests(userId, pageable))
+                .build();
+    }
 
     //Người first hoặc second có thể hủy
     @PreAuthorize(
@@ -81,4 +90,6 @@ public class ApiFriendController {
                 .message("Danh sách lời mời kết bạn")
                 .build();
     }
+
+
 }

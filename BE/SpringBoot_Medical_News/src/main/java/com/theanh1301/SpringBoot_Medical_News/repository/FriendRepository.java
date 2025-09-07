@@ -24,6 +24,7 @@ public interface FriendRepository extends JpaRepository<Friend,FriendId> {
     Page<Friend> findAllBySecondUserAndStatus(User user, FriendStatus status, Pageable pageable);
 
 
+
     @Query("""
     SELECT f FROM Friend f
     WHERE (f.firstUser = :user OR f.secondUser = :user)

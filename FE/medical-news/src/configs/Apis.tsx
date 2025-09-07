@@ -74,8 +74,11 @@ export const endpoint = {
     'accept_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
     'reject_friend': (friendId:string,secondId:string) => `/friends/${friendId}/${secondId}`,
 
+    sent_friend : (userId:string) => `/friends/${userId}/sent-requests`,
+
     //Follow
     'follow' : "/follows",
+    sent_follow : (userId:string) => `/follows/following/${userId}`,
     check_follow_status: (followerId: string, followingId: string) => `/follows/check?followerId=${followerId}&followingId=${followingId}`,
 
     'chats': '/chats',

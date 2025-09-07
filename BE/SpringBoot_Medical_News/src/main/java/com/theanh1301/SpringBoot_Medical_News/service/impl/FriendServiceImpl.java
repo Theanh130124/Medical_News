@@ -128,4 +128,14 @@ public class FriendServiceImpl implements FriendService {
                         : f.getFirstUser().getId())
                 .toList();
     }
+
+
+    @Override
+    public Page<FriendResponse> getSentRequests(String userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+        return friendRepository.findAllByFirstUserAndStatus(user, FriendStatus.PENDING, pageable)
+                .map(friendMapper::toFriendResponse);
+    }
 }

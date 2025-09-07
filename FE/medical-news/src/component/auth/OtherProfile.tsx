@@ -42,65 +42,93 @@ const OtherProfile = () => {
     fetchProfileUser();
   }, [userId, navigate]);
 
-  // Fetch relationship status
-  useEffect(() => {
-    if (!currentUser || !profileUser || currentUser.id === profileUser.id) return;
-    
-    const fetchRelationshipStatus = async () => {
-      try {
-        // Kiểm tra trạng thái bạn bè
-        const friendsRes = await authApis().get(endpoint.get_list_friends(currentUser.id));
-        const friendsList = friendsRes.data.result.content;
-        
-        const isFriend = friendsList.some((friend: any) => 
-          (friend.firstUserId.id === currentUser.id && friend.secondUserId.id === profileUser.id) ||
-          (friend.firstUserId.id === profileUser.id && friend.secondUserId.id === currentUser.id)
-        );
-        
-        if (isFriend) {
-          setFriendStatus("ACCEPTED");
-          setPendingRequestFrom(null);
-          return;
-        }
-        
-        // Kiểm tra lời mời kết bạn đang chờ xử lý
-        const pendingRes = await authApis().get(endpoint.friend_pending(currentUser.id));
-        const pendingRequests = pendingRes.data.result.content;
-        
-        const pendingRequest = pendingRequests.find((request: any) => 
-          (request.firstUserId.id === currentUser.id && request.secondUserId.id === profileUser.id) ||
-          (request.firstUserId.id === profileUser.id && request.secondUserId.id === currentUser.id)
-        );
-        
-        if (pendingRequest) {
-          setFriendStatus("PENDING");
-          // Xác định ai là người gửi lời mời
-          if (pendingRequest.firstUserId.id === currentUser.id) {
-            setPendingRequestFrom("YOU");
-          } else {
-            setPendingRequestFrom("THEM");
-          }
-        } else {
-          setFriendStatus(null);
-          setPendingRequestFrom(null);
-        }
-        
-        // Kiểm tra trạng thái theo dõi
+    // Fetch relationship status
+  // Sửa lại useEffect kiểm tra relationship status
+    useEffect(() => {
+      if (!currentUser || !profileUser || currentUser.id === profileUser.id) return;
+      
+      const fetchRelationshipStatus = async () => {
         try {
-          const followRes = await authApis().get(endpoint.check_follow_status(currentUser.id, profileUser.id));
-          setFollowStatus(followRes.data.isFollowing);
+          // Kiểm tra trạng thái bạn bè
+          const friendsRes = await authApis().get(endpoint.get_list_friends(currentUser.id));
+          const friendsList = friendsRes.data.result.content;
+          
+          const isFriend = friendsList.some((friend: any) => 
+            (friend.firstUserId.id === currentUser.id && friend.secondUserId.id === profileUser.id) ||
+            (friend.firstUserId.id === profileUser.id && friend.secondUserId.id === currentUser.id)
+          );
+          
+          if (isFriend) {
+            setFriendStatus("ACCEPTED");
+            setPendingRequestFrom(null);
+          } else {
+            // Kiểm tra lời mời kết bạn đang chờ xử lý
+            try {
+              const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
+              const sentRequests = sentRes.data.result.content;
+              
+              const sentRequest = sentRequests.find((request: any) => 
+                request.secondUserId.id === profileUser.id && request.status === "PENDING"
+              );
+              
+              if (sentRequest) {
+                setFriendStatus("PENDING");
+                setPendingRequestFrom("YOU");
+              } else {
+                // Kiểm tra xem profileUser đã gửi lời mời đến currentUser chưa
+                try {
+                  const receivedRes = await authApis().get(endpoint.sent_friend(profileUser.id));
+                  const receivedRequests = receivedRes.data.result.content;
+                  
+                  const receivedRequest = receivedRequests.find((request: any) => 
+                    request.secondUserId.id === currentUser.id && request.status === "PENDING"
+                  );
+                  
+                  if (receivedRequest) {
+                    setFriendStatus("PENDING");
+                    setPendingRequestFrom("THEM");
+                  } else {
+                    setFriendStatus(null);
+                    setPendingRequestFrom(null);
+                  }
+                } catch (error) {
+                  console.error("Lỗi kiểm tra lời mời đã nhận:", error);
+                  setFriendStatus(null);
+                  setPendingRequestFrom(null);
+                }
+              }
+            } catch (error) {
+              console.error("Lỗi kiểm tra lời mời đã gửi:", error);
+              setFriendStatus(null);
+              setPendingRequestFrom(null);
+            }
+          }
+          
+          // Kiểm tra trạng thái theo dõi - SỬA LỖI Ở ĐÂY
+          try {
+            // Sử dụng endpoint chính xác để lấy danh sách người mà currentUser đang theo dõi
+            // Giả sử endpoint là endpoint.get_following(currentUser.id)
+            const followRes = await authApis().get(endpoint.sent_follow(currentUser.id));
+            const followingList = followRes.data.result.content || [];
+            
+            // Kiểm tra xem currentUser có đang theo dõi profileUser không
+            const isFollowing = followingList.some((follow: any) => 
+              follow.followingId && follow.followingId.id === profileUser.id
+            );
+            
+            setFollowStatus(isFollowing);
+          } catch (error) {
+            console.error("Lỗi kiểm tra trạng thái theo dõi:", error);
+            setFollowStatus(false);
+          }
+          
         } catch (error) {
-          console.error("Lỗi kiểm tra trạng thái theo dõi:", error);
-          setFollowStatus(false);
+          console.error("Lỗi lấy trạng thái quan hệ:", error);
         }
-        
-      } catch (error) {
-        console.error("Lỗi lấy trạng thái quan hệ:", error);
-      }
-    };
-    
-    fetchRelationshipStatus();
-  }, [currentUser, profileUser, refreshFlag]);
+      };
+      
+      fetchRelationshipStatus();
+    }, [currentUser, profileUser, refreshFlag]);
 
   // Fetch posts
   useEffect(() => {
@@ -170,12 +198,12 @@ const OtherProfile = () => {
     
     setIsLoadingAction(true);
     try {
-      const pendingRes = await authApis().get(endpoint.friend_pending(currentUser.id));
-      const pendingRequests = pendingRes.data.result.content;
+      // Sử dụng endpoint mới để lấy danh sách lời mời đã gửi
+      const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
+      const sentRequests = sentRes.data.result.content;
       
-      const request = pendingRequests.find((req: any) => 
-        (req.firstUserId.id === currentUser.id && req.secondUserId.id === profileUser.id) ||
-        (req.firstUserId.id === profileUser.id && req.secondUserId.id === currentUser.id)
+      const request = sentRequests.find((req: any) => 
+        req.secondUserId.id === profileUser.id && req.status === "PENDING"
       );
       
       if (request) {
@@ -292,69 +320,44 @@ const OtherProfile = () => {
               {currentUser && currentUser.id !== profileUser.id && (
                 <div className="mt-3 d-flex flex-wrap justify-content-center gap-2">
                   {/* Nút kết bạn - chỉ hiện khi không có lời mời nào giữa 2 người */}
-                  {friendStatus === null && (
-                    <Button 
-                      variant="primary" 
-                      size="sm" 
-                      onClick={handleSendFriendRequest}
-                      disabled={isLoadingAction}
-                    >
-                      {isLoadingAction ? "Đang xử lý..." : "Kết bạn"}
-                    </Button>
-                  )}
-                  
-                  {/* Nút hủy lời mời - khi bạn là người gửi và đang ở trạng thái PENDING */}
-                  {friendStatus === "PENDING" && pendingRequestFrom === "YOU" && (
-                    <Button 
-                      variant="outline-danger" 
-                      size="sm" 
-                      onClick={handleCancelFriendRequest}
-                      disabled={isLoadingAction}
-                    >
-                      {isLoadingAction ? "Đang xử lý..." : "Hủy lời mời"}
-                    </Button>
-                  )}
-                  
-                  {/* Nút chấp nhận và từ chối - khi người khác gửi cho bạn */}
-                  {friendStatus === "PENDING" && pendingRequestFrom === "THEM" && (
-                    <>
-                      <Button 
-                        variant="success" 
-                        size="sm" 
-                        onClick={handleAcceptFriendRequest}
-                        disabled={isLoadingAction}
-                      >
-                        {isLoadingAction ? "Đang xử lý..." : "Chấp nhận"}
-                      </Button>
-                      <Button 
-                        variant="outline-danger" 
-                        size="sm" 
-                        onClick={handleCancelFriendRequest}
-                        disabled={isLoadingAction}
-                      >
-                        {isLoadingAction ? "Đang xử lý..." : "Từ chối"}
-                      </Button>
-                    </>
-                  )}
-                  
-                  {/* Nút hủy kết bạn - khi đã là bạn (trạng thái ACCEPTED) */}
-                  {friendStatus === "ACCEPTED" && (
-                    <Button 
-                      variant="outline-danger" 
-                      size="sm" 
-                      onClick={handleUnfriend}
-                      disabled={isLoadingAction}
-                    >
-                      {isLoadingAction ? "Đang xử lý..." : "Hủy kết bạn"}
-                    </Button>
-                  )}
-                  
-                  {/* Badge thông báo trạng thái */}
-                  {friendStatus === "PENDING" && (
-                    <Badge bg="warning" text="dark" className="mt-2">
-                      {pendingRequestFrom === "YOU" ? "Đã gửi lời mời" : "Đã nhận lời mời"}
-                    </Badge>
-                  )}
+              {friendStatus === null && (
+                <Button 
+                  variant="primary" 
+                  size="sm" 
+                  onClick={handleSendFriendRequest}
+                  disabled={isLoadingAction}
+                >
+                  {isLoadingAction ? "Đang xử lý..." : "Kết bạn"}
+                </Button>
+              )}
+
+              {friendStatus === "PENDING" && pendingRequestFrom === "YOU" && (
+                <Badge bg="warning" text="dark" className="mt-2">
+                  Đã gửi lời mời
+                </Badge>
+              )}
+
+              {friendStatus === "PENDING" && pendingRequestFrom === "THEM" && (
+                <>
+                  <Button 
+                    variant="success" 
+                    size="sm" 
+                    onClick={handleAcceptFriendRequest}
+                    disabled={isLoadingAction}
+                  >
+                    {isLoadingAction ? "Đang xử lý..." : "Chấp nhận"}
+                  </Button>
+                  <Button 
+                    variant="outline-danger" 
+                    size="sm" 
+                    onClick={handleCancelFriendRequest}
+                    disabled={isLoadingAction}
+                  >
+                    {isLoadingAction ? "Đang xử lý..." : "Từ chối"}
+                  </Button>
+                </>
+              )}
+
                   
                   {friendStatus === "ACCEPTED" && (
                     <Badge bg="success" className="mt-2">

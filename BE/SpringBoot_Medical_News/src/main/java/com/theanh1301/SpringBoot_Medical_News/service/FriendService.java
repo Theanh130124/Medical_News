@@ -22,5 +22,6 @@ public interface FriendService {
     boolean canAccessFriend(Page<FriendResponse> page, String currentUser);
     List<String> getFriendIds(String userId);
     boolean canAccessListFriend(Page<FriendResponse> page, String currentUser);
+    Page<FriendResponse> getSentRequests(String userId, Pageable pageable);
 
 }
