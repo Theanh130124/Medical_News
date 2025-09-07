@@ -52,7 +52,9 @@ public enum ErrorCode {
     ALREADY_VOTED(1037,"Bạn đã chọn phương án này rồi", HttpStatus.BAD_REQUEST),
     NOTIFICATION_NOT_FOUND(1038,"Không tìm thấy thông báo", HttpStatus.BAD_REQUEST),
     VOTE_NOT_FOUND(1039,"Không tìm thấy bình chọn", HttpStatus.BAD_REQUEST),
-    INVALID_TARGET_TYPE(1040,"Không tìm thấy Type notifications",HttpStatus.BAD_REQUEST);
+    INVALID_TARGET_TYPE(1040,"Không tìm thấy Type notifications",HttpStatus.BAD_REQUEST),
+    PASSWORD_CONFIRMATION_MISMATCH(1041,"Mật khẩu xác nhận không khớp",HttpStatus.BAD_REQUEST),
+    OLD_PASSWORD_INCORRECT(1042,"Mật khẩu cũ không chính xác",HttpStatus.BAD_REQUEST);
     private final int code;
     private final String msg;
     private final HttpStatusCode statusCode;

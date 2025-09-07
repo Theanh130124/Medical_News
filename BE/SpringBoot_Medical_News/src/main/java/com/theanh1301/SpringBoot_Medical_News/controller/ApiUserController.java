@@ -1,10 +1,12 @@
 package com.theanh1301.SpringBoot_Medical_News.controller;
 
 import com.theanh1301.SpringBoot_Medical_News.config.PaginationProperties;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.ChangePasswordRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.UserResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.User;
 import com.theanh1301.SpringBoot_Medical_News.service.UserService;
 import com.theanh1301.SpringBoot_Medical_News.utils.PaginationUtils;
 import jakarta.validation.Valid;
@@ -17,7 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -121,6 +126,22 @@ public class ApiUserController {
                 .result(userService.getUserResponseByUsername(principal.getName()))
                 .message("Lấy thông tin người dùng hiện tại thành công").build();
     }
+
+
+    @PostMapping("/change-password")
+    public ApiResponse<Void> changePassword(
+            @RequestBody @Valid ChangePasswordRequest request,
+            Authentication authentication
+    ) {
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        userService.changePassword(user.getId(), request);
+        return ApiResponse.<Void>builder()
+                .message("Đổi mật khẩu thành công")
+                .build();
+    }
+
+
 
 
 

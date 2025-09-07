@@ -39,6 +39,9 @@ export const endpoint = {
     //profile
     get_post_userId : (userId: string) => `/posts/user/${userId}`,
     get_list_friends: (userId: string) => `/friends/${userId}`,
+    update_profile_user :(userId:string) => `/users/${userId}`,
+    update_doctor : (doctorId:string) => `/doctors/${doctorId}`,
+    'change_password' :'/users/change-password',
 
 
 

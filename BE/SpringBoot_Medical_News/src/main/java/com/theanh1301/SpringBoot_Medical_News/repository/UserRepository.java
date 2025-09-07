@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -73,4 +74,6 @@ public interface UserRepository extends JpaRepository<User,String> , JpaSpecific
                                 @Param("year") Integer year);
     @Query("SELECT u FROM User u WHERE CONCAT(u.firstName, ' ', u.lastName) LIKE %:keyword%")
     Page<User> searchUserByFullName(@Param("keyword") String keyword, Pageable pageable);
+
+
 }

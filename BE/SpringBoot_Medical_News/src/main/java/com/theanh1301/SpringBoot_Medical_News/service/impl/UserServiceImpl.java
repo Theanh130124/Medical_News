@@ -3,6 +3,7 @@ package com.theanh1301.SpringBoot_Medical_News.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.ChangePasswordRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
@@ -33,7 +34,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,8 +44,6 @@ import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -157,9 +155,7 @@ public class UserServiceImpl implements  UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
         userMapper.updateUser(user, request); //   mapstruct các trg kia
-        if(request.getPassword() != null && !request.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
+
         MultipartFile avatar = request.getAvatar();
         //Đưa multipart và string cho user nhận
         if (avatar != null && !avatar.isEmpty()) {
@@ -252,5 +248,25 @@ public class UserServiceImpl implements  UserService {
     public UserResponse getUserResponseById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public void changePassword(String userId, ChangePasswordRequest request) {
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_CONFIRMATION_MISMATCH);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.OLD_PASSWORD_INCORRECT);
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
     }
 }

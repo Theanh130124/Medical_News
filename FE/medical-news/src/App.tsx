@@ -18,6 +18,7 @@ import ProtectedRoute from './component/wrapper/ProtectedRoute';
 import OtherProfile from './component/auth/OtherProfile';
 import RoomChat from './component/RoomChat';
 import News from './component/News';
+import EditProfile from './component/auth/EditProfile';
 
 
 
@@ -28,7 +29,7 @@ const App = () => {
 
   const [user, dispatch] = useReducer(MyUserReducer, cookie.load('user') || null);
 
-
+  
 
 
 
@@ -60,8 +61,12 @@ const App = () => {
             <ProtectedRoute><Profile/></ProtectedRoute>
           } />
 
-                    <Route path='/chat' element={
+          <Route path='/chat' element={
             <ProtectedRoute><RoomChat/></ProtectedRoute>
+          } />
+
+          <Route path='/editProfile' element={
+            <ProtectedRoute><EditProfile/></ProtectedRoute>
           } />
 
         </Routes>

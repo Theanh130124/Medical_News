@@ -60,7 +60,7 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       <strong>Bình luận:</strong>
       {post.comments?.map((c: any, index: number) => {
         const canEditComment = c.userResponse?.id === user?.id;
-        const canDeleteComment = canEditComment || user?.role === "ADMIN";
+        const canDeleteComment = canEditComment || user?.role?.name === "ADMIN";
         
         return (
           <Card key={c.id ?? `${post.id}-comment-${index}`} className="mt-2 p-2">

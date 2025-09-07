@@ -1,5 +1,6 @@
 package com.theanh1301.SpringBoot_Medical_News.service;
 
+import com.theanh1301.SpringBoot_Medical_News.dto.request.ChangePasswordRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.DoctorSearchRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserCreationRequest;
 import com.theanh1301.SpringBoot_Medical_News.dto.request.UserUpdateRequest;
@@ -31,6 +32,6 @@ public interface UserService extends UserDetailsService {
     Page<UserResponse> searchDoctors(DoctorSearchRequest request, Pageable pageable);
     UserResponse getUserResponseById(String id);
     UserUpdateRequest getUserUpdateRequestById(String id);
-
+    void changePassword(String userId, ChangePasswordRequest request);
 
 }

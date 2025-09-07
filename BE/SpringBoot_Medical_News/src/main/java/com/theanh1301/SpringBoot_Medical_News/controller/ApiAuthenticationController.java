@@ -2,15 +2,15 @@ package com.theanh1301.SpringBoot_Medical_News.controller;
 
 
 import com.nimbusds.jose.JOSEException;
-import com.theanh1301.SpringBoot_Medical_News.dto.request.AuthenticationRequest;
-import com.theanh1301.SpringBoot_Medical_News.dto.request.IntrospectRequest;
-import com.theanh1301.SpringBoot_Medical_News.dto.request.LogoutRequest;
-import com.theanh1301.SpringBoot_Medical_News.dto.request.RefreshTokenRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.*;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.ApiResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.AuthenticationResponse;
 import com.theanh1301.SpringBoot_Medical_News.dto.response.IntrospectResponse;
 import com.theanh1301.SpringBoot_Medical_News.service.AuthenticationService;
+import com.theanh1301.SpringBoot_Medical_News.service.UserService;
 import com.theanh1301.SpringBoot_Medical_News.service.impl.AuthenticationServiceImpl;
+import com.theanh1301.SpringBoot_Medical_News.service.impl.UserServiceImpl;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,6 +29,7 @@ public class ApiAuthenticationController {
 
 
     AuthenticationService authenticationService;
+    UserService userService;
 
 
     @PostMapping("/login")
@@ -53,6 +54,8 @@ public class ApiAuthenticationController {
         var res = authenticationService.refreshToken(request);
         return ApiResponse.<AuthenticationResponse>builder().result(res).build();
     }
+
+
 
 
 }

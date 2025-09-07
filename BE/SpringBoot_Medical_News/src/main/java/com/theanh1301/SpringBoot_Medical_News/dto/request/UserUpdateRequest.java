@@ -19,8 +19,7 @@ import java.time.LocalDate;
 public class UserUpdateRequest {
 
     String id;
-    @Size(min=8, max=30 , message ="PASSWORD_INVALID")
-    String password;
+
 
     String firstName;
     String lastName;
