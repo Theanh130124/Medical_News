@@ -152,7 +152,7 @@ const PostList = ({
               )}
 
               {/* Survey (nếu có) */}
-              {post.surveyQuestion && (
+              {post.type === "SURVEY" && post.surveyOptions && (
                 <div className={styles.surveySection}>
                   <SurveyVote post={post} onVoteUpdate={onVoteUpdate} />
                 </div>

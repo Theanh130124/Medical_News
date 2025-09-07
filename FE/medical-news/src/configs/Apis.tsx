@@ -50,6 +50,12 @@ export const endpoint = {
 
 
 
+    //notification
+
+    all_notification : (userId:string) => `/notifications/user/${userId}`,
+    read_notification : (id:string) => `/notifications/${id}/read`,
+    read_all_notification : (userId:string) => `/notifications/user/${userId}/read-all`,
+
     //Comment
     'create_comment':'/comments',
     update_comment: (commentId: string) => `/comments/${commentId}`,

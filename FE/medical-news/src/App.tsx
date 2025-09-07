@@ -45,8 +45,7 @@ const App = () => {
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
           <Route path='/news' element={<News/>}/>
-          <Route path='/uploadCertification' element={
-            <ProtectedRoute><UploadCertification/></ProtectedRoute>
+          <Route path='/uploadCertification' element={<UploadCertification/> 
           } />
 
             <Route path='/otherprofile/:userId' element={

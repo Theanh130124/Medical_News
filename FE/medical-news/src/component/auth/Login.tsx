@@ -62,8 +62,8 @@ const Login = () => {
             console.log(userData);
             if(userData.role?.name === "DOCTOR" && !userData.isActive){
                 sessionStorage.setItem("doctorId", userData.doctor.id);
-                showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!","error");
                 nav("/uploadCertification");
+                showCustomToast("Tài khoản chưa được kích hoạt. Vui lòng cung cấp chứng chỉ hành nghề cho admin để kích hoạt tài khoản!","error");
                 console.log(userData);
                 return;
             }
