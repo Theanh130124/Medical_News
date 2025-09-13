@@ -49,13 +49,7 @@ public class SecurityConfig {
             "/api/certificate",
             "/api/posts/public/normal/doctor/top-reactions",
             "/api/search/posts"
-
-
-
      };
-
-
-
 
     @Value("${jwt.signerKey}")
     @NonFinal

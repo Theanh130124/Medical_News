@@ -1,3 +1,140 @@
+
+<h1>TOPIC : MEDICAL NEWS SYSTEM INTEGRATED WITH CHATBOT TO CONSULT COMMON DISEASES</h1>
+
+
+<h1>📁Requirements for the Medical News System Integrated with Chatbot</h1>
+1. General Objective
+
+Develop a medical news system that serves the community.
+
+Integrate social network features and health-supporting utilities for searching and consulting.
+
+2. User Roles
+
+Administrator (Admin)
+
+Manage users, doctors, posts, and system activities.
+
+Approve or remove any content if necessary.
+
+User
+
+Register an account with profile picture.
+
+Access personal profile and timeline.
+
+Doctor
+
+Account created by the Admin.
+
+Required to verify medical license before being allowed to operate on the system.
+
+3. Account and Profile
+
+Every account includes:
+
+A personal profile page.
+
+A timeline to track posted articles.
+
+4. Post and Interaction Features
+
+Users and doctors can:
+
+Create new posts.
+
+Comment and react with emotions (like, haha, heart, sad, angry).
+
+Post owner can:
+
+Lock comments.
+
+Edit or delete their own posts.
+
+Comments can:
+
+Be edited only by the comment’s author.
+
+Be deleted by either the Admin or the comment’s author.
+
+Admin has the right to:
+
+Remove any post if necessary.
+
+5. Search and History
+
+Support searching for:
+
+Users.
+
+Posts.
+
+System stores recent search history and allows users to clear it.
+
+6. Statistics and Analytics
+
+Admin dashboard includes:
+
+Number of users.
+
+Number of posts by year, month, and quarter.
+
+Data presented in visual charts/graphs.
+
+7. Real-time Communication
+
+Chat system: Integrated via Firebase for real-time messaging.
+
+Video call: Implemented using WebRTC.
+
+Social interactions: Add friends, follow users, receive activity notifications.
+
+8. Medical News Integration
+
+System fetches medical news from trusted sources.
+
+News articles are categorized by disease groups.
+
+Users can comment and rate medical news.
+
+9. Chatbot for Health Consultation
+
+Integrated medical chatbot powered by:
+
+RAG model (Retrieval-Augmented Generation).
+
+LangChain + Flask for implementation.
+
+Provides basic consultation for patients before meeting a doctor.
+
+10. Technology Stack
+
+Backend: Spring Boot.
+
+Frontend: ReactJS.
+
+Ensures security, performance, and user experience.
+
+11. Vision
+
+Not only a medical news-sharing platform, but also a community hub for health exchange and comprehensive support.
+
+
+<h1>📦Database Schema Diagram</h1>
+
+![alt text](image-1.png)
+
+<h1>💻System Architecture</h1>
+
+![alt text](image-2.png)
+
+<h1>RESULT</h1>
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+![alt text](image-5.png)
 # SpringBoot_App
 
 industry project
