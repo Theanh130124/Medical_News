@@ -128,7 +128,8 @@ Not only a medical news-sharing platform, but also a community hub for health ex
 
 <h1>💻System Architecture</h1>
 
-![alt text](image-2.png)
+<img width="756" height="791" alt="image" src="https://github.com/user-attachments/assets/5fdb35f1-2273-4e15-8b73-0e3db36589c1" />
+
 
 <h1>RESULT</h1>
 
