@@ -1,6 +1,8 @@
 
 <h1>TOPIC : MEDICAL NEWS SYSTEM INTEGRATED WITH CHATBOT TO CONSULT COMMON DISEASES</h1>
 
+<h1>Link report </h1>
+<a href="https://drive.google.com/drive/folders/1gRYqlxZ1F99dh48N-4cUAWh_XrExIZ7h?usp=drive_link" alt"Link report">Click here</a>
 
 <h1>📁Requirements for the Medical News System Integrated with Chatbot</h1>
 1. General Objective
