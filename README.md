@@ -237,4 +237,16 @@ yarn start
 
 ```
 
+<h1>RUN PROJECT</h1>
 
+```
+1. Run Docker -> container : spring-MySQL - lastest  + peerJS
+
+2. BE: Select  SpringBoot_Medical_News  -> Run  :   http://localhost:8080/SpringBoot_Medical_News    (admin - pass:12345678)
+
+3. FE : Select Fe  , cd medical-new : yarn start   || cd medical-new cd function : npm run serve
+
+4. Run chatbot in huggingface
+
+
+```
