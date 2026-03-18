@@ -1,0 +1,130 @@
+package com.theanh1301.SpringBoot_Medical_News.service.impl;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.theanh1301.SpringBoot_Medical_News.dto.request.ChatMessageRequest;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.ChatConversationResponse;
+import com.theanh1301.SpringBoot_Medical_News.dto.response.ChatMessageResponse;
+import com.theanh1301.SpringBoot_Medical_News.entity.*;
+import com.theanh1301.SpringBoot_Medical_News.mapper.ChatMapper;
+import com.theanh1301.SpringBoot_Medical_News.repository.*;
+import com.theanh1301.SpringBoot_Medical_News.service.ChatService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class ChatServiceImpl implements ChatService {
+
+    private final ChatConversationRepository conversationRepo;
+    private final ChatMessageRepository messageRepo;
+    private final UserRepository userRepo;
+    private final ChatMapper chatMapper;
+    private final Cloudinary cloudinary;
+
+    @Override
+    public ChatConversationResponse createConversation(String userId, String title) {
+
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+
+        ChatConversation conversation = ChatConversation.builder()
+                .user(user)
+                .title(title != null ? title : "Cuộc trò chuyện mới")
+                .createdAt(Instant.now())
+                .updatedAt(Instant.now())
+                .build();
+
+        return chatMapper.toConversationResponse(conversationRepo.save(conversation));
+    }
+
+    @Override
+    public List<ChatConversationResponse> getUserConversations(String userId) {
+        return conversationRepo.findByUserIdOrderByCreatedAtDesc(userId)
+                .stream()
+                .map(chatMapper::toConversationResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ChatMessageResponse> getMessagesByConversation(String conversationId, String userId) {
+
+        ChatConversation conversation = conversationRepo.findById(conversationId)
+                .orElseThrow(() -> new RuntimeException("Conversation không tồn tại"));
+
+        //  check owner
+        if (!conversation.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Không có quyền truy cập");
+        }
+
+        return messageRepo.findByConversationIdOrderByTimestampAsc(conversationId)
+                .stream()
+                .map(chatMapper::toMessageResponse)
+                .toList();
+    }
+
+    @Override
+    public void deleteConversation(String conversationId, String userId) {
+
+        ChatConversation conversation = conversationRepo.findById(conversationId)
+                .orElseThrow(() -> new RuntimeException("Conversation không tồn tại"));
+
+        if (!conversation.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Không có quyền xoá");
+        }
+
+        conversationRepo.delete(conversation);
+    }
+
+    @Override
+    public ChatMessageResponse sendMessage(String conversationId, String userId, ChatMessageRequest request) {
+
+        ChatConversation conversation = conversationRepo.findById(conversationId).orElseThrow();
+        User user = userRepo.findById(userId).orElseThrow();
+
+        String imageUrl = null;
+        boolean hasImage = false;
+
+        // upload ảnh giống user
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+            try {
+                Map res = cloudinary.uploader().upload(
+                        request.getImage().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto")
+                );
+                imageUrl = res.get("secure_url").toString();
+                hasImage = true;
+            } catch (IOException e) {
+                throw new RuntimeException("Upload image failed");
+            }
+        }
+
+        ChatMessage message = ChatMessage.builder()
+                .conversation(conversation)
+                .user(user)
+                .content(request.getContent())
+                .messageType(request.getMessageType())
+                .imageUrl(imageUrl)
+                .hasImage(hasImage)
+                .timestamp(Instant.now())
+                .build();
+
+        return chatMapper.toMessageResponse(messageRepo.save(message));
+    }
+
+    @Override
+    public List<ChatMessageResponse> getMessages(String conversationId) {
+
+        return messageRepo.findByConversationIdOrderByTimestampAsc(conversationId)
+                .stream()
+                .map(chatMapper::toMessageResponse)
+                .toList();
+    }
+}
