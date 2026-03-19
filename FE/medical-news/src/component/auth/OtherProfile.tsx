@@ -1,452 +1,396 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, createElement } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
 import { useNavigate, useParams } from "react-router-dom";
 import { authApis, endpoint } from "../../configs/Apis";
 import { handleApiError } from "../../utils/errorHandler";
-import { Card, Col, Container, Image, Row, Button, ListGroup, Badge } from "react-bootstrap";
 import MySpinner from "../layout/MySpinner";
-import styles from "./Styles/profile.module.css";
+import styles from "./Styles/otherprofile.module.css";
 import { showCustomToast } from "../layout/MyToaster";
 import PrivacyIcon from "../../utils/privacyIcon";
+import {
+    FiMail, FiPhone, FiMapPin, FiCalendar,
+    FiUserPlus, FiUserCheck, FiUserX, FiChevronDown,
+    FiMessageSquare, FiAward, FiBriefcase, FiBook, FiCamera
+} from "react-icons/fi";
+import { RiHospitalLine } from "react-icons/ri";
+
+const ico = (C: any, size: number) => createElement(C, { size });
 
 const OtherProfile = () => {
-  const currentUser = useContext(MyUserContext);
-  const { userId } = useParams();
-  const navigate = useNavigate();
-  const [profileUser, setProfileUser] = useState<any>(null);
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [refreshFlag, setRefreshFlag] = useState(0);
-  const [friendStatus, setFriendStatus] = useState<string | null>(null);
-  const [followStatus, setFollowStatus] = useState<boolean>(false);
-  const [isLoadingAction, setIsLoadingAction] = useState(false);
-  const [pendingRequestFrom, setPendingRequestFrom] = useState<string | null>(null);
+    const currentUser = useContext(MyUserContext);
+    const { userId }  = useParams();
+    const navigate    = useNavigate();
 
-  // Fetch profile user info
-  useEffect(() => {
-    if (!userId) return;
-    
-    const fetchProfileUser = async () => {
-      try {
-        const res = await authApis().get(endpoint.get_otheruser_by_id(userId));
-        setProfileUser(res.data.result);
-      } catch (error) {
-        console.error("Lỗi lấy thông tin người dùng:", error);
-        handleApiError(error, "Không thể tải thông tin người dùng");
-        navigate(-1);
-      }
-    };
-    
-    fetchProfileUser();
-  }, [userId, navigate]);
+    const [profileUser,       setProfileUser]       = useState<any>(null);
+    const [posts,             setPosts]             = useState<any[]>([]);
+    const [loading,           setLoading]           = useState(false);
+    const [page,              setPage]              = useState(0);
+    const [hasMore,           setHasMore]           = useState(true);
+    const [refreshFlag,       setRefreshFlag]       = useState(0);
+    const [friendStatus,      setFriendStatus]      = useState<string | null>(null);
+    const [followStatus,      setFollowStatus]      = useState(false);
+    const [isLoadingAction,   setIsLoadingAction]   = useState(false);
+    const [pendingRequestFrom, setPendingRequestFrom] = useState<string | null>(null);
+
+    // Fetch profile user
+    useEffect(() => {
+        if (!userId) return;
+        const fetch = async () => {
+            try {
+                const res = await authApis().get(endpoint.get_otheruser_by_id(userId));
+                setProfileUser(res.data.result);
+            } catch (error) {
+                handleApiError(error, "Không thể tải thông tin người dùng");
+                navigate(-1);
+            }
+        };
+        fetch();
+    }, [userId, navigate]);
 
     // Fetch relationship status
-  // Sửa lại useEffect kiểm tra relationship status
     useEffect(() => {
-      if (!currentUser || !profileUser || currentUser.id === profileUser.id) return;
-      
-      const fetchRelationshipStatus = async () => {
-        try {
-          // Kiểm tra trạng thái bạn bè
-          const friendsRes = await authApis().get(endpoint.get_list_friends(currentUser.id));
-          const friendsList = friendsRes.data.result.content;
-          
-          const isFriend = friendsList.some((friend: any) => 
-            (friend.firstUserId.id === currentUser.id && friend.secondUserId.id === profileUser.id) ||
-            (friend.firstUserId.id === profileUser.id && friend.secondUserId.id === currentUser.id)
-          );
-          
-          if (isFriend) {
-            setFriendStatus("ACCEPTED");
-            setPendingRequestFrom(null);
-          } else {
-            // Kiểm tra lời mời kết bạn đang chờ xử lý
+        if (!currentUser || !profileUser || currentUser.id === profileUser.id) return;
+        const fetchRelationship = async () => {
             try {
-              const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
-              const sentRequests = sentRes.data.result.content;
-              
-              const sentRequest = sentRequests.find((request: any) => 
-                request.secondUserId.id === profileUser.id && request.status === "PENDING"
-              );
-              
-              if (sentRequest) {
-                setFriendStatus("PENDING");
-                setPendingRequestFrom("YOU");
-              } else {
-                // Kiểm tra xem profileUser đã gửi lời mời đến currentUser chưa
-                try {
-                  const receivedRes = await authApis().get(endpoint.sent_friend(profileUser.id));
-                  const receivedRequests = receivedRes.data.result.content;
-                  
-                  const receivedRequest = receivedRequests.find((request: any) => 
-                    request.secondUserId.id === currentUser.id && request.status === "PENDING"
-                  );
-                  
-                  if (receivedRequest) {
-                    setFriendStatus("PENDING");
-                    setPendingRequestFrom("THEM");
-                  } else {
-                    setFriendStatus(null);
-                    setPendingRequestFrom(null);
-                  }
-                } catch (error) {
-                  console.error("Lỗi kiểm tra lời mời đã nhận:", error);
-                  setFriendStatus(null);
-                  setPendingRequestFrom(null);
+                const friendsRes = await authApis().get(endpoint.get_list_friends(currentUser.id));
+                const friendsList = friendsRes.data.result.content;
+                const isFriend = friendsList.some((f: any) =>
+                    (f.firstUserId.id === currentUser.id && f.secondUserId.id === profileUser.id) ||
+                    (f.firstUserId.id === profileUser.id && f.secondUserId.id === currentUser.id)
+                );
+                if (isFriend) {
+                    setFriendStatus("ACCEPTED"); setPendingRequestFrom(null);
+                } else {
+                    try {
+                        const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
+                        const sent = sentRes.data.result.content.find((r: any) =>
+                            r.secondUserId.id === profileUser.id && r.status === "PENDING"
+                        );
+                        if (sent) { setFriendStatus("PENDING"); setPendingRequestFrom("YOU"); }
+                        else {
+                            try {
+                                const recvRes = await authApis().get(endpoint.sent_friend(profileUser.id));
+                                const recv = recvRes.data.result.content.find((r: any) =>
+                                    r.secondUserId.id === currentUser.id && r.status === "PENDING"
+                                );
+                                if (recv) { setFriendStatus("PENDING"); setPendingRequestFrom("THEM"); }
+                                else { setFriendStatus(null); setPendingRequestFrom(null); }
+                            } catch { setFriendStatus(null); setPendingRequestFrom(null); }
+                        }
+                    } catch { setFriendStatus(null); setPendingRequestFrom(null); }
                 }
-              }
-            } catch (error) {
-              console.error("Lỗi kiểm tra lời mời đã gửi:", error);
-              setFriendStatus(null);
-              setPendingRequestFrom(null);
-            }
-          }
-          
-          // Kiểm tra trạng thái theo dõi - SỬA LỖI Ở ĐÂY
-          try {
-            // Sử dụng endpoint chính xác để lấy danh sách người mà currentUser đang theo dõi
-            // Giả sử endpoint là endpoint.get_following(currentUser.id)
-            const followRes = await authApis().get(endpoint.sent_follow(currentUser.id));
-            const followingList = followRes.data.result.content || [];
-            
-            // Kiểm tra xem currentUser có đang theo dõi profileUser không
-            const isFollowing = followingList.some((follow: any) => 
-              follow.followingId && follow.followingId.id === profileUser.id
-            );
-            
-            setFollowStatus(isFollowing);
-          } catch (error) {
-            console.error("Lỗi kiểm tra trạng thái theo dõi:", error);
-            setFollowStatus(false);
-          }
-          
-        } catch (error) {
-          console.error("Lỗi lấy trạng thái quan hệ:", error);
-        }
-      };
-      
-      fetchRelationshipStatus();
+                try {
+                    const followRes = await authApis().get(endpoint.sent_follow(currentUser.id));
+                    const isFollowing = (followRes.data.result.content || []).some(
+                        (f: any) => f.followingId?.id === profileUser.id
+                    );
+                    setFollowStatus(isFollowing);
+                } catch { setFollowStatus(false); }
+            } catch (error) { console.error(error); }
+        };
+        fetchRelationship();
     }, [currentUser, profileUser, refreshFlag]);
 
-  // Fetch posts
-  useEffect(() => {
-    if (!profileUser) return;
-    
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const res = await authApis().get(endpoint.get_post_userId(profileUser.id) + `?page=${page}`);
-        const newPosts = res.data.result.content || [];
-        setHasMore(page < res.data.result.totalPages - 1);
+    // Fetch posts
+    useEffect(() => {
+        if (!profileUser) return;
+        const fetchPosts = async () => {
+            setLoading(true);
+            try {
+                const res = await authApis().get(endpoint.get_post_userId(profileUser.id) + `?page=${page}`);
+                const newPosts = res.data.result.content || [];
+                setHasMore(page < res.data.result.totalPages - 1);
+                setPosts(prev => page === 0 ? newPosts : [...prev, ...newPosts]);
+            } catch (error) { console.error(error); }
+            finally { setLoading(false); }
+        };
+        fetchPosts();
+    }, [profileUser, page, refreshFlag]);
 
-        if (page === 0) {
-          setPosts(newPosts);
-        } else {
-          setPosts((prev) => [...prev, ...newPosts]);
-        }
-      } catch (error) {
-        console.error("Lỗi lấy posts của user:", error);
-      } finally {
-        setLoading(false);
-      }
+    useEffect(() => { setPage(0); }, [profileUser]);
+
+    const refreshData = () => setRefreshFlag(p => p + 1);
+
+    const handleSendFriendRequest = async () => {
+        setIsLoadingAction(true);
+        try {
+            await authApis().post(endpoint.send_friend, { firstUser: currentUser.id, secondUser: profileUser.id });
+            setFriendStatus("PENDING"); setPendingRequestFrom("YOU");
+            showCustomToast("Đã gửi lời mời kết bạn!", "success"); refreshData();
+        } catch (ex: any) { handleApiError(ex, "Gửi lời mời kết bạn thất bại!"); }
+        finally { setIsLoadingAction(false); }
     };
-    
-    fetchPosts();
-  }, [profileUser, page, refreshFlag]);
 
-  // Reset page khi user đổi
-  useEffect(() => {
-    setPage(0);
-  }, [profileUser]);
+    const handleCancelFriendRequest = async () => {
+        setIsLoadingAction(true);
+        try {
+            const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
+            const req = sentRes.data.result.content.find((r: any) =>
+                r.secondUserId.id === profileUser.id && r.status === "PENDING"
+            );
+            if (req) {
+                await authApis().delete(endpoint.reject_friend(req.firstUserId.id, req.secondUserId.id));
+                setFriendStatus(null); setPendingRequestFrom(null);
+                showCustomToast("Đã hủy lời mời kết bạn!", "success"); refreshData();
+            }
+        } catch (ex: any) { handleApiError(ex, "Hủy lời mời kết bạn thất bại!"); }
+        finally { setIsLoadingAction(false); }
+    };
 
-  const loadMore = () => {
-    if (hasMore && !loading) setPage((prev) => prev + 1);
-  };
+    const handleAcceptFriendRequest = async () => {
+        setIsLoadingAction(true);
+        try {
+            await authApis().patch(endpoint.accept_friend(profileUser.id, currentUser.id));
+            setFriendStatus("ACCEPTED"); setPendingRequestFrom(null);
+            showCustomToast("Đã chấp nhận lời mời kết bạn!", "success"); refreshData();
+        } catch (ex: any) { handleApiError(ex, "Chấp nhận lời mời kết bạn thất bại!"); }
+        finally { setIsLoadingAction(false); }
+    };
 
-  // Refresh dữ liệu
-  const refreshData = () => {
-    setRefreshFlag(prev => prev + 1);
-  };
+    const handleUnfriend = async () => {
+        setIsLoadingAction(true);
+        try {
+            await authApis().delete(endpoint.reject_friend(currentUser.id, profileUser.id));
+            setFriendStatus(null); setPendingRequestFrom(null);
+            showCustomToast("Đã hủy kết bạn!", "success"); refreshData();
+        } catch (ex: any) { handleApiError(ex, "Hủy kết bạn thất bại!"); }
+        finally { setIsLoadingAction(false); }
+    };
 
-  // Xử lý gửi lời mời kết bạn
-  const handleSendFriendRequest = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      await authApis().post(endpoint.send_friend, {
-        firstUser: currentUser.id,
-        secondUser: profileUser.id
-      });
-      
-      setFriendStatus("PENDING");
-      setPendingRequestFrom("YOU");
-      showCustomToast("Đã gửi lời mời kết bạn!", "success");
-      refreshData();
-    } catch (ex: any) {
-      handleApiError(ex, "Gửi lời mời kết bạn thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
+    const handleFollow = async () => {
+        setIsLoadingAction(true);
+        try {
+            await authApis().post(endpoint.follow, { followerId: currentUser.id, followingId: profileUser.id });
+            setFollowStatus(true); showCustomToast("Đã theo dõi!", "success"); refreshData();
+        } catch (ex: any) { handleApiError(ex, "Theo dõi thất bại!"); }
+        finally { setIsLoadingAction(false); }
+    };
 
-  // Xử lý hủy lời mời kết bạn
-  const handleCancelFriendRequest = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      // Sử dụng endpoint mới để lấy danh sách lời mời đã gửi
-      const sentRes = await authApis().get(endpoint.sent_friend(currentUser.id));
-      const sentRequests = sentRes.data.result.content;
-      
-      const request = sentRequests.find((req: any) => 
-        req.secondUserId.id === profileUser.id && req.status === "PENDING"
-      );
-      
-      if (request) {
-        await authApis().delete(endpoint.reject_friend(request.firstUserId.id, request.secondUserId.id));
-        setFriendStatus(null);
-        setPendingRequestFrom(null);
-        showCustomToast("Đã hủy lời mời kết bạn!", "success");
-        refreshData();
-      }
-    } catch (ex: any) {
-      handleApiError(ex, "Hủy lời mời kết bạn thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
+    const handleUnfollow = async () => {
+        setIsLoadingAction(true);
+        try {
+            await authApis().delete(endpoint.follow, { data: { followerId: currentUser.id, followingId: profileUser.id } });
+            setFollowStatus(false); showCustomToast("Đã bỏ theo dõi!", "success"); refreshData();
+        } catch (ex: any) { handleApiError(ex, "Bỏ theo dõi thất bại!"); }
+        finally { setIsLoadingAction(false); }
+    };
 
-  // Xử lý chấp nhận kết bạn
-  const handleAcceptFriendRequest = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      await authApis().patch(endpoint.accept_friend(profileUser.id, currentUser.id));
-      
-      setFriendStatus("ACCEPTED");
-      setPendingRequestFrom(null);
-      showCustomToast("Đã chấp nhận lời mời kết bạn!", "success");
-      refreshData();
-    } catch (ex: any) {
-      handleApiError(ex, "Chấp nhận lời mời kết bạn thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
+    if (!profileUser) return (
+        <div className={styles.loadingWrap}><MySpinner /></div>
+    );
 
-  // Xử lý hủy kết bạn
-  const handleUnfriend = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      await authApis().delete(endpoint.reject_friend(currentUser.id, profileUser.id));
-      
-      setFriendStatus(null);
-      setPendingRequestFrom(null);
-      showCustomToast("Đã hủy kết bạn!", "success");
-      refreshData();
-    } catch (ex: any) {
-      handleApiError(ex, "Hủy kết bạn thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
+    const isDoctor = profileUser.role?.name === "DOCTOR";
+    const isMe     = currentUser?.id === profileUser.id;
 
-  // Xử lý theo dõi
-  const handleFollow = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      await authApis().post(endpoint.follow, {
-        followerId: currentUser.id,
-        followingId: profileUser.id
-      });
-      
-      setFollowStatus(true);
-      showCustomToast("Đã theo dõi!", "success");
-      refreshData();
-    } catch (ex: any) {
-      handleApiError(ex, "Theo dõi thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
+    const infoItems = [
+        { icon: FiMail,     label: "Email",    value: profileUser.email },
+        { icon: FiPhone,    label: "SĐT",      value: profileUser.phoneNumber || "Chưa cập nhật" },
+        { icon: FiMapPin,   label: "Địa chỉ",  value: profileUser.address || "Chưa cập nhật" },
+        { icon: FiCalendar, label: "Ngày sinh", value: profileUser.dateOfBirth
+            ? new Date(profileUser.dateOfBirth).toLocaleDateString("vi-VN")
+            : "Chưa cập nhật" },
+    ];
 
-  // Xử lý bỏ theo dõi
-  const handleUnfollow = async () => {
-    if (!currentUser || !profileUser) return;
-    
-    setIsLoadingAction(true);
-    try {
-      await authApis().delete(endpoint.follow, {
-        data: {
-          followerId: currentUser.id,
-          followingId: profileUser.id
-        }
-      });
-      
-      setFollowStatus(false);
-      showCustomToast("Đã bỏ theo dõi!", "success");
-      refreshData();
-    } catch (ex: any) {
-      handleApiError(ex, "Bỏ theo dõi thất bại!");
-    } finally {
-      setIsLoadingAction(false);
-    }
-  };
-
-  if (!profileUser) {
-    return <MySpinner />;
-  }
-
-  return (
-    <Container className={styles.profile}>
-      <Row>
-        {/* Sidebar */}
-        <Col xs={12} md={4}>
-          <Card className={styles.profileSidebar}>
-            <Card.Body className="text-center">
-              <Image src={profileUser.avatar} roundedCircle width={120} height={120} />
-              <h5 className="mt-3">{profileUser.firstName} {profileUser.lastName}</h5>
-              
-              {/* Các nút hành động */}
-              {currentUser && currentUser.id !== profileUser.id && (
-                <div className="mt-3 d-flex flex-wrap justify-content-center gap-2">
-                  {/* Nút kết bạn - chỉ hiện khi không có lời mời nào giữa 2 người */}
-              {friendStatus === null && (
-                <Button 
-                  variant="primary" 
-                  size="sm" 
-                  onClick={handleSendFriendRequest}
-                  disabled={isLoadingAction}
-                >
-                  {isLoadingAction ? "Đang xử lý..." : "Kết bạn"}
-                </Button>
-              )}
-
-              {friendStatus === "PENDING" && pendingRequestFrom === "YOU" && (
-                <Badge bg="warning" text="dark" className="mt-2">
-                  Đã gửi lời mời
-                </Badge>
-              )}
-
-              {friendStatus === "PENDING" && pendingRequestFrom === "THEM" && (
-                <>
-                  <Button 
-                    variant="success" 
-                    size="sm" 
-                    onClick={handleAcceptFriendRequest}
-                    disabled={isLoadingAction}
-                  >
-                    {isLoadingAction ? "Đang xử lý..." : "Chấp nhận"}
-                  </Button>
-                  <Button 
-                    variant="outline-danger" 
-                    size="sm" 
-                    onClick={handleCancelFriendRequest}
-                    disabled={isLoadingAction}
-                  >
-                    {isLoadingAction ? "Đang xử lý..." : "Từ chối"}
-                  </Button>
-                </>
-              )}
-
-                  
-                  {friendStatus === "ACCEPTED" && (
-                    <Badge bg="success" className="mt-2">
-                      Bạn bè
-                    </Badge>
-                  )}
-                  
-                  {/* Nút theo dõi/bỏ theo dõi */}
-                  {!followStatus ? (
-                    <Button 
-                      variant="outline-info" 
-                      size="sm" 
-                      onClick={handleFollow}
-                      disabled={isLoadingAction}
-                    >
-                      {isLoadingAction ? "Đang xử lý..." : "Theo dõi"}
-                    </Button>
-                  ) : (
-                    <Button 
-                      variant="outline-secondary" 
-                      size="sm" 
-                      onClick={handleUnfollow}
-                      disabled={isLoadingAction}
-                    >
-                      {isLoadingAction ? "Đang xử lý..." : "Bỏ theo dõi"}
-                    </Button>
-                  )}
+    return (
+        <div className={styles.pageWrapper}>
+            {/* ── COVER BANNER ── */}
+            <div className={styles.coverOuter}>
+                <div className={styles.coverBanner}>
+                    <div className={styles.coverBlob1} />
+                    <div className={styles.coverBlob2} />
                 </div>
-              )}
-            </Card.Body>
-            
-            <ListGroup variant="flush">
-              <ListGroup.Item><strong>Email:</strong> {profileUser.email}</ListGroup.Item>
-              <ListGroup.Item><strong>SĐT:</strong> {profileUser.phoneNumber || "Chưa cập nhật"}</ListGroup.Item>
-              <ListGroup.Item><strong>Địa chỉ:</strong> {profileUser.address || "Chưa cập nhật"}</ListGroup.Item>
-              <ListGroup.Item><strong>Ngày sinh:</strong> {profileUser.dateOfBirth || "Chưa cập nhật"}</ListGroup.Item>
-            </ListGroup>
-          </Card>
-        </Col>
-
-        {/* Posts */}
-        <Col xs={12} md={8}>
-          {loading && page === 0 && <MySpinner />}
-          
-          <div className={styles.profilePosts}>
-            {posts.map((post: any) => (
-              <Card className={`mb-4 ${styles.profileCard}`} key={post.id}>
-                {post.imagePostResponses?.length > 0 && (
-                  <Card.Img variant="top" src={post.imagePostResponses[0].postImageUrl} className={styles.profileCardImg} />
-                )}
-                <Card.Body className={styles.profileCardBody}>
-                  <div 
-                    className={styles.profileAuthorInfo}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
-                  >
-                    <Image src={post.userResponse.avatar} className={styles.profileAuthorAvatar} />
-                    <div className={styles.profileAuthorDetails}>
-                      <strong>{post.userResponse.firstName} {post.userResponse.lastName}</strong>
-                      <br />
-                      <small>
-                        {new Date(post.createdAt).toLocaleString("vi-VN")}
-                        <PrivacyIcon
-                          privacyMode={post.visibility} 
-                          size="0.8rem" 
-                          className="ms-1" 
-                        />
-                      </small>
-                    </div>
-                  </div>
-
-                  <Card.Title>{post.title}</Card.Title>
-                  <Card.Text>{post.content}</Card.Text>
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
-
-          {hasMore && (
-            <div className="text-center mb-4">
-              <Button variant="info" onClick={loadMore} disabled={loading}>
-                {loading ? "Đang tải..." : "Xem thêm"}
-              </Button>
             </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
-  );
+
+            {/* ── PROFILE TOP ROW ── */}
+            <div className={styles.profileTopRow}>
+                <div className={styles.avatarFrame}>
+                    <img src={profileUser.avatar} alt={profileUser.username} className={styles.avatar} />
+                    {isDoctor && (
+                        <span className={styles.doctorRing}>{ico(RiHospitalLine, 13)}</span>
+                    )}
+                </div>
+                <div className={styles.profileHeadInfo}>
+                    <div className={styles.profileNameRow}>
+                        <h1 className={styles.profileName}>
+                            {profileUser.firstName} {profileUser.lastName}
+                        </h1>
+                        {isDoctor && (
+                            <span className={styles.doctorBadge}>
+                                {ico(RiHospitalLine, 12)} Bác sĩ
+                            </span>
+                        )}
+                    </div>
+                    <p className={styles.profileUsername}>@{profileUser.username}</p>
+
+                    {/* Action buttons */}
+                    {currentUser && !isMe && (
+                        <div className={styles.actionRow}>
+                            {/* Friend button */}
+                            {friendStatus === null && (
+                                <button className={styles.btnPrimary} onClick={handleSendFriendRequest} disabled={isLoadingAction}>
+                                    {ico(FiUserPlus, 14)} {isLoadingAction ? "Đang xử lý..." : "Kết bạn"}
+                                </button>
+                            )}
+                            {friendStatus === "PENDING" && pendingRequestFrom === "YOU" && (
+                                <button className={styles.btnOutline} onClick={handleCancelFriendRequest} disabled={isLoadingAction}>
+                                    {ico(FiUserX, 14)} Hủy lời mời
+                                </button>
+                            )}
+                            {friendStatus === "PENDING" && pendingRequestFrom === "THEM" && (
+                                <>
+                                    <button className={styles.btnSuccess} onClick={handleAcceptFriendRequest} disabled={isLoadingAction}>
+                                        {ico(FiUserCheck, 14)} Chấp nhận
+                                    </button>
+                                    <button className={styles.btnDanger} onClick={handleCancelFriendRequest} disabled={isLoadingAction}>
+                                        {ico(FiUserX, 14)} Từ chối
+                                    </button>
+                                </>
+                            )}
+                            {friendStatus === "ACCEPTED" && (
+                                <button className={styles.btnFriend} onClick={handleUnfriend} disabled={isLoadingAction}>
+                                    {ico(FiUserCheck, 14)} Bạn bè
+                                </button>
+                            )}
+
+                            {/* Follow button */}
+                            {!followStatus ? (
+                                <button className={styles.btnOutline} onClick={handleFollow} disabled={isLoadingAction}>
+                                    Theo dõi
+                                </button>
+                            ) : (
+                                <button className={styles.btnOutline} onClick={handleUnfollow} disabled={isLoadingAction}>
+                                    Đang theo dõi
+                                </button>
+                            )}
+
+                            {/* Message */}
+                            <button className={styles.btnIcon} onClick={() => navigate("/chat")} title="Nhắn tin">
+                                {ico(FiMessageSquare, 16)}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* ── MAIN LAYOUT ── */}
+            <div className={styles.layout}>
+                {/* Left sidebar */}
+                <aside className={styles.leftSidebar}>
+                    {/* Info card */}
+                    <div className={styles.sideCard}>
+                        <div className={styles.sideCardTitle}>Thông tin</div>
+                        <div className={styles.infoList}>
+                            {infoItems.map(item => (
+                                <div key={item.label} className={styles.infoItem}>
+                                    <span className={styles.infoIcon}>{ico(item.icon, 14)}</span>
+                                    <div className={styles.infoContent}>
+                                        <span className={styles.infoLabel}>{item.label}</span>
+                                        <span className={styles.infoValue}>{item.value}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Doctor info */}
+                    {isDoctor && profileUser.doctor && (
+                        <div className={styles.sideCard}>
+                            <div className={styles.sideCardTitle}>{ico(RiHospitalLine, 14)} Thông tin bác sĩ</div>
+                            <div className={styles.infoList}>
+                                {profileUser.doctor.specialty && (
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoIcon}>{ico(FiAward, 14)}</span>
+                                        <div className={styles.infoContent}>
+                                            <span className={styles.infoLabel}>Chuyên khoa</span>
+                                            <span className={styles.infoValue}>{profileUser.doctor.specialty}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {profileUser.doctor.workplace && (
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoIcon}>{ico(FiBriefcase, 14)}</span>
+                                        <div className={styles.infoContent}>
+                                            <span className={styles.infoLabel}>Nơi làm việc</span>
+                                            <span className={styles.infoValue}>{profileUser.doctor.workplace}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {profileUser.doctor.educationalLevel && (
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoIcon}>{ico(FiBook, 14)}</span>
+                                        <div className={styles.infoContent}>
+                                            <span className={styles.infoLabel}>Học vấn</span>
+                                            <span className={styles.infoValue}>{profileUser.doctor.educationalLevel}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {profileUser.doctor.yearsOfExperience && (
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoIcon}>{ico(FiAward, 14)}</span>
+                                        <div className={styles.infoContent}>
+                                            <span className={styles.infoLabel}>Kinh nghiệm</span>
+                                            <span className={styles.infoValue}>{profileUser.doctor.yearsOfExperience} năm</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </aside>
+
+                {/* Feed */}
+                <div className={styles.feed}>
+                    {loading && page === 0 ? (
+                        <div className={styles.spinnerWrap}><MySpinner /></div>
+                    ) : posts.length === 0 ? (
+                        <div className={styles.emptyPosts}>Chưa có bài viết nào.</div>
+                    ) : (
+                        posts.map((post: any) => (
+                            <div key={post.id} className={styles.postCard}>
+                                {post.imagePostResponses?.length > 0 && (
+                                    <img
+                                        src={post.imagePostResponses[0].postImageUrl}
+                                        alt={post.title}
+                                        className={styles.postImg}
+                                    />
+                                )}
+                                <div className={styles.postBody}>
+                                    <div
+                                        className={styles.postAuthorRow}
+                                        onClick={() => navigate(`/otherprofile/${post.userResponse.id}`)}
+                                    >
+                                        <img src={post.userResponse.avatar} alt="" className={styles.postAvatar} />
+                                        <div>
+                                            <div className={styles.postAuthorName}>
+                                                {post.userResponse.firstName} {post.userResponse.lastName}
+                                            </div>
+                                            <div className={styles.postTime}>
+                                                {new Date(post.createdAt).toLocaleString("vi-VN")}
+                                                <PrivacyIcon privacyMode={post.visibility} className={styles.privacyIcon} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {post.title && <h3 className={styles.postTitle}>{post.title}</h3>}
+                                    {post.content && <p className={styles.postContent}>{post.content}</p>}
+                                </div>
+                            </div>
+                        ))
+                    )}
+
+                    {hasMore && !loading && (
+                        <div className={styles.loadMoreWrap}>
+                            <button className={styles.loadMoreBtn} onClick={() => setPage(p => p + 1)}>
+                                {ico(FiChevronDown, 15)} Xem thêm
+                            </button>
+                        </div>
+                    )}
+                    {loading && page > 0 && (
+                        <div className={styles.spinnerWrap}><MySpinner /></div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default OtherProfile;

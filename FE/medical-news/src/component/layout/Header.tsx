@@ -10,7 +10,7 @@ import { handleApiError } from "../../utils/errorHandler";
 import {
     FiBell, FiHome, FiClock, FiFileText, FiLogOut,
     FiUser, FiEdit, FiCheck, FiX, FiRefreshCw,
-    FiCheckSquare, FiMenu, FiChevronDown
+    FiCheckSquare, FiMenu, FiChevronDown, FiMessageCircle
 } from "react-icons/fi";
 
 const ico = (C: any, size: number) => createElement(C, { size });
@@ -118,9 +118,10 @@ const Header = () => {
     const isActive = (path: string) => location.pathname === path;
 
     const navLinks = [
-        { to: "/",         label: "Trang chủ", sub: "Home",     icon: FiHome,     always: true  },
-        { to: "/timeline", label: "Hoạt động", sub: "Timeline", icon: FiClock,    always: false },
-        { to: "/news",     label: "Tin tức",   sub: "News",     icon: FiFileText, always: true  },
+        { to: "/",         label: "Trang chủ", sub: "Home",     icon: FiHome,           always: true  },
+        { to: "/timeline", label: "Hoạt động", sub: "Timeline", icon: FiClock,          always: false },
+        { to: "/news",     label: "Tin tức",   sub: "News",     icon: FiFileText,       always: true  },
+        { to: "/chatbot",  label: "Hỏi đáp",   sub: "AI Chat",  icon: FiMessageCircle, always: true  },
     ];
 
     return (

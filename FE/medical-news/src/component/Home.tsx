@@ -2,7 +2,7 @@ import { useEffect, useState, createElement } from "react";
 import { useNavigate } from "react-router-dom";
 import Apis, { endpoint } from "../configs/Apis";
 import MySpinner from "./layout/MySpinner";
-import ChatBot from "./ChatBot";
+
 import { Post } from "../types/post";
 import styles from "./Styles/home.module.css";
 import { FiArrowRight, FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -225,7 +225,7 @@ const Home = () => {
                 </section>
             </div>
 
-            <ChatBot />
+
         </>
     );
 };

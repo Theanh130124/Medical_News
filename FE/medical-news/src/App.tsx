@@ -19,6 +19,7 @@ import OtherProfile from './component/auth/OtherProfile';
 import RoomChat from './component/RoomChat';
 import News from './component/News';
 import EditProfile from './component/auth/EditProfile';
+import ChatBotPage from './component/Chatbotpage';
 
 
 
@@ -45,6 +46,7 @@ const App = () => {
           <Route path='/register' element ={<Register/>} />
           <Route path='/login' element ={<Login/>} />
           <Route path='/news' element={<News/>}/>
+          <Route path='/chatbot' element={<ChatBotPage />} />
           <Route path='/uploadCertification' element={<UploadCertification/> 
           } />
 

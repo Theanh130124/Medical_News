@@ -1,237 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap');
+/* timeline.module.css */
 
-/* ═══════════════════════════════
-   PAGE WRAPPER
-═══════════════════════════════ */
-.pageWrapper {
-    font-family: 'Be Vietnam Pro', sans-serif;
-    background: #f4f7ff;
-    min-height: 100vh;
+.timeline {
+  margin-top: 2rem;
 }
 
-/* ═══════════════════════════════
-   HERO BANNER
-═══════════════════════════════ */
-.heroBanner {
-    background: linear-gradient(135deg, #183e9f 0%, #2a51b2 55%, #3a6fd8 100%);
-    padding: 36px 24px 44px;
-    position: relative;
-    overflow: hidden;
-}
-
-.heroBlob1 {
-    position: absolute;
-    width: 380px;
-    height: 380px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    top: -140px;
-    right: -60px;
-    pointer-events: none;
-    animation: blobFloat 9s ease-in-out infinite;
-}
-
-.heroBlob2 {
-    position: absolute;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(56,217,169,0.14) 0%, transparent 70%);
-    bottom: -80px;
-    left: -40px;
-    pointer-events: none;
-    animation: blobFloat 11s ease-in-out infinite reverse;
-}
-
-@keyframes blobFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50%       { transform: translateY(14px) scale(1.04); }
-}
-
-.heroInner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    position: relative;
-    z-index: 2;
-}
-
-.heroLeft {}
-
-.heroBadge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.13);
-    color: #c8d8ff;
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.20);
-    margin-bottom: 12px;
-}
-
-.heroTitle {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(22px, 3.5vw, 34px);
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 8px;
-    letter-spacing: -0.3px;
-}
-
-.heroSub {
-    font-size: 14px;
-    color: rgba(255,255,255,0.68);
-    margin: 0;
-    line-height: 1.6;
-    max-width: 480px;
-}
-
-/* User chip */
-.heroUser {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 14px;
-    padding: 10px 16px 10px 10px;
-    flex-shrink: 0;
-}
-
-.heroAvatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255,255,255,0.35);
-}
-
-.heroUserName {
-    font-size: 13.5px;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.heroUserRole {
-    font-size: 11.5px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 2px;
-}
-
-/* ═══════════════════════════════
-   MAIN LAYOUT
-═══════════════════════════════ */
-.layout {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 32px 24px 48px;
-    display: grid;
-    grid-template-columns: 1fr 600px 300px;
-    gap: 28px;
-    align-items: flex-start;
-}
-
-.leftGap {}
-
-/* ── Feed (center col) ── */
-.feed {
-    min-width: 0;
-}
-
-/* ── Sidebar (right col) ── */
-.sidebar {
-    position: sticky;
-    top: 88px;
-}
-
-/* ── Spinner ── */
-.spinnerWrap {
-    display: flex;
-    justify-content: center;
-    padding: 32px 0;
-}
-
-/* ── Load more ── */
-.loadMoreWrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 24px;
-    margin-bottom: 8px;
-}
-
-.loadMoreBtn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 46px;
-    padding: 0 32px;
-    border: 1.5px solid #4f6fff;
-    border-radius: 13px;
-    background: #ffffff;
-    color: #4f6fff;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 2px 10px rgba(79,111,255,0.10);
-}
-.loadMoreBtn:hover:not(:disabled) {
-    background: #4f6fff;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79,111,255,0.28);
-}
-.loadMoreBtn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-/* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
-@media (max-width: 1024px) {
-    .layout {
-        grid-template-columns: 1fr 300px;
-    }
-    .leftGap { display: none; }
-}
-
-@media (max-width: 700px) {
-    .layout {
-        grid-template-columns: 1fr;
-        padding: 20px 16px 36px;
-    }
-    .sidebar     { display: none; }
-    .heroBanner  { padding: 28px 16px 36px; }
-    .heroUser    { display: none; }
-}
-
-/* ═══════════════════════════════
-   LEGACY (giữ cho PostList / CreatePost không bị vỡ)
-═══════════════════════════════ */
+/* Card chung */
 .timelineCard {
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
 }
+
+
+/* Hình ảnh bài viết */
 .timelineCardImg {
-    object-fit: cover;
-    max-height: 300px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+  object-fit: cover;
+  max-height: 300px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
-.authorInfo { display: flex; align-items: center; margin-bottom: 0.5rem; }
-.authorInfo img { border-radius: 50%; width: 40px; height: 40px; }
-.authorDetails { margin-left: 0.5rem; }
-.authorDetails strong { font-size: 0.95rem; color: #333; }
-.authorDetails small  { font-size: 0.75rem; color: #777; }
-.timelineCardBody { padding: 1rem; }
-.timelineCardBody h5 { font-weight: 600; margin-bottom: 0.5rem; }
-.timelineCardBody p  { color: #444; }
-.surveyForm { margin-top: 0.5rem; }
-.normalButton { margin-top: 0.5rem; width: 100%; }
+
+/* Author info */
+.authorInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.authorInfo img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.authorDetails {
+  margin-left: 0.5rem;
+}
+
+.authorDetails strong {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.authorDetails small {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Card body */
+.timelineCardBody {
+  padding: 1rem;
+}
+
+.timelineCardBody h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timelineCardBody p {
+  color: #444;
+}
+
+/* Survey Form */
+.surveyForm {
+  margin-top: 0.5rem;
+}
+
+.surveyForm .form-check {
+  margin-bottom: 0.5rem;
+}
+
+.surveyForm button {
+  margin-top: 0.5rem;
+}
+
+/* Button NORMAL */
+.normalButton {
+  margin-top: 0.5rem;
+  width: 100%;
+}

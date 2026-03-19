@@ -1,71 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap');
+
+/* ═══════════════════════════════
+   PAGE
+═══════════════════════════════ */
+.pageWrapper {
+    min-height: 100vh;
+    width: 100%;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    position: relative;
+    overflow: hidden;
+    padding: 48px 24px;
+    box-sizing: border-box;
+}
+
+/* Blobs */
+.blob1 {
+    position: fixed;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #a5b8ff 0%, #c7d3ff 55%, transparent 100%);
+    top: -200px; left: -160px;
+    opacity: 0.5;
+    pointer-events: none;
+    animation: blobFloat 8s ease-in-out infinite;
+}
+.blob2 {
+    position: fixed;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #99f0d4 0%, #c8f5e8 55%, transparent 100%);
+    bottom: -140px; right: -120px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: blobFloat 10s ease-in-out infinite reverse;
+}
+@keyframes blobFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(20px) scale(1.04); }
+}
+
+/* ═══════════════════════════════
+   CARD
+═══════════════════════════════ */
+.card {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 28px;
+    border: 1px solid rgba(180,200,255,0.4);
+    box-shadow: 0 8px 48px rgba(100,120,200,0.13);
+    padding: 44px 48px 40px;
+    width: 100%;
+    max-width: 520px;
+    position: relative;
+    z-index: 2;
+    animation: cardIn 0.55s cubic-bezier(0.22,0.68,0,1.2) both;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Card header ── */
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.logoRing {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f6fff 0%, #38d9a9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(79,111,255,0.30);
+    animation: pulseRing 2.6s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+    0%,100% { box-shadow: 0 4px 20px rgba(79,111,255,0.28); }
+    50%      { box-shadow: 0 4px 32px rgba(79,111,255,0.50); }
+}
+
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a2340;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    font-size: 12.5px;
+    color: #7a8aaa;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Notice ── */
+.notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #eef2ff;
+    border: 1.5px solid #b5d4f4;
+    border-radius: 11px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: #185FA5;
+    font-weight: 500;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* ── Form ── */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Fields */
+.fieldWrap {}
+
+.fieldLabel {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #5a6a8a;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.inputWrap {
+    position: relative;
+}
+
+.fieldIcon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9aaac8;
+    display: flex;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 42px;
+    border: 1.5px solid #dde4f5;
+    border-radius: 13px;
+    font-size: 14px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a2340;
+    background: #f6f8ff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    box-sizing: border-box;
+}
+.input::placeholder { color: #aab4cc; }
+.input:focus {
+    border-color: #4f6fff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79,111,255,0.10);
+}
+
+/* File drop zone */
+.fileDropZone {
+    display: block;
+    border: 2px dashed #c5d0f0;
+    border-radius: 14px;
+    background: #f6f8ff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s;
+    min-height: 130px;
+}
+.fileDropZone:hover {
+    border-color: #4f6fff;
+    background: #eef2ff;
+}
+
+.fileDropInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 28px 20px;
+    color: #9aaac8;
+}
+
+.fileDropText {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #5a6a8a;
+}
+
+.fileDropSub {
+    font-size: 11.5px;
+    color: #aab4cc;
+}
+
+.filePreview {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    display: block;
+    padding: 8px;
+    border-radius: 12px;
+}
+
+.fileName {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #4f6fff;
+    font-weight: 500;
+    margin-top: 7px;
+}
+
+/* Submit button */
+.submitBtn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #4f6fff 0%, #38c9a9 100%);
+    color: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(79,111,255,0.30);
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+}
+.submitBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 60%);
+    pointer-events: none;
+}
+.submitBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(79,111,255,0.40);
+}
+.submitBtn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Legacy */
 .custom-row-primary {
-  background: linear-gradient(135deg, #9aabff, #d7e0ff);
-  border-radius: 16px; /* bo góc mềm mại */
-  padding: 60px 40px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
-  animation: fadeIn 0.6s ease-in-out;
-}
-
-/* Animation xuất hiện */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Tiêu đề */
-.custom-row-primary h1 {
-  font-weight: bold;
-  color: #2d6a4f;
-  letter-spacing: 1px;
-}
-
-/* Label */
-.custom-row-primary label {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 6px;
-}
-
-/* Input */
-.custom-row-primary input[type="text"],
-.custom-row-primary input[type="date"],
-.custom-row-primary input[type="file"] {
-  border: 2px solid #cdd5ff;
-  border-radius: 8px;
-  padding: 10px 14px;
-  transition: all 0.3s ease;
-}
-
-.custom-row-primary input:focus {
-  border-color: #5a73e6;
-  box-shadow: 0 0 8px rgba(90, 115, 230, 0.3);
-}
-
-/* Button */
-.custom-row-primary .btn-success {
-  background: #40916c;
-  border: none;
-  padding: 12px 30px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 30px;
-  transition: all 0.3s ease;
-}
-
-.custom-row-primary .btn-success:hover {
-  background: #2d6a4f;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.custom-row-primary .btn-success:disabled {
-  background: #9fb6aa;
-  cursor: not-allowed;
+    background: linear-gradient(135deg, #9aabff, #d7e0ff);
+    border-radius: 16px;
+    padding: 60px 40px;
 }
