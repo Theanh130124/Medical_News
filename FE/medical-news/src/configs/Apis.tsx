@@ -85,7 +85,9 @@ export const endpoint = {
     chatMessages: (chatId:string) => `/chats/${chatId}/messages`,
     search_post : (keyword:string) => `/search/posts?keyword=${keyword}`,
     
-    'chatbot' : '/chat_chatbot'
+    chat_create: '/chat/conversations',
+    chat_messages: (id: string) => `/chat/conversations/${id}/messages`,
+    chat_list: '/chat/conversations'
     
 } 
 
