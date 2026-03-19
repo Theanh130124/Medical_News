@@ -38,7 +38,7 @@ const App = () => {
        <MyDipatcherContext.Provider value={dispatch}>
     <BrowserRouter>
       <Header/> 
-      <Container fluid>
+      <Container fluid style={{ paddingTop: '76px', paddingLeft: 0, paddingRight: 0 }}>
         <MyToaster />
         <Routes>
           <Route path='/' element={<Home/>} />

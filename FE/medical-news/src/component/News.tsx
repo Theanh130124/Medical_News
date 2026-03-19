@@ -1,7 +1,6 @@
-import { JSX, useContext, useState, useEffect } from "react";
+import { JSX, useContext, useState, useEffect, createElement } from "react";
 import { MyUserContext } from "../configs/MyContexts";
 import Apis, { authApis, endpoint } from "../configs/Apis";
-import { Container, Row, Col, Form, Button, Alert, Card } from "react-bootstrap";
 import MySpinner from "./layout/MySpinner";
 import PostList from "./post/PostList";
 import EditPostModal from "./post/EditPostModal";
@@ -9,33 +8,28 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "./hooks/usePost";
 import { handleApiError } from "../utils/errorHandler";
 import styles from "./Styles/news.module.css";
-import styleshome from "./Styles/home.module.css";
+import { FiSearch, FiArrowLeft, FiChevronDown, FiLogIn } from "react-icons/fi";
+
+const ico = (C: any, size: number) => createElement(C, { size });
 
 const News = (): JSX.Element => {
   const user = useContext(MyUserContext);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Lấy keyword từ URL
+
   const queryParams = new URLSearchParams(location.search);
   const initialKeyword = queryParams.get("q") || "";
-  
-  const [searchKeyword, setSearchKeyword] = useState(initialKeyword);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [loadingSearch, setLoadingSearch] = useState(false);
-  const [error, setError] = useState("");
-  const [hasSearched, setHasSearched] = useState(!!initialKeyword);
+
+  const [searchKeyword,  setSearchKeyword]  = useState(initialKeyword);
+  const [searchResults,  setSearchResults]  = useState<any[]>([]);
+  const [loadingSearch,  setLoadingSearch]  = useState(false);
+  const [error,          setError]          = useState("");
+  const [hasSearched,    setHasSearched]    = useState(!!initialKeyword);
 
   const {
-    posts,
-    loading,
-    hasMore,
-    editingPost,
-    setEditingPost,
-    loadMore,
-    handleUpdatePost,
-    handleDeletePost,
-    handleRefresh
+    posts, loading, hasMore, editingPost,
+    setEditingPost, loadMore, handleUpdatePost,
+    handleDeletePost, handleRefresh
   } = usePosts(endpoint.get_posts_timeline(user?.id || ""));
 
   const searchByKeyword = async (keyword: string) => {
@@ -44,23 +38,18 @@ const News = (): JSX.Element => {
       setSearchResults([]);
       return;
     }
-
     setLoadingSearch(true);
     setError("");
-
     try {
       const response = await Apis.get(endpoint.search_post(keyword));
       if (response.data.code === 0) {
         setSearchResults(response.data.result.content || []);
         setHasSearched(true);
-        
-        // Cập nhật URL với keyword tìm kiếm
         navigate(`?q=${encodeURIComponent(keyword)}`, { replace: true });
       } else {
         setError(response.data.message || "Có lỗi xảy ra khi tìm kiếm");
       }
     } catch (error) {
-      console.error("Search error:", error);
       setError("Có lỗi xảy ra khi tìm kiếm");
       handleApiError(error, "Tìm kiếm thất bại!");
     } finally {
@@ -73,11 +62,9 @@ const News = (): JSX.Element => {
     await searchByKeyword(searchKeyword);
   };
 
-  // Cập nhật searchKeyword khi URL thay đổi
   useEffect(() => {
     const newKeyword = queryParams.get("q") || "";
     setSearchKeyword(newKeyword);
-    
     if (newKeyword) {
       searchByKeyword(newKeyword);
     } else {
@@ -87,96 +74,87 @@ const News = (): JSX.Element => {
   }, [location.search]);
 
   const handleNavigateToProfile = (userId: string) => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-    
-    if (userId === user.id) {
-      navigate("/profile");
-    } else {
-      navigate(`/otherprofile/${userId}`);
-    }
+    if (!user) { navigate("/login"); return; }
+    if (userId === user.id) navigate("/profile");
+    else navigate(`/otherprofile/${userId}`);
   };
 
-  const handleReactionRequireLogin = () => {
-    if (!user) {
-      navigate("/login");
-    }
-  };
+  const handleReactionRequireLogin  = () => { if (!user) navigate("/login"); };
+  const handleCommentRequireLogin   = () => { if (!user) navigate("/login"); };
 
-  const handleCommentRequireLogin = () => {
-    if (!user) {
-      navigate("/login");
-    }
-  };
-
-  // Hiển thị kết quả tìm kiếm nếu có, nếu không hiển thị bài viết mặc định
   const displayPosts = hasSearched ? searchResults : posts;
 
   return (
-    <Container className={styles.container}>
-      <Row className="justify-content-center">
-        <Col md={3}></Col>
-        <Col md={6}>
-          <h2 className={styles.header}>Tin Tức Y Tế</h2>
-          
-          {/* Form tìm kiếm */}
-          <Form onSubmit={handleSearch} className={styles.searchForm}>
-            <Form.Group controlId="searchKeyword">
-              <Form.Label className={styles.searchLabel}>Tìm kiếm bài viết</Form.Label>
-              <div className="d-flex">
-                <Form.Control
-                  type="text"
-                  placeholder="Nhập từ khóa tìm kiếm..."
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  className={styles.searchInput}
-                />
-                <Button 
-                  variant="primary" 
-                  type="submit" 
-                  className={`ms-2 ${styles.searchButton}`}
-                  disabled={loadingSearch || !searchKeyword.trim()}
-                >
-                  {loadingSearch ? "Đang tìm..." : "Tìm kiếm"}
-                </Button>
-              </div>
-            </Form.Group>
-          </Form>
+    <div className={styles.pageWrapper}>
+      {/* ── PAGE HERO BANNER ── */}
+      <div className={styles.heroBanner}>
+        <div className={styles.heroBlob1} />
+        <div className={styles.heroBlob2} />
+        <div className={styles.heroInner}>
+          <h1 className={styles.heroTitle}>Tin Tức Y Tế</h1>
+          <p className={styles.heroSub}>Thông tin sức khỏe chính thống từ đội ngũ bác sĩ và chuyên gia</p>
 
-          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+          {/* Search bar in hero */}
+          <form onSubmit={handleSearch} className={styles.searchBar}>
+            <span className={styles.searchIcon}>{ico(FiSearch, 17)}</span>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder="Tìm kiếm bài viết, chủ đề..."
+              value={searchKeyword}
+              onChange={e => setSearchKeyword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className={styles.searchBtn}
+              disabled={loadingSearch || !searchKeyword.trim()}
+            >
+              {loadingSearch ? "Đang tìm..." : "Tìm kiếm"}
+            </button>
+          </form>
+        </div>
+      </div>
 
-          {/* Thông báo khi không có kết quả tìm kiếm */}
-          {hasSearched && searchResults.length === 0 && !loadingSearch && (
-            <Alert variant="info" className={styles.alertInfo}>
-              Không tìm thấy bài viết nào phù hợp với từ khóa "{searchKeyword}".
-            </Alert>
+      {/* ── MAIN CONTENT ── */}
+      <div className={styles.contentWrap}>
+        <div className={styles.mainCol}>
+
+          {/* Error */}
+          {error && (
+            <div className={styles.alertDanger}>{error}</div>
           )}
 
-          {/* Nút quay lại xem tất cả bài viết sau khi tìm kiếm */}
+          {/* No results */}
+          {hasSearched && searchResults.length === 0 && !loadingSearch && (
+            <div className={styles.alertInfo}>
+              Không tìm thấy bài viết nào phù hợp với từ khóa "<strong>{searchKeyword}</strong>".
+            </div>
+          )}
+
+          {/* Back button */}
           {hasSearched && (
-            <div className="mb-3">
-              <Button 
-                variant="outline-secondary" 
-                size="sm"
-                className={styles.backButton}
-                onClick={() => {
-                  setHasSearched(false);
-                  setSearchKeyword("");
-                  setSearchResults([]);
-                  navigate("", { replace: true }); // Xóa query parameter
-                }}
-              >
-                ← Quay lại xem tất cả
-              </Button>
+            <button
+              className={styles.backBtn}
+              onClick={() => {
+                setHasSearched(false);
+                setSearchKeyword("");
+                setSearchResults([]);
+                navigate("", { replace: true });
+              }}
+            >
+              {ico(FiArrowLeft, 14)} Quay lại xem tất cả
+            </button>
+          )}
+
+          {/* Search result label */}
+          {hasSearched && searchResults.length > 0 && (
+            <div className={styles.resultLabel}>
+              Tìm thấy <strong>{searchResults.length}</strong> kết quả cho "<em>{searchKeyword}</em>"
             </div>
           )}
 
           {(loading || loadingSearch) && (
-            <div className={styles.spinnerContainer}>
-              <MySpinner />
-            </div>
+            <div className={styles.spinnerWrap}><MySpinner /></div>
           )}
 
           <PostList
@@ -190,20 +168,18 @@ const News = (): JSX.Element => {
             onNavigateToProfile={handleNavigateToProfile}
           />
 
-          {/* Chỉ hiển thị nút "Xem thêm" khi không ở chế độ tìm kiếm */}
           {!hasSearched && hasMore && posts.length > 0 && (
-            <div className="text-center mb-4">
-              <Button 
-                variant="info" 
-                onClick={loadMore} 
+            <div className={styles.loadMoreWrap}>
+              <button
+                className={styles.loadMoreBtn}
+                onClick={loadMore}
                 disabled={loading}
               >
-                {loading ? "Đang tải..." : "Xem thêm bài viết"}
-              </Button>
+                {loading ? "Đang tải..." : <>{ico(FiChevronDown, 15)} Xem thêm bài viết</>}
+              </button>
             </div>
           )}
 
-          {/* Modal chỉnh sửa bài viết */}
           <EditPostModal
             show={!!editingPost}
             editingPost={editingPost}
@@ -213,26 +189,39 @@ const News = (): JSX.Element => {
             onContentChange={(content) => setEditingPost(prev => ({ ...prev!, content }))}
             onAllowCommentsChange={(allowComments) => setEditingPost(prev => ({ ...prev!, allowComments }))}
           />
-        </Col>
-        <Col md={3} className="d-none d-md-block">
+        </div>
+
+        {/* ── SIDEBAR ── */}
+        <aside className={styles.sidebar}>
           {!user && (
-            <Card className={styles.sidebarCard}>
-              <Card.Body className="text-center">
-                <h5 className={styles.sidebarTitle}>Đăng nhập để tương tác</h5>
-                <p className={styles.sidebarText}>Bạn cần đăng nhập để bình luận, reaction và thực hiện các tương tác khác.</p>
-                <Button 
-                  variant="primary" 
-                  className={styles.sidebarButton}
-                  onClick={() => navigate("/login")}
-                >
-                  Đăng nhập ngay
-                </Button>
-              </Card.Body>
-            </Card>
+            <div className={styles.sideCard}>
+              <div className={styles.sideCardAccent} />
+              <h5 className={styles.sideCardTitle}>Đăng nhập để tương tác</h5>
+              <p className={styles.sideCardText}>
+                Bạn cần đăng nhập để bình luận, reaction và thực hiện các tương tác khác.
+              </p>
+              <button
+                className={styles.sideCardBtn}
+                onClick={() => navigate("/login")}
+              >
+                {ico(FiLogIn, 15)} Đăng nhập ngay
+              </button>
+            </div>
           )}
-        </Col>
-      </Row>
-    </Container>
+
+          {/* Tips card */}
+          <div className={styles.sideCard} style={{ marginTop: user ? 0 : 16 }}>
+            <div className={styles.sideCardAccent} style={{ background: 'linear-gradient(135deg,#38d9a9,#4f6fff)' }} />
+            <h5 className={styles.sideCardTitle}>Mẹo tìm kiếm</h5>
+            <ul className={styles.tipList}>
+              <li>Dùng từ khóa ngắn gọn, cụ thể</li>
+              <li>Tìm theo tên bác sĩ hoặc chuyên khoa</li>
+              <li>Tìm theo tên bệnh hoặc triệu chứng</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
   );
 };
 

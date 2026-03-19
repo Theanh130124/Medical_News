@@ -1,183 +1,312 @@
-/* news.module.css */
-.container {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  min-height: 100vh;
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap');
+
+/* ═══════════════════════════════
+   PAGE WRAPPER
+═══════════════════════════════ */
+.pageWrapper {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: #f4f7ff;
+    min-height: 100vh;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #2c3e50;
-  font-weight: 700;
-  position: relative;
-  padding-bottom: 0.5rem;
+/* ═══════════════════════════════
+   HERO BANNER
+═══════════════════════════════ */
+.heroBanner {
+    background: linear-gradient(135deg, #183e9f 0%, #2a51b2 55%, #3a6fd8 100%);
+    padding: 52px 24px 64px;
+    position: relative;
+    overflow: hidden;
 }
 
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, #3498db, #2ecc71);
-  border-radius: 3px;
+.heroBlob1 {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.09) 0%, transparent 70%);
+    top: -160px;
+    right: -80px;
+    pointer-events: none;
+    animation: blobFloat 9s ease-in-out infinite;
 }
 
-.searchForm {
-  background-color: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
+.heroBlob2 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,217,169,0.16) 0%, transparent 70%);
+    bottom: -100px;
+    left: -60px;
+    pointer-events: none;
+    animation: blobFloat 11s ease-in-out infinite reverse;
 }
 
-.searchLabel {
-  font-weight: 600;
-  color: #34495e;
-  margin-bottom: 0.75rem;
-  display: block;
+@keyframes blobFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%       { transform: translateY(16px) scale(1.04); }
+}
+
+.heroInner {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.heroTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 10px;
+    letter-spacing: -0.4px;
+}
+
+.heroSub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 32px;
+    line-height: 1.6;
+}
+
+/* ── Search bar ── */
+.searchBar {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.95);
+    border-radius: 16px;
+    padding: 6px 6px 6px 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    gap: 8px;
+    position: relative;
+}
+
+.searchIcon {
+    color: #9aaac8;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .searchInput {
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  transition: all 0.3s ease;
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14.5px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a2340;
+    background: transparent;
+    padding: 8px 0;
 }
 
-.searchInput:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+.searchInput::placeholder { color: #aab4cc; }
+
+.searchBtn {
+    height: 42px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4f6fff 0%, #38c9a9 100%);
+    color: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 2px 10px rgba(79,111,255,0.30);
+}
+.searchBtn:hover:not(:disabled) { transform: translateY(-1px); opacity: 0.92; }
+.searchBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ═══════════════════════════════
+   CONTENT LAYOUT
+═══════════════════════════════ */
+.contentWrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 48px;
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
 }
 
-.searchButton {
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  border: none;
-  min-width: 120px;
+.mainCol {
+    flex: 1;
+    min-width: 0;
 }
 
-.searchButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-  background: linear-gradient(135deg, #2980b9, #3498db);
+/* ── Back button ── */
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 14px;
+    border: 1.5px solid #dde4f5;
+    border-radius: 9px;
+    background: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5a6a8a;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.backBtn:hover { border-color: #4f6fff; color: #4f6fff; background: #f0f4ff; }
+
+/* ── Result label ── */
+.resultLabel {
+    font-size: 13.5px;
+    color: #5a6a8a;
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: #eef2ff;
+    border-radius: 10px;
+    border-left: 3px solid #4f6fff;
 }
 
-.searchButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.backButton {
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-}
-
-.backButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-}
-
-.loadMoreButton {
-  border-radius: 8px;
-  padding: 0.75rem 2rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  border: none;
-  transition: all 0.3s ease;
-  margin: 2rem 0;
-}
-
-.loadMoreButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
-  background: linear-gradient(135deg, #27ae60, #2ecc71);
-}
-
-.loadMoreButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.sidebarCard {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: none;
-  position: sticky;
-  top: 2rem;
-}
-
-.sidebarTitle {
-  color: #2c3e50;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.sidebarText {
-  color: #7f8c8d;
-  margin-bottom: 1.5rem;
-}
-
-.sidebarButton {
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  border: none;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.sidebarButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-  background: linear-gradient(135deg, #2980b9, #3498db);
-}
-
-.alert {
-  border-radius: 8px;
-  border: none;
-  padding: 1rem 1.5rem;
-}
-
+/* ── Alerts ── */
 .alertDanger {
-  background-color: #ffeaea;
-  color: #e74c3c;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #fff5f5;
+    border: 1.5px solid #f09595;
+    color: #a32d2d;
+    font-size: 13.5px;
+    margin-bottom: 16px;
 }
 
 .alertInfo {
-  background-color: #e8f4fd;
-  color: #3498db;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #eef2ff;
+    border: 1.5px solid #b5d4f4;
+    color: #185FA5;
+    font-size: 13.5px;
+    margin-bottom: 16px;
 }
 
-.spinnerContainer {
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0;
+/* ── Spinner ── */
+.spinnerWrap {
+    display: flex;
+    justify-content: center;
+    padding: 28px 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .container {
-    padding-top: 1rem;
-  }
-  
-  .header {
-    font-size: 1.75rem;
-  }
-  
-  .searchForm {
-    padding: 1rem;
-  }
+/* ── Load more ── */
+.loadMoreWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.loadMoreBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 46px;
+    padding: 0 32px;
+    border: 1.5px solid #4f6fff;
+    border-radius: 13px;
+    background: transparent;
+    color: #4f6fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.loadMoreBtn:hover:not(:disabled) { background: #4f6fff; color: #fff; transform: translateY(-2px); }
+.loadMoreBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ═══════════════════════════════
+   SIDEBAR
+═══════════════════════════════ */
+.sidebar {
+    flex: 0 0 256px;
+    position: sticky;
+    top: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sideCard {
+    background: #ffffff;
+    border: 1.5px solid #e4eaf5;
+    border-radius: 18px;
+    padding: 20px 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.sideCardAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, #4f6fff, #38c9a9);
+    border-radius: 18px 18px 0 0;
+}
+
+.sideCardTitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a2340;
+    margin: 0 0 8px;
+    padding-top: 4px;
+}
+
+.sideCardText {
+    font-size: 13px;
+    color: #7a8aaa;
+    line-height: 1.6;
+    margin: 0 0 16px;
+}
+
+.sideCardBtn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #4f6fff 0%, #38c9a9 100%);
+    color: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 3px 12px rgba(79,111,255,0.28);
+}
+.sideCardBtn:hover { opacity: 0.90; transform: translateY(-1px); }
+
+.tipList {
+    margin: 0;
+    padding: 0 0 0 16px;
+    font-size: 12.5px;
+    color: #5a6a8a;
+    line-height: 2;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+    .sidebar   { display: none; }
+    .contentWrap { padding: 24px 16px 36px; }
+}
+
+@media (max-width: 480px) {
+    .heroBanner { padding: 36px 16px 52px; }
+    .searchBar  { flex-wrap: wrap; }
+    .searchBtn  { width: 100%; justify-content: center; }
 }

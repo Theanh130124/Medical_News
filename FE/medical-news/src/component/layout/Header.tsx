@@ -1,412 +1,320 @@
-import { Container, Navbar, Button, NavDropdown, Nav, Badge, Dropdown } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect, createElement } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 import styles from "./Styles/header.module.css";
-import { useContext, useState, useEffect } from "react";
 import { MyDipatcherContext, MyUserContext } from "../../configs/MyContexts";
-import { authApis, endpoint } from "../../configs/Apis"; 
+import { authApis, endpoint } from "../../configs/Apis";
 import cookie from 'react-cookies';
 import { FriendRequest } from "../../types/friends";
 import { handleApiError } from "../../utils/errorHandler";
+import {
+    FiBell, FiHome, FiClock, FiFileText, FiLogOut,
+    FiUser, FiEdit, FiCheck, FiX, FiRefreshCw,
+    FiCheckSquare, FiMenu, FiChevronDown
+} from "react-icons/fi";
 
-// Định nghĩa kiểu dữ liệu cho Notification
+const ico = (C: any, size: number) => createElement(C, { size });
+
 interface Notification {
-  id: string;
-  userResponse: {
     id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    isActive: boolean;
-    address: string;
-    email: string;
-    gender: string;
-    avatar: string;
-    dateOfBirth: string;
-    role: {
-      name: string;
-      description: string;
+    userResponse: {
+        id: string; username: string; firstName: string; lastName: string;
+        phoneNumber: string; isActive: boolean; address: string; email: string;
+        gender: string; avatar: string; dateOfBirth: string;
+        role: { name: string; description: string };
+        createdAt: string; doctor: any;
     };
+    message: string;
+    isRead: boolean;
     createdAt: string;
-    doctor: any;
-  };
-  message: string;
-  isRead: boolean;
-  createdAt: string;
-  updatedAt: string;
+    updatedAt: string;
 }
 
 const Header = () => {
-  const user = useContext(MyUserContext);
-  const dispatch = useContext(MyDipatcherContext);
-  const navigate = useNavigate();
-  const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showFriendRequests, setShowFriendRequests] = useState(false);
-  const [activeTab, setActiveTab] = useState<'notifications' | 'friendRequests'>('notifications');
+    const user      = useContext(MyUserContext);
+    const dispatch  = useContext(MyDipatcherContext);
+    const navigate  = useNavigate();
+    const location  = useLocation();
 
-  // Lấy danh sách thông báo
-  const fetchNotifications = async () => {
-    if (!user) return;
-    
-    try {
-      const response = await authApis().get(endpoint.all_notification(user.id));
-      if (response.data.code === 0) {
-        setNotifications(response.data.result);
-      }
-    } catch (error) {
-      handleApiError(error, "Lấy thông báo thất bại!");
-    }
-  };
+    const [friendRequests,      setFriendRequests]      = useState<FriendRequest[]>([]);
+    const [notifications,       setNotifications]       = useState<Notification[]>([]);
+    const [showNotifications,   setShowNotifications]   = useState(false);
+    const [activeTab,           setActiveTab]           = useState<'notifications' | 'friendRequests'>('notifications');
+    const [scrolled,            setScrolled]            = useState(false);
+    const [mobileOpen,          setMobileOpen]          = useState(false);
 
-  // Lấy danh sách lời mời kết bạn
-  const fetchFriendRequests = async () => {
-    if (!user) return;
-    
-    try {
-      const response = await authApis().get(endpoint.friend_pending(user.id));
-      if (response.data.code === 0) {
-        setFriendRequests(response.data.result.content);
-      }
-    } catch (error) {
-      handleApiError(error, "Lấy lời mời kết bạn thất bại!");
-    }
-  };
+    // Sticky on scroll
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 12);
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
-  // Xử lý đọc một thông báo
-  const handleReadNotification = async (id: string) => {
-    try {
-      await authApis().patch(endpoint.read_notification(id));
-      
-      // Cập nhật lại danh sách thông báo
-      fetchNotifications();
-    } catch (error) {
-      handleApiError(error, "Đọc thông báo thất bại!");
-    }
-  };
+    const fetchNotifications = async () => {
+        if (!user) return;
+        try {
+            const res = await authApis().get(endpoint.all_notification(user.id));
+            if (res.data.code === 0) setNotifications(res.data.result);
+        } catch (err) { handleApiError(err, "Lấy thông báo thất bại!"); }
+    };
 
-  // Xử lý đọc tất cả thông báo
-  const handleReadAllNotifications = async () => {
-    if (!user) return;
-    
-    try {
-      await authApis().patch(endpoint.read_all_notification(user.id));
-      
-      // Cập nhật lại danh sách thông báo
-      fetchNotifications();
-    } catch (error) {
-      handleApiError(error, "Đọc tất cả thông báo thất bại!");
-    }
-  };
+    const fetchFriendRequests = async () => {
+        if (!user) return;
+        try {
+            const res = await authApis().get(endpoint.friend_pending(user.id));
+            if (res.data.code === 0) setFriendRequests(res.data.result.content);
+        } catch (err) { handleApiError(err, "Lấy lời mời kết bạn thất bại!"); }
+    };
 
-  // Xử lý chấp nhận lời mời kết bạn
-  const handleAcceptFriend = async (firstUserId: string) => {
-    try {
-      await authApis().patch(endpoint.accept_friend(firstUserId, user.id), {
-        status: "ACCEPTED"
-      });
-      
-      // Cập nhật lại danh sách
-      fetchFriendRequests();
-    } catch (error) {
-      handleApiError(error, "Chấp nhận lời mời kết bạn thất bại!");
-    }
-  };
+    const handleReadNotification = async (id: string) => {
+        try {
+            await authApis().patch(endpoint.read_notification(id));
+            fetchNotifications();
+        } catch (err) { handleApiError(err, "Đọc thông báo thất bại!"); }
+    };
 
-  // Xử lý từ chối lời mời kết bạn
-  const handleRejectFriend = async (firstUserId: string) => {
-    try {
-      await authApis().delete(endpoint.reject_friend(firstUserId, user.id));
-      
-      // Cập nhật lại danh sách
-      fetchFriendRequests();
-    } catch (error) {
-      handleApiError(error, "Từ chối lời mời kết bạn thất bại!");
-    }
-  };
+    const handleReadAllNotifications = async () => {
+        if (!user) return;
+        try {
+            await authApis().patch(endpoint.read_all_notification(user.id));
+            fetchNotifications();
+        } catch (err) { handleApiError(err, "Đọc tất cả thông báo thất bại!"); }
+    };
 
-  const handleLogout = () => {
-    dispatch({ type: "logout" });
-    navigate("/login");
-  };
+    const handleAcceptFriend = async (firstUserId: string) => {
+        try {
+            await authApis().patch(endpoint.accept_friend(firstUserId, user.id), { status: "ACCEPTED" });
+            fetchFriendRequests();
+        } catch (err) { handleApiError(err, "Chấp nhận lời mời kết bạn thất bại!"); }
+    };
 
-  // Tính số thông báo chưa đọc
-  const unreadNotificationsCount = notifications.filter(notif => !notif.isRead).length;
-  const totalUnreadCount = unreadNotificationsCount + friendRequests.length;
+    const handleRejectFriend = async (firstUserId: string) => {
+        try {
+            await authApis().delete(endpoint.reject_friend(firstUserId, user.id));
+            fetchFriendRequests();
+        } catch (err) { handleApiError(err, "Từ chối lời mời kết bạn thất bại!"); }
+    };
 
-  // Gọi API khi component mount và khi user thay đổi
-  useEffect(() => {
-    if (user) {
-      fetchNotifications();
-      fetchFriendRequests();
-      
-      // Thiết lập interval để cập nhật thông báo mỗi 30 giây
-      const interval = setInterval(() => {
-        fetchNotifications();
-        fetchFriendRequests();
-      }, 30000);
-      
-      return () => clearInterval(interval);
-    }
-  }, [user]);
+    const handleLogout = () => {
+        dispatch({ type: "logout" });
+        navigate("/login");
+    };
 
-  return (
-    <Navbar collapseOnSelect expand="lg" variant="light" bg="light" className={styles.header}>
-      <Container className="p-0">
-        <Navbar.Brand as={Link} to="/" className={styles.logoLink}>
-          <h2 className={styles.logoTitle}>
-            <span className={styles.logoHealth}>MEDICAL</span>
-            <span className={styles.logoCare}>NEWS</span>
-          </h2>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
+    useEffect(() => {
+        if (user) {
+            fetchNotifications();
+            fetchFriendRequests();
+            const interval = setInterval(() => {
+                fetchNotifications();
+                fetchFriendRequests();
+            }, 30000);
+            return () => clearInterval(interval);
+        }
+    }, [user]);
 
-          <Nav className={`me-auto ${styles.headerMenu} text-center`}>
-            <Link to="/" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-              <i className="bi bi-house me-1"></i>
-              <span className={styles.navText}>Trang chủ</span>
-              <span className={styles.subText}>Home</span>
-            </Link>
+    const unreadCount   = notifications.filter(n => !n.isRead).length;
+    const totalUnread   = unreadCount + friendRequests.length;
 
-            {user !== null && (
-              <Link to="/timeline" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-                <i className="bi bi-clock-history me-1"></i>
-                <span className={styles.navText}>Hoạt động</span>
-                <span className={styles.subText}>Timeline</span>
-              </Link>
-            )}
-        
-            <Link to="/news" className={`nav-link text-dark ${styles.navItemWithSubtext} ms-4`}>
-              <i className="bi bi-newspaper me-1"></i>
-              <span className={styles.navText}>Tin tức</span>
-              <span className={styles.subText}>Xem ngay</span>
-            </Link>
-         
-          </Nav>
+    const isActive = (path: string) => location.pathname === path;
 
-          <Nav className={styles.headerAuth}>
-            {user === null ? (
-              <>
-                <Link to="/register" className={styles.registerBtn} style={{ textDecoration: "none" }}>
-                  Đăng ký
+    const navLinks = [
+        { to: "/",         label: "Trang chủ", sub: "Home",     icon: FiHome,     always: true  },
+        { to: "/timeline", label: "Hoạt động", sub: "Timeline", icon: FiClock,    always: false },
+        { to: "/news",     label: "Tin tức",   sub: "News",     icon: FiFileText, always: true  },
+    ];
+
+    return (
+        <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ""}`}>
+            <div className={styles.inner}>
+
+                {/* ── LOGO ── */}
+                <Link to="/" className={styles.logo}>
+                    <span className={styles.logoMedical}>MEDICAL</span>
+                    <span className={styles.logoNews}>NEWS</span>
                 </Link>
-                <Link to="/login" className={styles.loginBtn} style={{ textDecoration: "none" }}>
-                  Đăng nhập
-                </Link>
-              </>
-            ) : (
-              <>
-                {/* Chuông thông báo */}
-                <Dropdown 
-                  show={showNotifications} 
-                  onToggle={(isOpen) => setShowNotifications(isOpen)}
-                  align="end"
-                >
-                  <Dropdown.Toggle 
-                    variant="light" 
-                    className={`position-relative border-0 bg-transparent ${styles.customToggle}`}
-                  >
-                    <i className="bi bi-bell fs-5"></i>
-                    {totalUnreadCount > 0 && (
-                      <Badge 
-                        pill 
-                        bg="danger" 
-                        className={styles.notificationBadge}
-                        style={{ fontSize: '0.6rem' }}
-                      >
-                        {totalUnreadCount}
-                      </Badge>
-                    )}
-                  </Dropdown.Toggle>
 
-                  <Dropdown.Menu style={{ width: '350px' }}>
-                    <div className="d-flex border-bottom">
-                      <Button 
-                        variant={activeTab === 'notifications' ? 'primary' : 'light'} 
-                        className="flex-fill rounded-0 border-0"
-                        onClick={() => setActiveTab('notifications')}
-                      >
-                        Thông báo
-                        {unreadNotificationsCount > 0 && (
-                          <Badge bg="danger" className="ms-1">
-                            {unreadNotificationsCount}
-                          </Badge>
-                        )}
-                      </Button>
-                      <Button 
-                        variant={activeTab === 'friendRequests' ? 'primary' : 'light'} 
-                        className="flex-fill rounded-0 border-0"
-                        onClick={() => setActiveTab('friendRequests')}
-                      >
-                        Lời mời kết bạn
-                        {friendRequests.length > 0 && (
-                          <Badge bg="danger" className="ms-1">
-                            {friendRequests.length}
-                          </Badge>
-                        )}
-                      </Button>
-                    </div>
+                {/* ── NAV (desktop) ── */}
+                <nav className={styles.nav}>
+                    {navLinks.filter(l => l.always || user !== null).map(l => (
+                        <Link
+                            key={l.to}
+                            to={l.to}
+                            className={`${styles.navItem} ${isActive(l.to) ? styles.navItemActive : ""}`}
+                        >
+                            <span className={styles.navIcon}>{ico(l.icon, 15)}</span>
+                            <span className={styles.navLabel}>{l.label}</span>
+                            <span className={styles.navSub}>{l.sub}</span>
+                        </Link>
+                    ))}
+                </nav>
 
-                    {activeTab === 'notifications' ? (
-                      <>
-                        <Dropdown.Header>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <span>Thông báo</span>
-                            <div>
-                              <Button 
-                                variant="link" 
-                                size="sm" 
-                                className="p-0 me-2"
-                                onClick={fetchNotifications}
-                                title="Làm mới"
-                              >
-                                <i className="bi bi-arrow-clockwise"></i>
-                              </Button>
-                              {unreadNotificationsCount > 0 && (
-                                <Button 
-                                  variant="link" 
-                                  size="sm" 
-                                  className="p-0"
-                                  onClick={handleReadAllNotifications}
-                                  title="Đọc tất cả"
-                                >
-                                  <i className="bi bi-check-all"></i>
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </Dropdown.Header>
-                        
-                        {notifications.length === 0 ? (
-                          <Dropdown.ItemText className="text-center text-muted py-3">
-                            Không có thông báo
-                          </Dropdown.ItemText>
-                        ) : (
-                          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                            {notifications.map((notification) => (
-                              <Dropdown.Item 
-                                key={notification.id} 
-                                className={`p-3 border-bottom ${!notification.isRead ? 'bg-light' : ''}`}
-                                onClick={() => handleReadNotification(notification.id)}
-                                style={{ cursor: 'pointer' }}
-                              >
-                                <div className="d-flex align-items-start">
-                                  {!notification.isRead && (
-                                    <span className="me-2 text-primary">
-                                      <i className="bi bi-circle-fill" style={{ fontSize: '8px' }}></i>
-                                    </span>
-                                  )}
-                                  <div className="flex-grow-1">
-                                    <div className="fw-normal">{notification.message}</div>
-                                    <small className="text-muted">
-                                      {new Date(notification.createdAt).toLocaleString('vi-VN')}
-                                    </small>
-                                  </div>
-                                </div>
-                              </Dropdown.Item>
-                            ))}
-                          </div>
-                        )}
-                      </>
+                {/* ── RIGHT ── */}
+                <div className={styles.right}>
+                    {user === null ? (
+                        <>
+                            <Link to="/register" className={styles.btnRegister}>Đăng ký</Link>
+                            <Link to="/login"    className={styles.btnLogin}>Đăng nhập</Link>
+                        </>
                     ) : (
-                      <>
-                        <Dropdown.Header>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <span>Lời mời kết bạn</span>
-                            <Button 
-                              variant="link" 
-                              size="sm" 
-                              className="p-0"
-                              onClick={fetchFriendRequests}
-                              title="Làm mới"
+                        <>
+                            {/* Bell dropdown */}
+                            <Dropdown
+                                show={showNotifications}
+                                onToggle={open => setShowNotifications(open)}
+                                align="end"
                             >
-                              <i className="bi bi-arrow-clockwise"></i>
-                            </Button>
-                          </div>
-                        </Dropdown.Header>
-                        
-                        {friendRequests.length === 0 ? (
-                          <Dropdown.ItemText className="text-center text-muted py-3">
-                            Không có lời mời kết bạn
-                          </Dropdown.ItemText>
-                        ) : (
-                          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                            {friendRequests.map((request, index) => (
-                              <Dropdown.Item 
-                                key={index} 
-                                className="p-3 border-bottom"
-                                style={{ cursor: 'default' }}
-                              >
-                                <div className="d-flex align-items-center">
-                                  <img 
-                                    src={request.firstUserId.avatar} 
-                                    width="40" 
-                                    height="40"
-                                    className="rounded-circle me-2" 
-                                    alt={request.firstUserId.username}
-                                  />
-                                  <div className="flex-grow-1">
-                                    <div className="fw-bold">{request.firstUserId.firstName} {request.firstUserId.lastName}</div>
-                                  </div>
-                                </div>
-                                <div className="d-flex justify-content-end mt-2 gap-1">
-                                  <Button 
-                                    variant="outline-success" 
-                                    size="sm"
-                                    onClick={() => handleAcceptFriend(request.firstUserId.id)}
-                                  >
-                                    <i className="bi bi-check-lg"></i> Chấp nhận
-                                  </Button>
-                                  <Button 
-                                    variant="outline-danger" 
-                                    size="sm"
-                                    onClick={() => handleRejectFriend(request.firstUserId.id)}
-                                  >
-                                    <i className="bi bi-x-lg"></i> Từ chối
-                                  </Button>
-                                </div>
-                              </Dropdown.Item>
-                            ))}
-                          </div>
-                        )}
-                      </>
+                                <Dropdown.Toggle as="button" className={styles.bellBtn} bsPrefix="x">
+                                    {ico(FiBell, 18)}
+                                    {totalUnread > 0 && (
+                                        <span className={styles.bellBadge}>{totalUnread}</span>
+                                    )}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu className={styles.dropMenu}>
+                                    {/* Tabs */}
+                                    <div className={styles.dropTabs}>
+                                        <button
+                                            className={`${styles.dropTab} ${activeTab === 'notifications' ? styles.dropTabActive : ''}`}
+                                            onClick={() => setActiveTab('notifications')}
+                                        >
+                                            Thông báo
+                                            {unreadCount > 0 && <span className={styles.tabBadge}>{unreadCount}</span>}
+                                        </button>
+                                        <button
+                                            className={`${styles.dropTab} ${activeTab === 'friendRequests' ? styles.dropTabActive : ''}`}
+                                            onClick={() => setActiveTab('friendRequests')}
+                                        >
+                                            Lời mời kết bạn
+                                            {friendRequests.length > 0 && <span className={styles.tabBadge}>{friendRequests.length}</span>}
+                                        </button>
+                                    </div>
+
+                                    {/* Panel header */}
+                                    <div className={styles.dropPanelHeader}>
+                                        <span>{activeTab === 'notifications' ? 'Thông báo' : 'Lời mời kết bạn'}</span>
+                                        <div style={{ display: 'flex', gap: 6 }}>
+                                            <button className={styles.iconActionBtn} onClick={activeTab === 'notifications' ? fetchNotifications : fetchFriendRequests} title="Làm mới">
+                                                {ico(FiRefreshCw, 13)}
+                                            </button>
+                                            {activeTab === 'notifications' && unreadCount > 0 && (
+                                                <button className={styles.iconActionBtn} onClick={handleReadAllNotifications} title="Đọc tất cả">
+                                                    {ico(FiCheckSquare, 13)}
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Notification list */}
+                                    <div className={styles.dropList}>
+                                        {activeTab === 'notifications' ? (
+                                            notifications.length === 0 ? (
+                                                <div className={styles.dropEmpty}>Không có thông báo</div>
+                                            ) : notifications.map(n => (
+                                                <div
+                                                    key={n.id}
+                                                    className={`${styles.dropItem} ${!n.isRead ? styles.dropItemUnread : ''}`}
+                                                    onClick={() => handleReadNotification(n.id)}
+                                                >
+                                                    {!n.isRead && <span className={styles.unreadDot} />}
+                                                    <div className={styles.dropItemContent}>
+                                                        <div className={styles.dropItemMsg}>{n.message}</div>
+                                                        <div className={styles.dropItemTime}>
+                                                            {new Date(n.createdAt).toLocaleString('vi-VN')}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            friendRequests.length === 0 ? (
+                                                <div className={styles.dropEmpty}>Không có lời mời kết bạn</div>
+                                            ) : friendRequests.map((req, i) => (
+                                                <div key={i} className={styles.dropItem}>
+                                                    <img
+                                                        src={req.firstUserId.avatar}
+                                                        alt={req.firstUserId.username}
+                                                        className={styles.reqAvatar}
+                                                    />
+                                                    <div className={styles.dropItemContent}>
+                                                        <div className={styles.dropItemMsg} style={{ fontWeight: 600 }}>
+                                                            {req.firstUserId.firstName} {req.firstUserId.lastName}
+                                                        </div>
+                                                        <div className={styles.reqActions}>
+                                                            <button
+                                                                className={styles.reqAccept}
+                                                                onClick={() => handleAcceptFriend(req.firstUserId.id)}
+                                                            >
+                                                                {ico(FiCheck, 13)} Chấp nhận
+                                                            </button>
+                                                            <button
+                                                                className={styles.reqReject}
+                                                                onClick={() => handleRejectFriend(req.firstUserId.id)}
+                                                            >
+                                                                {ico(FiX, 13)} Từ chối
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                            {/* User dropdown */}
+                            <Dropdown align="end">
+                                <Dropdown.Toggle as="button" className={styles.userBtn} bsPrefix="x">
+                                    <img src={user.avatar} alt="avatar" className={styles.userAvatar} />
+                                    <span className={styles.userName}>{user.username}</span>
+                                    {ico(FiChevronDown, 13)}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className={styles.dropMenu} style={{ minWidth: 200 }}>
+                                    <div className={styles.dropUserInfo}>
+                                        <img src={user.avatar} alt="avatar" className={styles.dropUserAvatar} />
+                                        <div>
+                                            <div className={styles.dropUserName}>{user.firstName} {user.lastName}</div>
+                                            <div className={styles.dropUserRole}>{user.role?.name}</div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.dropDivider} />
+                                    <Link to="/editProfile" className={styles.dropLink}>
+                                        {ico(FiEdit, 14)} Sửa thông tin
+                                    </Link>
+                                    <Link to="/profile" className={styles.dropLink}>
+                                        {ico(FiUser, 14)} Trang cá nhân
+                                    </Link>
+                                    <div className={styles.dropDivider} />
+                                    <button className={`${styles.dropLink} ${styles.dropLogout}`} onClick={handleLogout}>
+                                        {ico(FiLogOut, 14)} Đăng xuất
+                                    </button>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </>
                     )}
-                  </Dropdown.Menu>
-                </Dropdown>
 
-                {/* Dropdown người dùng */}
-                <NavDropdown
-                  title={
-                    <span>
-                      <img src={user.avatar} width="40" className="rounded-circle me-1" alt="Avatar" /> 
-                      {user.username}
-                    </span>
-                  }
-                  id="user-dropdown"
-                  align="end"
-                >
-                  <NavDropdown.Item as={Link} to="/editProfile">
-                    Sửa thông tin cá nhân
-                  </NavDropdown.Item>
+                    {/* Mobile hamburger */}
+                    <button className={styles.hamburger} onClick={() => setMobileOpen(o => !o)}>
+                        {ico(FiMenu, 22)}
+                    </button>
+                </div>
+            </div>
 
-                  <NavDropdown.Item as={Link} to="/profile">
-                    Trang cá nhân
-                  </NavDropdown.Item>
-                  
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>
-                    <i className="bi bi-box-arrow-right me-2"></i> Đăng xuất
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </>
+            {/* Mobile nav drawer */}
+            {mobileOpen && (
+                <div className={styles.mobileNav}>
+                    {navLinks.filter(l => l.always || user !== null).map(l => (
+                        <Link
+                            key={l.to}
+                            to={l.to}
+                            className={`${styles.mobileNavItem} ${isActive(l.to) ? styles.mobileNavItemActive : ""}`}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            {ico(l.icon, 16)} {l.label}
+                        </Link>
+                    ))}
+                </div>
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+        </header>
+    );
 };
 
 export default Header;

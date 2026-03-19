@@ -1,7 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap');
+
+/* ───────── Page wrapper ───────── */
+.pageWrapper {
+    min-height: 100vh;
+    width: 100%;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 60px 32px;
+    box-sizing: border-box;
+}
+
+/* ───────── Blobs (same as Login) ───────── */
+.blob1 {
+    position: fixed;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #a5b8ff 0%, #c7d3ff 55%, transparent 100%);
+    top: -200px;
+    left: -180px;
+    opacity: 0.5;
+    pointer-events: none;
+    animation: blobFloat 8s ease-in-out infinite;
+}
+
+.blob2 {
+    position: fixed;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #99f0d4 0%, #c8f5e8 55%, transparent 100%);
+    bottom: -160px;
+    right: -140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: blobFloat 10s ease-in-out infinite reverse;
+}
+
+@keyframes blobFloat {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50%       { transform: translateY(20px) scale(1.04); }
+}
+
+/* ───────── Outer layout: left panel + right card ───────── */
+.outerLayout {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    width: 100%;
+    max-width: 1300px;
+    position: relative;
+    z-index: 2;
+    animation: cardIn 0.55s cubic-bezier(0.22, 0.68, 0, 1.2) both;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ───────── Left panel ───────── */
+.leftPanel {
+    flex: 0 0 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.bannerImg {
+    width: 100%;
+    max-width: 400px;
+    object-fit: contain;
+    drop-shadow: 0 8px 24px rgba(79,111,255,0.15);
+    animation: bannerFloat 6s ease-in-out infinite;
+}
+
+@keyframes bannerFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+}
+
+.slogan {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #4a5880;
+    text-align: center;
+    font-style: italic;
+    font-weight: 400;
+    padding: 0 8px;
+}
+
+/* ───────── Card (right) ───────── */
+.card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.87);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 28px;
+    box-shadow:
+        0 8px 48px rgba(100, 120, 200, 0.13),
+        0 1.5px 8px rgba(100, 120, 200, 0.07);
+    border: 1px solid rgba(180, 200, 255, 0.4);
+    padding: 44px 52px 40px;
+}
+
+/* ───────── Header ───────── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.logoRing {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f6fff 0%, #38d9a9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 0 4px 18px rgba(79, 111, 255, 0.30);
+    animation: pulseRing 2.6s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+    0%, 100% { box-shadow: 0 4px 18px rgba(79, 111, 255, 0.28); }
+    50%       { box-shadow: 0 4px 28px rgba(79, 111, 255, 0.50); }
+}
+
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1a2340;
+    margin: 0 0 3px;
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    font-size: 13.5px;
+    color: #7a8aaa;
+    margin: 0;
+}
+
+/* ───────── Avatar upload ───────── */
+.avatarRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #f6f8ff;
+    border: 1.5px dashed #c5d0f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.avatarRow:hover {
+    border-color: #4f6fff;
+    background: #f0f3ff;
+}
+
+.avatarCircle {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 50%;
+    background: #dde4f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7ebd;
+    overflow: hidden;
+    transition: background 0.2s;
+}
+
+.avatarCircle:hover { background: #c9d3f5; }
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatarHint        { display: flex; flex-direction: column; gap: 2px; }
+.avatarHintTitle   { font-size: 13px; font-weight: 600; color: #1a2340; }
+.avatarHintSub     { font-size: 11.5px; color: #9aaac8; }
+
+/* ───────── Two-column grid ───────── */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+}
+
+.col { display: flex; flex-direction: column; }
+
+/* ───────── Fields ───────── */
+.fieldWrap {
+    margin-bottom: 18px;
+    animation: fieldIn 0.4s ease both;
+    opacity: 0;
+}
+
+@keyframes fieldIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.fieldLabel {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #5a6a8a;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.inputWrap { position: relative; }
+
+.fieldIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #9aaac8;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 40px;
+    border: 1.5px solid #dde4f5;
+    border-radius: 11px;
+    font-size: 14px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a2340;
+    background: #f6f8ff;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    box-sizing: border-box;
+}
+
+.input::placeholder { color: #aab4cc; font-weight: 400; }
+
+.input:focus {
+    border-color: #4f6fff;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(79, 111, 255, 0.10);
+}
+
+/* ───────── Eye toggle ───────── */
+.eyeBtn {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #9aaac8;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+}
+.eyeBtn:hover { color: #4f6fff; }
+
+/* ───────── Submit ───────── */
+.submitBtn {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #4f6fff 0%, #38c9a9 100%);
+    color: #ffffff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(79, 111, 255, 0.30);
+}
+.submitBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 60%);
+    pointer-events: none;
+}
+.submitBtn:hover  { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(79,111,255,0.38); }
+.submitBtn:active { transform: translateY(0) scale(0.98); }
+
+/* ───────── Spinner ───────── */
+.spinnerWrap { display: flex; justify-content: center; margin-top: 12px; }
+
+/* ───────── Divider ───────── */
+.divider { display: flex; align-items: center; gap: 12px; margin: 22px 0 0; }
+.dividerLine { flex: 1; height: 1px; background: #e4eaf5; }
+.dividerText { font-size: 11px; color: #aab4cc; font-weight: 500; white-space: nowrap; letter-spacing: 0.3px; }
+
+/* ───────── Footer ───────── */
+.footer { text-align: center; margin-top: 14px; font-size: 13px; color: #7a8aaa; }
+.footerLink { color: #4f6fff; font-weight: 600; text-decoration: none; transition: color 0.15s; }
+.footerLink:hover { color: #2e50e8; text-decoration: underline; }
+
+/* ───────── Responsive ───────── */
+@media (max-width: 768px) {
+    .outerLayout  { flex-direction: column; gap: 24px; }
+    .leftPanel    { flex: unset; width: 100%; }
+    .bannerImg    { max-width: 200px; }
+    .grid         { grid-template-columns: 1fr; }
+    .card         { padding: 24px 18px 20px; }
+}
+
+/* ───────── Legacy ───────── */
 .custom-row-primary {
-  background: linear-gradient(135deg, #9aabff, #d7e0ff);
-  border-radius: 0;
-  width: 100vw; /* sửa lại từ 100vx thành 100vw */
-  padding: 60px 20px; /* tăng khoảng cách để nội dung thoáng hơn */
-  height: auto; /* để nó tự điều chỉnh theo nội dung */
+    background: linear-gradient(135deg, #9aabff, #d7e0ff);
+    border-radius: 0;
+    width: 100vw;
+    padding: 60px 20px;
+    height: auto;
 }
