@@ -1,9 +1,12 @@
-import { useState, useContext } from "react";
+import { useState, useContext, createElement } from "react";
 import { MyUserContext } from "../../configs/MyContexts";
 import { authApis, endpoint } from "../../configs/Apis";
-import { Card, Image, Button, InputGroup, Form, Modal } from "react-bootstrap";
 import { showCustomToast } from "../layout/MyToaster";
 import { handleApiError } from "../../utils/errorHandler";
+import styles from "./Styles/comment.module.css";
+import { FiEdit2, FiTrash2, FiSend, FiX, FiCheck, FiMessageCircle } from "react-icons/fi";
+
+const ico = (C: any, size: number) => createElement(C, { size });
 
 interface CommentProps {
   post: any;
@@ -16,19 +19,15 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
   const [editingComment, setEditingComment] = useState<{ id: string; content: string } | null>(null);
 
   const handleCreateComment = async () => {
-    if (!user) return;
+    if (!user || !commentContent.trim()) return;
     try {
-      if (!commentContent) return;
-      await authApis().post(endpoint['create_comment'], { 
-        postId: post.id, 
-        userId: user.id, 
-        content: commentContent 
+      await authApis().post(endpoint["create_comment"], {
+        postId: post.id, userId: user.id, content: commentContent
       });
       setCommentContent("");
       onCommentUpdate();
     } catch (ex) {
-      console.error(ex);
-       handleApiError(ex, "Bình luận thất bại!");
+      handleApiError(ex, "Bình luận thất bại!");
     }
   };
 
@@ -39,8 +38,7 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       onCommentUpdate();
       setEditingComment(null);
     } catch (ex) {
-      console.error(ex);
-      handleApiError(ex, "Cập nhât bình luận thất bại!");
+      handleApiError(ex, "Cập nhật bình luận thất bại!");
     }
   };
 
@@ -50,87 +48,129 @@ const Comment = ({ post, onCommentUpdate }: CommentProps) => {
       showCustomToast("Xóa bình luận thành công!", "success");
       onCommentUpdate();
     } catch (ex) {
-      console.error(ex);
-       handleApiError(ex, "Xóa bình luận thất bại!");
+      handleApiError(ex, "Xóa bình luận thất bại!");
     }
   };
 
   return (
-    <div className="mt-3">
-      <strong>Bình luận:</strong>
+    <div className={styles.commentWrap}>
+
+      {/* Section label */}
+      <div className={styles.sectionLabel}>
+        {ico(FiMessageCircle, 13)}
+        <span>Bình luận</span>
+        {post.comments?.length > 0 && (
+          <span className={styles.commentCount}>{post.comments.length}</span>
+        )}
+      </div>
+
+      {/* Comment list */}
       {post.comments?.map((c: any, index: number) => {
-        const canEditComment = c.userResponse?.id === user?.id;
-        const canDeleteComment = canEditComment || user?.role?.name === "ADMIN";
-        
+        const canEdit   = c.userResponse?.id === user?.id;
+        const canDelete = canEdit || user?.role?.name === "ADMIN";
+        const isEditing = editingComment?.id === c.id;
+
         return (
-          <Card key={c.id ?? `${post.id}-comment-${index}`} className="mt-2 p-2">
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="d-flex align-items-center">
-                <Image src={c.userResponse.avatar} roundedCircle width={30} height={30} className="me-2" />
-                <strong>{c.userResponse.firstName} {c.userResponse.lastName}</strong>
-                <small className="ms-2 text-muted">
-                  {c.createdAt ? new Date(c.createdAt).toLocaleString("vi-VN") : ""}
-                </small>
-              </div>
-              <div>
-                {canEditComment && (
-                  <Button
-                    size="sm"
-                    variant="warning"
-                    className="me-1"
-                    onClick={() => setEditingComment({ id: c.id, content: c.content })}
-                  >
-                    <i className="bi bi-pencil-square"></i>
-                  </Button>
+          <div key={c.id ?? `${post.id}-c-${index}`} className={styles.commentItem}>
+            <img
+              src={c.userResponse.avatar}
+              alt={c.userResponse.username}
+              className={styles.commentAvatar}
+            />
+            <div className={styles.commentBody}>
+              <div className={styles.commentHeader}>
+                <div className={styles.commentMeta}>
+                  <span className={styles.commentAuthor}>
+                    {c.userResponse.firstName} {c.userResponse.lastName}
+                  </span>
+                  <span className={styles.commentTime}>
+                    {c.createdAt ? new Date(c.createdAt).toLocaleString("vi-VN") : ""}
+                  </span>
+                </div>
+                {(canEdit || canDelete) && !isEditing && (
+                  <div className={styles.commentActions}>
+                    {canEdit && (
+                      <button
+                        className={`${styles.commentActionBtn} ${styles.editBtn}`}
+                        onClick={() => setEditingComment({ id: c.id, content: c.content })}
+                      >
+                        {ico(FiEdit2, 12)}
+                      </button>
+                    )}
+                    {canDelete && (
+                      <button
+                        className={`${styles.commentActionBtn} ${styles.deleteBtn}`}
+                        onClick={() => handleDeleteComment(c.id)}
+                      >
+                        {ico(FiTrash2, 12)}
+                      </button>
+                    )}
+                  </div>
                 )}
-                {canDeleteComment && (
-                  <Button size="sm" variant="danger" onClick={() => handleDeleteComment(c.id)}>
-                    <i className="bi bi-trash"></i>
-                  </Button>
-                )}
               </div>
+
+              {isEditing ? (
+                <div className={styles.editWrap}>
+                  <textarea
+                    className={styles.editTextarea}
+                    value={editingComment?.content ?? ""}
+                    onChange={e => setEditingComment(prev => prev ? { ...prev, content: e.target.value } : prev)}
+                    rows={2}
+                    autoFocus
+                  />
+                  <div className={styles.editActions}>
+                    <button
+                      className={styles.editCancelBtn}
+                      onClick={() => setEditingComment(null)}
+                    >
+                      {ico(FiX, 13)} Hủy
+                    </button>
+                    <button
+                      className={styles.editSaveBtn}
+                      onClick={() => {
+                        if (editingComment) handleUpdateComment(editingComment.id, editingComment.content);
+                      }}
+                    >
+                      {ico(FiCheck, 13)} Lưu
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.commentContent}>{c.content}</div>
+              )}
             </div>
-            <div>{c.content}</div>
-          </Card>
+          </div>
         );
       })}
 
-      <InputGroup className="mt-2">
-        <Form.Control
-          placeholder={post.allowComments ? "Viết bình luận..." : "Bài viết này không cho phép bình luận"}
-          value={commentContent}
-          onChange={e => post.allowComments && setCommentContent(e.target.value)}
-          disabled={!post.allowComments}
-          onKeyPress={e => e.key === 'Enter' && handleCreateComment()}
-        />
-        <Button 
-          variant="primary" 
-          onClick={handleCreateComment} 
-          disabled={!post.allowComments}
-        >
-          Gửi
-        </Button>
-      </InputGroup>
-
-      {/* Modal update comment */}
-      <Modal show={!!editingComment} onHide={() => setEditingComment(null)}>
-        <Modal.Header closeButton><Modal.Title>Sửa bình luận</Modal.Title></Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Control 
-              as="textarea" 
-              value={editingComment?.content || ""} 
-              onChange={e => setEditingComment(prev => prev && { ...prev, content: e.target.value })} 
-            />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setEditingComment(null)}>Hủy</Button>
-          <Button variant="primary" onClick={() => editingComment && handleUpdateComment(editingComment.id, editingComment.content)}>
-            Cập nhật
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {/* Input */}
+      <div className={styles.inputRow}>
+        {user && (
+          <img src={user.avatar} alt={user.username} className={styles.inputAvatar} />
+        )}
+        <div className={styles.inputWrap}>
+          <input
+            className={styles.input}
+            type="text"
+            placeholder={
+              post.allowComments
+                ? "Viết bình luận..."
+                : "Bài viết này không cho phép bình luận"
+            }
+            value={commentContent}
+            disabled={!post.allowComments}
+            onChange={e => post.allowComments && setCommentContent(e.target.value)}
+            onKeyPress={e => e.key === "Enter" && handleCreateComment()}
+          />
+          <button
+            className={styles.sendBtn}
+            onClick={handleCreateComment}
+            disabled={!post.allowComments || !commentContent.trim()}
+          >
+            {ico(FiSend, 14)}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

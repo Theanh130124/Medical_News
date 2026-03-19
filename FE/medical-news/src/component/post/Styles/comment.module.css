@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&display=swap');
+
+.commentWrap {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    padding: 12px 0 16px;
+    border-top: 1px solid #f0f4ff;
+}
+
+/* ── Section label ── */
+.sectionLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #5a6a8a;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+}
+
+.commentCount {
+    background: #eef2ff;
+    color: #4f6fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+/* ── Comment item ── */
+.commentItem {
+    display: flex;
+    gap: 9px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.2s ease both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.commentAvatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #e4eaf5;
+    margin-top: 2px;
+}
+
+.commentBody {
+    flex: 1;
+    min-width: 0;
+    background: #f6f8ff;
+    border: 1.5px solid #e4eaf5;
+    border-radius: 12px;
+    padding: 9px 12px;
+    transition: border-color 0.15s;
+}
+.commentBody:hover { border-color: #c5d0f0; }
+
+.commentHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.commentMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.commentAuthor {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a2340;
+}
+
+.commentTime {
+    font-size: 11px;
+    color: #9aaac8;
+}
+
+/* Action buttons */
+.commentActions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.commentActionBtn {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    border: 1.5px solid #e4eaf5;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.editBtn   { color: #BA7517; }
+.editBtn:hover   { background: #FAEEDA; border-color: #FAC775; }
+.deleteBtn { color: #a32d2d; }
+.deleteBtn:hover { background: #fff5f5; border-color: #f09595; }
+
+/* Comment content */
+.commentContent {
+    font-size: 13.5px;
+    color: #3a4a6a;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+/* Edit inline */
+.editWrap {
+    margin-top: 4px;
+}
+
+.editTextarea {
+    width: 100%;
+    border: 1.5px solid #dde4f5;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13.5px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a2340;
+    background: #fff;
+    outline: none;
+    resize: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+.editTextarea:focus {
+    border-color: #4f6fff;
+    box-shadow: 0 0 0 3px rgba(79,111,255,0.09);
+}
+
+.editActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin-top: 7px;
+}
+
+.editCancelBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    padding: 0 12px;
+    border: 1.5px solid #e4eaf5;
+    border-radius: 8px;
+    background: transparent;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #7a8aaa;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.editCancelBtn:hover { background: #f0f4ff; color: #4f6fff; border-color: #4f6fff; }
+
+.editSaveBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4f6fff, #38c9a9);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(79,111,255,0.22);
+    transition: opacity 0.15s, transform 0.12s;
+}
+.editSaveBtn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ── Input row ── */
+.inputRow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.inputAvatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #e4eaf5;
+}
+
+.inputWrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #f6f8ff;
+    border: 1.5px solid #dde4f5;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inputWrap:focus-within {
+    border-color: #4f6fff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79,111,255,0.09);
+}
+
+.input {
+    flex: 1;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1a2340;
+    padding: 0 12px;
+    outline: none;
+}
+.input::placeholder { color: #aab4cc; }
+.input:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.sendBtn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: none;
+    background: linear-gradient(135deg, #4f6fff, #38c9a9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.sendBtn:hover:not(:disabled) { opacity: 0.85; }
+.sendBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .commentWrap { padding: 10px 0 14px; }
+    .commentAuthor { font-size: 12.5px; }
+    .commentContent { font-size: 13px; }
+}
