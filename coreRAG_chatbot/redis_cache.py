@@ -1,247 +1,200 @@
-# redis_cache.py
-import redis
+import os
 import json
 import hashlib
+import pickle
 import numpy as np
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from sentence_transformers import SentenceTransformer
-import pickle
+import redis
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 
 class RedisPromptCache:
-    def __init__(self, host='localhost', port=6379, db=0, password=None, prefix="rag_cache:"):
-        """
-        Khởi tạo Redis cache cho RAG prompts
-        """
+    def __init__(self, host="localhost", port=6379, db=0,
+                 password=None, prefix="rag_cache:"):
         self.redis_client = redis.Redis(
             host=host,
             port=port,
             db=db,
             password=password,
-            decode_responses=False  # Giữ bytes để lưu numpy arrays
+            decode_responses=False,   # giữ bytes để lưu numpy arrays
         )
         self.prefix = prefix
+        self.similarity_threshold = 0.85
 
-        # Mô hình embedding cho semantic search
         self.embedder = SentenceTransformer(
             "dangvantuan/vietnamese-embedding",
             token=os.getenv("HF_API_KEY"),
-            trust_remote_code=True
+            trust_remote_code=True,
         )
 
-        # Ngưỡng similarity
-        self.similarity_threshold = 0.85
-
-        # Test connection
         try:
             self.redis_client.ping()
-            print(" Redis connection successful")
+            print("[Cache] Redis connection OK")
         except redis.ConnectionError:
-            print(" Cannot connect to Redis")
+            print("[Cache] WARNING: Cannot connect to Redis")
 
-    def _generate_key(self, text: str) -> str:
-        """Tạo Redis key từ text"""
-        content_hash = hashlib.md5(text.strip().lower().encode('utf-8')).hexdigest()
-        return f"{self.prefix}hash:{content_hash}"
+    # ── Key helpers ───────────────────────────────────────────────────────────
 
-    def _generate_semantic_key(self, vector_hash: str) -> str:
-        """Tạo key cho semantic index"""
+    def _hash_key(self, text: str) -> str:
+        h = hashlib.md5(text.strip().lower().encode("utf-8")).hexdigest()
+        return f"{self.prefix}hash:{h}"
+
+    def _semantic_key(self, vector_hash: str) -> str:
         return f"{self.prefix}semantic:{vector_hash}"
 
-    def _generate_vector(self, text: str) -> np.ndarray:
-        """Tạo embedding vector từ text"""
+    def _mapping_key(self, vector_hash: str) -> str:
+        return f"{self.prefix}map:{vector_hash}"
+
+    @property
+    def _index_key(self) -> str:
+        return f"{self.prefix}semantic_index"
+
+    # ── Embedding ─────────────────────────────────────────────────────────────
+
+    def _vectorize(self, text: str) -> np.ndarray:
         return self.embedder.encode(text)
 
-    def _cosine_similarity(self, vec_a: np.ndarray, vec_b: np.ndarray) -> float:
-        """Tính cosine similarity"""
-        return float(np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b)))
+    def _cosine(self, a: np.ndarray, b: np.ndarray) -> float:
+        return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
-    def store(self, query: str, response: str, conversation_id: int = None,
-              user_id: int = None, metadata: Dict[str, Any] = None) -> str:
-        """
-        Lưu prompt và response vào Redis
-        """
-        # Tạo embedding vector
-        vector = self._generate_vector(query)
+    # ── Store ─────────────────────────────────────────────────────────────────
+
+    def store(self, query: str, response: str,
+              conversation_id: str = None, user_id: str = None,
+              metadata: Dict[str, Any] = None) -> str:
+        """Lưu query + response vào Redis (exact key + semantic index)."""
+        vector       = self._vectorize(query)
         vector_bytes = pickle.dumps(vector)
-        vector_hash = hashlib.md5(vector_bytes).hexdigest()
+        vector_hash  = hashlib.md5(vector_bytes).hexdigest()
 
-        # Tạo entry data
         entry = {
-            'prompt': query,
-            'response': response,
-            'vector': vector_bytes,
-            'vector_hash': vector_hash,
-            'timestamp': datetime.utcnow().isoformat(),
-            'conversation_id': conversation_id,
-            'user_id': user_id,
-            'metadata': metadata or {}
+            "prompt":          query,
+            "response":        response,
+            "vector_hash":     vector_hash,
+            "timestamp":       datetime.utcnow().isoformat(),
+            "conversation_id": conversation_id,
+            "user_id":         user_id,
+            "metadata":        metadata or {},
+            "vector":          None,   # vector lưu riêng
         }
 
-        # Chuyển đổi toàn bộ entry thành JSON string (ngoại trừ vector)
-        entry_for_json = entry.copy()
-        entry_for_json['vector'] = None  # Loại bỏ vector khỏi JSON
+        ttl = 86400 * 7   # 7 ngày
 
-        entry_json = json.dumps(entry_for_json, ensure_ascii=False)
+        # 1. Lưu entry JSON (không có vector)
+        hash_key = self._hash_key(query)
+        self.redis_client.set(hash_key, json.dumps(entry, ensure_ascii=False), ex=ttl)
 
-        # Lưu vào Redis theo multiple keys
-        # 1. Lưu bằng hash key (exact match)
-        hash_key = self._generate_key(query)
-        self.redis_client.set(hash_key, entry_json, ex=86400 * 7)  # 7 days expiry
+        # 2. Lưu vector bytes riêng
+        self.redis_client.set(self._semantic_key(vector_hash), vector_bytes, ex=ttl)
 
-        # 2. Lưu vector riêng để semantic search
-        semantic_key = self._generate_semantic_key(vector_hash)
-        self.redis_client.set(semantic_key, vector_bytes, ex=86400 * 7)
-
-        # 3. Lưu mapping từ vector_hash sang prompt hash
-        mapping_key = f"{self.prefix}map:{vector_hash}"
-        self.redis_client.set(mapping_key, hash_key, ex=86400 * 7)
+        # 3. Mapping vector_hash → hash_key
+        self.redis_client.set(self._mapping_key(vector_hash), hash_key, ex=ttl)
 
         # 4. Thêm vào semantic index set
-        index_key = f"{self.prefix}semantic_index"
-        self.redis_client.sadd(index_key, vector_hash)
+        self.redis_client.sadd(self._index_key, vector_hash)
 
         return hash_key
 
+    # ── Retrieve exact ────────────────────────────────────────────────────────
+
     def retrieve_exact(self, query: str) -> Optional[Dict[str, Any]]:
-        """Tìm kiếm chính xác bằng hash"""
-        hash_key = self._generate_key(query)
-        cached_data = self.redis_client.get(hash_key)
+        """Tìm kiếm chính xác theo MD5 hash của query."""
+        data = self.redis_client.get(self._hash_key(query))
+        if not data:
+            return None
 
-        if cached_data:
-            entry = json.loads(cached_data.decode('utf-8') if isinstance(cached_data, bytes) else cached_data)
+        entry = json.loads(data)
 
-            # Lấy lại vector từ separate key
-            vector_hash = entry.get('vector_hash')
-            if vector_hash:
-                semantic_key = self._generate_semantic_key(vector_hash)
-                vector_bytes = self.redis_client.get(semantic_key)
-                if vector_bytes:
-                    entry['vector'] = pickle.loads(vector_bytes)
+        # Đính kèm lại vector nếu còn tồn tại
+        if entry.get("vector_hash"):
+            vbytes = self.redis_client.get(self._semantic_key(entry["vector_hash"]))
+            if vbytes:
+                entry["vector"] = pickle.loads(vbytes)
 
-            return entry
-        return None
+        return entry
+
+    # ── Retrieve semantic ─────────────────────────────────────────────────────
 
     def retrieve_semantic(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
-        """Tìm kiếm semantic với similarity threshold"""
-        query_vector = self._generate_vector(query)
+        """Tìm kiếm ngữ nghĩa: so sánh cosine với toàn bộ vector trong index."""
+        query_vector = self._vectorize(query)
         results = []
 
-        # Lấy tất cả vector_hashes từ index
-        index_key = f"{self.prefix}semantic_index"
-        vector_hashes = self.redis_client.smembers(index_key)
+        for vh_bytes in self.redis_client.smembers(self._index_key):
+            vector_hash = vh_bytes.decode() if isinstance(vh_bytes, bytes) else vh_bytes
 
-        for vector_hash_bytes in vector_hashes:
-            vector_hash = vector_hash_bytes.decode('utf-8') if isinstance(vector_hash_bytes,
-                                                                          bytes) else vector_hash_bytes
-
-            # Lấy vector từ Redis
-            semantic_key = self._generate_semantic_key(vector_hash)
-            vector_bytes = self.redis_client.get(semantic_key)
-
-            if not vector_bytes:
+            vbytes = self.redis_client.get(self._semantic_key(vector_hash))
+            if not vbytes:
                 continue
 
-            cached_vector = pickle.loads(vector_bytes)
-            similarity = self._cosine_similarity(query_vector, cached_vector)
+            similarity = self._cosine(query_vector, pickle.loads(vbytes))
+            if similarity < self.similarity_threshold:
+                continue
 
-            if similarity >= self.similarity_threshold:
-                # Lấy metadata từ hash key
-                mapping_key = f"{self.prefix}map:{vector_hash}"
-                hash_key = self.redis_client.get(mapping_key)
+            raw_key = self.redis_client.get(self._mapping_key(vector_hash))
+            if not raw_key:
+                continue
 
-                if hash_key:
-                    hash_key = hash_key.decode('utf-8') if isinstance(hash_key, bytes) else hash_key
-                    cached_data = self.redis_client.get(hash_key)
+            data = self.redis_client.get(raw_key)
+            if not data:
+                continue
 
-                    if cached_data:
-                        entry = json.loads(
-                            cached_data.decode('utf-8') if isinstance(cached_data, bytes) else cached_data)
-                        entry['similarity'] = similarity
-                        entry['vector'] = cached_vector
-                        results.append(entry)
+            entry = json.loads(data)
+            entry["similarity"] = similarity
+            results.append(entry)
 
-        # Sắp xếp theo similarity giảm dần
-        results.sort(key=lambda x: x.get('similarity', 0), reverse=True)
+        results.sort(key=lambda x: x.get("similarity", 0), reverse=True)
         return results[:top_k]
 
+    # ── Retrieve (main) ───────────────────────────────────────────────────────
+
     def retrieve(self, query: str, use_semantic: bool = True) -> Optional[Dict[str, Any]]:
-        """
-        Retrieve cached response - thử exact match trước, sau đó semantic
-        """
-        # 1. Thử exact match
-        exact_result = self.retrieve_exact(query)
-        if exact_result:
-            return exact_result
-
-        # 2. Nếu không tìm thấy và cho phép semantic search
+        """Exact match trước, sau đó semantic nếu không tìm thấy."""
+        result = self.retrieve_exact(query)
+        if result:
+            return result
         if use_semantic:
-            semantic_results = self.retrieve_semantic(query, top_k=1)
-            if semantic_results:
-                return semantic_results[0]
-
+            hits = self.retrieve_semantic(query, top_k=1)
+            return hits[0] if hits else None
         return None
 
+    # ── Delete ────────────────────────────────────────────────────────────────
+
     def delete_by_query(self, query: str) -> bool:
-        """Xóa cache cho một query cụ thể"""
-        hash_key = self._generate_key(query)
+        """Xóa cache cho một query cụ thể cùng tất cả key liên quan."""
+        data = self.redis_client.get(self._hash_key(query))
+        if not data:
+            return False
 
-        # Lấy entry để xóa các key liên quan
-        cached_data = self.redis_client.get(hash_key)
-        if cached_data:
-            entry = json.loads(cached_data.decode('utf-8') if isinstance(cached_data, bytes) else cached_data)
-            vector_hash = entry.get('vector_hash')
+        entry       = json.loads(data)
+        vector_hash = entry.get("vector_hash")
+        keys        = [self._hash_key(query)]
 
-            # Xóa tất cả các key liên quan
-            keys_to_delete = [hash_key]
+        if vector_hash:
+            keys += [self._semantic_key(vector_hash), self._mapping_key(vector_hash)]
+            self.redis_client.srem(self._index_key, vector_hash)
 
-            if vector_hash:
-                keys_to_delete.append(self._generate_semantic_key(vector_hash))
-                keys_to_delete.append(f"{self.prefix}map:{vector_hash}")
-
-                # Xóa khỏi semantic index
-                index_key = f"{self.prefix}semantic_index"
-                self.redis_client.srem(index_key, vector_hash)
-
-            self.redis_client.delete(*keys_to_delete)
-            return True
-
-        return False
+        self.redis_client.delete(*keys)
+        return True
 
     def clear_all(self) -> int:
-        """Xóa toàn bộ cache"""
-        pattern = f"{self.prefix}*"
-        keys = self.redis_client.keys(pattern)
-
+        """Xóa toàn bộ cache theo prefix."""
+        keys = self.redis_client.keys(f"{self.prefix}*")
         if keys:
             self.redis_client.delete(*keys)
-            return len(keys)
-        return 0
+        return len(keys)
+
+    # ── Stats ─────────────────────────────────────────────────────────────────
 
     def get_stats(self) -> Dict[str, Any]:
-        """Lấy thống kê về cache"""
-        pattern = f"{self.prefix}*"
-        keys = self.redis_client.keys(pattern)
-
-        stats = {
-            'total_keys': len(keys),
-            'exact_entries': len([k for k in keys if b'hash:' in k]),
-            'semantic_entries': len([k for k in keys if b'semantic:' in k]),
-            'vector_entries': len([k for k in keys if b'map:' in k]),
+        keys = self.redis_client.keys(f"{self.prefix}*")
+        return {
+            "total_keys":      len(keys),
+            "exact_entries":   sum(1 for k in keys if b"hash:"     in k),
+            "semantic_entries": sum(1 for k in keys if b"semantic:" in k),
+            "vector_entries":  sum(1 for k in keys if b"map:"      in k),
         }
-
-        return stats
-
-
-cache = RedisPromptCache(
-    host=os.getenv('REDIS_HOST', 'localhost'),
-    port=int(os.getenv('REDIS_PORT', 6379)),
-    db=int(os.getenv('REDIS_DB', 0)),
-    password=os.getenv('REDIS_PASSWORD', None),
-    prefix="rag_prompt_cache:"
-)
