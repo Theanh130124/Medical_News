@@ -1,4 +1,5 @@
 coreRAG_chatbot/.env
+coreRAG_chatbot/venv
 coreRAG_chatbot/DataChatbot/Data_baiviet_benh_vinmec_2025-07-22.txt
 BE/SpringBoot_Medical_News/.env
 crawldata_selenium/venv

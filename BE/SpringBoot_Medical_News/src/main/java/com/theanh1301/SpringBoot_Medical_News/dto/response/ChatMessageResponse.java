@@ -20,4 +20,11 @@ public class ChatMessageResponse {
     Boolean hasImage;
     String imageUrl;
     Boolean isHtml;
+
+    /**
+     * Chỉ có giá trị khi sendMessage() được gọi từ FE.
+     * FE đọc field này để hiển thị tin nhắn bot ngay lập tức.
+     * Các lần load lịch sử sau thì field này null (bot message đã lưu riêng).
+     */
+    String botResponse;
 }

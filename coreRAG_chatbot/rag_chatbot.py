@@ -4,7 +4,7 @@
 # from langchain_community.embeddings import HuggingFaceEmbeddings
 # from langchain_qdrant import QdrantVectorStore
 # from langchain_community.chat_models import ChatOpenAI
-# #cài requirements rồi cài pip install langchain==0.3.27 cài về cái này
+# #cài requirements_v2 rồi cài pip install langchain==0.3.27 cài về cái này
 # from langchain.memory import ConversationBufferMemory
 # from langchain.chains import create_retrieval_chain
 # from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -12,7 +12,6 @@
 # from langchain_core.messages import HumanMessage, AIMessage
 # from app import app
 # from redis_cache import cache
-
 
 import os
 import requests
@@ -27,11 +26,21 @@ from sentence_transformers import CrossEncoder
 from redis_cache import RedisPromptCache
 from dotenv import load_dotenv
 
-
 load_dotenv()
+
 
 SPRINGBOOT_BASE_URL    = os.getenv("SPRINGBOOT_BASE_URL")
 SPRINGBOOT_INTERNAL_TOKEN = os.getenv("SPRINGBOOT_INTERNAL_TOKEN")
+
+
+QDRANT_URL        = os.getenv("QDRANT_URL")
+QDRANT_API_KEY    = os.getenv("QDRANT_API_KEY")
+COLLECTION_NAME   = os.getenv("COLLECTION_NAME", "medical")
+MODEL_LLM_NAME    = os.getenv("MODEL_LLM_NAME")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+MODEL_CROSS_ENCODER = os.getenv("MODEL_CROSS_ENCODER")
+
+
 
 
 class RAGSystem:
@@ -98,10 +107,17 @@ class RAGSystem:
         )
 
         # Monitoring counters
-        self.cache_hits = 0
+        self.cache_hits   = 0
         self.cache_misses = 0
 
     # ── Spring Boot API helpers ───────────────────────────────────────────────
+
+    def _sb_headers(self) -> dict:
+        """Header xác thực nội bộ Flask → Spring Boot."""
+        return {
+            "Content-Type": "application/json",
+            "X-Internal-Token": SPRINGBOOT_INTERNAL_TOKEN,
+        }
 
     def _get_chat_history(self, conversation_id: str) -> list:
         """
@@ -110,16 +126,16 @@ class RAGSystem:
         """
         url = f"{SPRINGBOOT_BASE_URL}/api/internal/conversations/{conversation_id}/messages"
         try:
-            resp = requests.get(url, headers=_sb_headers(), timeout=5)
+            resp = requests.get(url, headers=self._sb_headers(), timeout=5)
             resp.raise_for_status()
             messages_raw = resp.json().get("result", [])
         except Exception as e:
-            print(f"[RAG] Không lấy được lịch sử chat: {e}")
+            print(f"[RAG] Khong lay duoc lich su chat: {e}")
             return []
 
         history = []
         for msg in messages_raw:
-            mtype = msg.get("messageType", "")
+            mtype   = msg.get("messageType", "")
             content = msg.get("content", "")
             if mtype == "user":
                 history.append(HumanMessage(content=content))
@@ -137,12 +153,12 @@ class RAGSystem:
         payload = {
             "userId": user_id,
             "messages": [
-                {"content": user_query, "messageType": "user", "isHtml": False},
-                {"content": bot_answer, "messageType": "bot", "isHtml": False},
+                {"content": user_query, "messageType": "user",  "isHtml": False},
+                {"content": bot_answer, "messageType": "bot",   "isHtml": False},
             ],
         }
         try:
-            resp = requests.post(url, json=payload, headers=_sb_headers(), timeout=5)
+            resp = requests.post(url, json=payload, headers=self._sb_headers(), timeout=5)
             resp.raise_for_status()
         except Exception as e:
             print(f"[RAG] Lưu tin nhắn thất bại: {e}")
@@ -150,7 +166,7 @@ class RAGSystem:
     # ── Reranking ─────────────────────────────────────────────────────────────
 
     def _rerank(self, query: str, docs: list, top_n: int = 5) -> list:
-        pairs = [[query, doc.page_content] for doc in docs]
+        pairs  = [[query, doc.page_content] for doc in docs]
         scores = self.cross_encoder.predict(pairs)
         ranked = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
         return [doc for doc, _ in ranked[:top_n]]
@@ -181,13 +197,13 @@ class RAGSystem:
 
         # 3. Retrieve + rerank
         similar_docs = self.retriever.invoke(query)
-        top_docs = self._rerank(query, similar_docs, top_n=5)
+        top_docs     = self._rerank(query, similar_docs, top_n=5)
 
         # 4. Gọi LLM
-        qa_chain = create_stuff_documents_chain(self.llm, self.prompt)
+        qa_chain  = create_stuff_documents_chain(self.llm, self.prompt)
         answer_raw = qa_chain.invoke({
-            "input": query,
-            "context": top_docs,
+            "input":        query,
+            "context":      top_docs,
             "chat_history": chat_history,
         })
         answer = answer_raw if isinstance(answer_raw, str) else answer_raw.get("answer", "")
@@ -207,7 +223,7 @@ class RAGSystem:
             user_id=user_id,
             metadata={
                 "retrieved_docs": len(top_docs),
-                "model": MODEL_LLM_NAME,
+                "model":          MODEL_LLM_NAME,
             },
         )
 
@@ -216,10 +232,10 @@ class RAGSystem:
     def get_cache_stats(self) -> dict:
         total = self.cache_hits + self.cache_misses
         return {
-            "redis_stats": self.cache.get_stats(),
-            "cache_hits": self.cache_hits,
-            "cache_misses": self.cache_misses,
-            "hit_rate": self.cache_hits / total if total > 0 else 0,
+            "redis_stats":   self.cache.get_stats(),
+            "cache_hits":    self.cache_hits,
+            "cache_misses":  self.cache_misses,
+            "hit_rate":      self.cache_hits / total if total > 0 else 0,
         }
 
 

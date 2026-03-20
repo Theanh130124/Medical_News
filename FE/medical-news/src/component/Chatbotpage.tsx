@@ -78,8 +78,8 @@ const ChatBotPage = () => {
 
     const loadMessages = async (convId: string) => {
         try {
-            const res = await authApis().get(endpoint.chat_messages(convId));
-            setMessages(res.data.map((msg: any) => ({
+                const res = await authApis().get(endpoint.chat_messages(convId));
+                setMessages((res.data.result || []).map((msg: any) => ({
                 text: msg.content,
                 sender: msg.messageType === "user" ? "user" : "bot",
                 timestamp: new Date(msg.timestamp),
@@ -136,7 +136,7 @@ const ChatBotPage = () => {
                     const res = await authApis().post(endpoint.chat_create, {
                         title: currentText || "Gửi ảnh"
                     });
-                    convId = res.data.id;
+                    convId = res.data.result?.id;
                     setConversationId(convId);
                     await loadConversations();
                 }

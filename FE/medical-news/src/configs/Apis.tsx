@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:8080/SpringBoot_Medical_News/api/";
 export const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dxiawzgnz/image/upload";
 export const CLOUDINARY_PRESET = "healthapp";
 export const BASE_URL_FIREBASE = 'http://127.0.0.1:5001/healthapp-a5a6d/us-central1/app'
-export const  BASE_CHATBOT ='https://tta1301-medical-chatbot.hf.space/'
+export const  BASE_CHATBOT ='http://127.0.0.1:5000'
 
 
 export const endpoint = {

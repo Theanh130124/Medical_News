@@ -63,19 +63,27 @@ def health():
     return jsonify({"status": "ok"})
 
 
+@app.route('/')
+def index():
+    return '''
+    <h2>Medical Chatbot API</h2>
+    <p>App is running!</p>
+    <p>Use <code>/chat_chatbot</code> with POST method to interact with the chatbot.</p>
+    '''
+
 # ── Scheduler: tự train mỗi 6 tiếng ─────────────────────────────────────────
-#
-# @scheduler.task("interval", id="train_job", hours=6)
-# def scheduled_train():
-#     app.logger.info("Scheduled training started...")
-#     try:
-#         from store_index import train_new_files
-#         train_new_files()
-#     except Exception as e:
-#         app.logger.error(f"Scheduled train failed: {e}")
-#
-#
-# scheduler.start()
+
+@scheduler.task("interval", id="train_job", hours=6)
+def scheduled_train():
+    app.logger.info("Scheduled training started...")
+    try:
+        from store_index import train_new_files
+        train_new_files()
+    except Exception as e:
+        app.logger.error(f"Scheduled train failed: {e}")
+
+
+scheduler.start()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

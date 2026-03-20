@@ -1,79 +1,90 @@
-from src.helper import *
-from pinecone.grpc import PineconeGRPC as Pinecone
-from langchain.schema import Document
-from pinecone import ServerlessSpec
-from langchain_pinecone import PineconeVectorStore
+from src.helper import (
+    download_hugging_face_embeddings,
+    load_word_files,
+    preprocess_data,
+    text_split,
+    is_file_trained,
+    mark_file_trained,
+)
+from langchain_core.documents import Document
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams
 from dotenv import load_dotenv
-import os 
-from configs import *
+import os
 
+load_dotenv()
 
+# ── Cấu hình ──────────────────────────────────────────────────────────────────
+QDRANT_URL      = os.getenv("QDRANT_URL")
+QDRANT_API_KEY  = os.getenv("QDRANT_API_KEY")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "medical")
+DATA_FOLDER     = os.getenv("DATA_FOLDER")
+TRAINED_LOG     = os.getenv("TRAINED_LOG")
 
-#Tải model embeddings vietnamess 
+# dangvantuan/vietnamese-embedding output dimension = 768
+VECTOR_DIM = 768
+
+# ── Khởi tạo ──────────────────────────────────────────────────────────────────
 embeddings = download_hugging_face_embeddings()
 
-pc = Pinecone(api_key=PINECONE_API_KEY)
+client = QdrantClient(
+    url=QDRANT_URL,
+    api_key=QDRANT_API_KEY,
+)
 
+
+def _ensure_collection():
+    """Tạo collection nếu chưa tồn tại."""
+    existing = [c.name for c in client.get_collections().collections]
+    if COLLECTION_NAME not in existing:
+        client.create_collection(
+            collection_name=COLLECTION_NAME,
+            vectors_config=VectorParams(size=VECTOR_DIM, distance=Distance.COSINE),
+        )
+        print(f"[Qdrant] Đã tạo collection: {COLLECTION_NAME}")
+    else:
+        print(f"[Qdrant] Collection đã tồn tại: {COLLECTION_NAME}")
 
 
 def train_new_files():
-    #Gọi để gán dữ liệu
-    all_docs = load_word_files(data=DATA_FOLDER) 
-    new_docs = [] #dữ liệu sẽ đc check 
+    all_docs = load_word_files(data=DATA_FOLDER)
+    new_docs = []
 
-    #Tiền xử lý dữ liệu
     for doc in all_docs:
-        file_name = doc.metadata.get("source", "unknown.docx") #nếu metadata không có thì sẽ tên là unknown.docx -> langchain tự gán (tại vì sẽ không biết tên file sắp train)
-        if not is_file_trained(file_name, TRAINED_LOG):  #chưa đc train
-            print(f"Phát hiện có file mới và training: {file_name}")
-            cleaned_content = preprocess_data(doc.page_content)  #tiền xử lý dữ liệu
-            cleaned_doc = Document(
-                page_content=cleaned_content,
-                metadata=doc.metadata
-            )
-            new_docs.append(cleaned_doc)
-            #đánh dấu đã train 
+        file_name = doc.metadata.get("source", "unknown.txt")
+
+        if not is_file_trained(file_name, TRAINED_LOG):
+            print(f"[Train] Phát hiện file mới: {file_name}")
+            cleaned = preprocess_data(doc.page_content)
+            new_docs.append(Document(page_content=cleaned, metadata=doc.metadata))
             mark_file_trained(file_name, TRAINED_LOG)
         else:
-            print(f"File đã được train trước đó: {file_name}")
+            print(f"[Train] Đã train trước đó: {file_name}")
+
     if not new_docs:
         return "Không có file mới nào để train"
-            
-    #Tạo chunk 
+
+    # Chunk
     text_chunks = text_split(new_docs)
-    #Tạo db
-    if INDEX_NAME not in pc.list_indexes():
-        pc.create_index(
-            name=INDEX_NAME,
-            dimension=768,
-            metric="cosine",
-            spec=ServerlessSpec(cloud="aws", region="us-east-1")
-        )
-    PineconeVectorStore.from_documents(
+    print(f"[Train] Tổng số chunks: {len(text_chunks)}")
+
+    # Đảm bảo collection tồn tại trước khi upsert
+    _ensure_collection()
+
+    # Upsert vào Qdrant
+    QdrantVectorStore.from_documents(
         documents=text_chunks,
-        index_name=INDEX_NAME,
-        embedding=embeddings
+        embedding=embeddings,
+        url=QDRANT_URL,
+        api_key=QDRANT_API_KEY,
+        collection_name=COLLECTION_NAME,
     )
 
-    
-#Chỉ chạy 1 lần đầu tạo db
+    return f"Train xong {len(text_chunks)} chunks từ {len(new_docs)} file mới"
 
+
+# Chạy lần đầu để tạo DB
 if __name__ == "__main__":
     result = train_new_files()
     print(result)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Chạy store_index.py để tạo db cho lần đầu 

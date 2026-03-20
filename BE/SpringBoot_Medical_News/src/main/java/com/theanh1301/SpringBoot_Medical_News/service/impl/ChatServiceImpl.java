@@ -9,6 +9,7 @@ import com.theanh1301.SpringBoot_Medical_News.entity.*;
 import com.theanh1301.SpringBoot_Medical_News.mapper.ChatMapper;
 import com.theanh1301.SpringBoot_Medical_News.repository.*;
 import com.theanh1301.SpringBoot_Medical_News.service.ChatService;
+import com.theanh1301.SpringBoot_Medical_News.service.FlaskRagClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +25,14 @@ import java.util.Map;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatConversationRepository conversationRepo;
-    private final ChatMessageRepository messageRepo;
-    private final UserRepository userRepo;
-    private final ChatMapper chatMapper;
-    private final Cloudinary cloudinary;
+    private final ChatMessageRepository      messageRepo;
+    private final UserRepository             userRepo;
+    private final ChatMapper                 chatMapper;
+    private final Cloudinary                 cloudinary;
+    private final FlaskRagClient             flaskRagClient;   // inject RAG client
 
     @Override
     public ChatConversationResponse createConversation(String userId, String title) {
-
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User không tồn tại"));
 
@@ -55,11 +56,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatMessageResponse> getMessagesByConversation(String conversationId, String userId) {
-
         ChatConversation conversation = conversationRepo.findById(conversationId)
                 .orElseThrow(() -> new RuntimeException("Conversation không tồn tại"));
 
-        //  check owner
         if (!conversation.getUser().getId().equals(userId)) {
             throw new RuntimeException("Không có quyền truy cập");
         }
@@ -72,7 +71,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void deleteConversation(String conversationId, String userId) {
-
         ChatConversation conversation = conversationRepo.findById(conversationId)
                 .orElseThrow(() -> new RuntimeException("Conversation không tồn tại"));
 
@@ -83,16 +81,29 @@ public class ChatServiceImpl implements ChatService {
         conversationRepo.delete(conversation);
     }
 
+    /**
+     * Luồng xử lý:
+     * 1. Upload ảnh nếu có (Cloudinary)
+     * 2. Gọi Flask RAG → lấy botAnswer
+     *    (Flask tự lưu cả tin user + bot về /api/internal)
+     * 3. Trả về ChatMessageResponse kèm botResponse cho FE
+     *
+     * Lưu ý: Flask đã lưu messages vào DB qua InternalChatController,
+     * nên ở đây KHÔNG lưu lại để tránh duplicate.
+     */
     @Override
-    public ChatMessageResponse sendMessage(String conversationId, String userId, ChatMessageRequest request) {
+    public ChatMessageResponse sendMessage(String conversationId, String userId,
+                                           ChatMessageRequest request) {
 
-        ChatConversation conversation = conversationRepo.findById(conversationId).orElseThrow();
-        User user = userRepo.findById(userId).orElseThrow();
+        conversationRepo.findById(conversationId).orElseThrow(
+                () -> new RuntimeException("Conversation không tồn tại"));
+        userRepo.findById(userId).orElseThrow(
+                () -> new RuntimeException("User không tồn tại"));
 
+        // 1. Upload ảnh nếu có
         String imageUrl = null;
         boolean hasImage = false;
 
-        // upload ảnh giống user
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             try {
                 Map res = cloudinary.uploader().upload(
@@ -106,22 +117,27 @@ public class ChatServiceImpl implements ChatService {
             }
         }
 
-        ChatMessage message = ChatMessage.builder()
-                .conversation(conversation)
-                .user(user)
-                .content(request.getContent())
-                .messageType(request.getMessageType())
-                .imageUrl(imageUrl)
-                .hasImage(hasImage)
-                .timestamp(Instant.now())
-                .build();
+        // 2. Gọi Flask RAG — Flask sẽ tự lưu user + bot message về DB
+        String botAnswer = flaskRagClient.getAnswer(
+                request.getContent(),
+                conversationId,
+                userId
+        );
 
-        return chatMapper.toMessageResponse(messageRepo.save(message));
+        // 3. Trả về response cho FE
+        // Dùng builder tạm — không save vào DB ở đây vì Flask đã lưu rồi
+        return ChatMessageResponse.builder()
+                .content(request.getContent())
+                .messageType("user")
+                .hasImage(hasImage)
+                .imageUrl(imageUrl)
+                .timestamp(Instant.now())
+                .botResponse(botAnswer)   // FE đọc field này để hiển thị tin bot
+                .build();
     }
 
     @Override
     public List<ChatMessageResponse> getMessages(String conversationId) {
-
         return messageRepo.findByConversationIdOrderByTimestampAsc(conversationId)
                 .stream()
                 .map(chatMapper::toMessageResponse)

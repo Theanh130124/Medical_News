@@ -9,7 +9,6 @@ logging.basicConfig(level=logging.INFO, format='[%(asctime)s]: %(message)s:')
 list_dir = [
     "src/__init__.py",
     "src/helper.py",
-    "src/prompt.py",
     ".env",
     "setup.py",
     "store_index.py",
