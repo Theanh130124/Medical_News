@@ -152,9 +152,9 @@ const ChatBotPage = () => {
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
 
-                if (res.data.botResponse) {
+                if (res.data.result?.botResponse) {
                     setMessages(prev => [...prev, {
-                        text: res.data.botResponse,
+                        text: res.data.result.botResponse,
                         sender: "bot",
                         timestamp: new Date(),
                     }]);
