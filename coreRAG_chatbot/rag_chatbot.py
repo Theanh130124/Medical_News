@@ -195,42 +195,63 @@ class RAGSystem:
         q    = f"{base} {vi} {user_text}".strip()
         return q or "X-quang ngực bệnh phổi"
 
+    # Trong method _get_xray_rag_response, thêm logging:
+
     def _get_xray_rag_response(
-        self,
-        image_bytes: bytes,
-        user_text: str,
-        chat_history: list,
+            self,
+            image_bytes: bytes,
+            user_text: str,
+            chat_history: list,
     ) -> tuple:
         """
         Phân tích ảnh X-ray → retrieve docs → LLM → trả về (answer, xray_result).
         """
+        print("\n" + "=" * 80)
+        print(" X-RAY ANALYSIS PIPELINE STARTED")
+        print("=" * 80)
+
         # 1. Classify ảnh
-        xray_result   = classify_xray(image_bytes)
-        xray_text     = format_xray_result(xray_result)
+        print(" Step 1: Classifying X-ray image...")
+        xray_result = classify_xray(image_bytes)  # Hàm này đã có log bên trong
+        xray_text = format_xray_result(xray_result)
+
+        print(f"\n Step 2: Formatted result for RAG:")
+        print("-" * 40)
+        print(xray_text)
+        print("-" * 40)
 
         # 2. Retrieve tài liệu liên quan
+        print("\n Step 3: Building retrieval query...")
         retrieve_query = self._build_xray_retrieve_query(xray_result, user_text)
-        similar_docs   = self.retriever.invoke(retrieve_query)
-        top_docs       = self._rerank(retrieve_query, similar_docs, top_n=5)
+        print(f"   Query: {retrieve_query[:200]}...")
+
+        similar_docs = self.retriever.invoke(retrieve_query)
+        print(f"   Retrieved {len(similar_docs)} documents")
+
+        top_docs = self._rerank(retrieve_query, similar_docs, top_n=5)
+        print(f"   After reranking: {len(top_docs)} top documents")
 
         # 3. Build display input cho LLM
         display_input = user_text if user_text else "Phân tích kết quả X-quang này cho tôi."
 
         # 4. Gọi LLM với xray prompt
+        print("\n Step 4: Generating response with LLM...")
         qa_chain = create_stuff_documents_chain(self.llm, self.xray_prompt)
         answer_raw = qa_chain.invoke({
-            "input":        display_input,
-            "context":      top_docs,
+            "input": display_input,
+            "context": top_docs,
             "chat_history": chat_history,
-            "xray_result":  xray_text,
+            "xray_result": xray_text,
         })
         answer = answer_raw if isinstance(answer_raw, str) else answer_raw.get("answer", "")
+
+        print(f"\nFinal answer length: {len(answer)} characters")
+        print("=" * 80 + "\n")
 
         if not answer:
             answer = "Xin lỗi, tôi không thể xử lý ảnh X-quang của bạn lúc này."
 
         return answer, xray_result
-
     # ── Main entry point ──────────────────────────────────────────────────────
 
     def get_rag_response(
