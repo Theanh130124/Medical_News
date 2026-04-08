@@ -11,31 +11,75 @@ scheduler.init_app(app)
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
-
 @app.route("/chat_chatbot", methods=["POST"])
 def chat_chatbot():
     """
-    Body JSON:
-        { "msg": "...", "conversationId": "...", "userId": "..." }
+    Hỗ trợ 2 content-type:
+
+    1. multipart/form-data  — Spring Boot gửi lên (text + ảnh tùy chọn)
+       Fields khớp ApiChatBotController.sendMessage():
+         - content        : nội dung tin nhắn  (@RequestParam "content")
+         - conversationId : string
+         - userId         : string
+         - image          : MultipartFile  (@RequestParam "image")
+
+    2. application/json  — gọi trực tiếp / test
+       Body: { "content": "..." hoặc "msg": "...",
+               "conversationId": "...", "userId": "..." }
+
     Response:
-        { "answer": "...", "cached": true/false }
+       {
+         "answer":      "...",
+         "xray_result": { "findings": [...], "findings_vi": [...],
+                          "scores": {...}, "no_finding": bool } | null
+       }
     """
-    data            = request.json or {}
-    user_input      = (data.get("msg") or "").strip()
-    conversation_id = data.get("conversationId", "")
-    user_id         = data.get("userId", "")
+    # ── Parse input ───────────────────────────────────────────────────────────
+    ct = request.content_type or ""
 
-    if not user_input:
-        return jsonify({"error": "msg không được để trống"}), 400
+    if "multipart/form-data" in ct:
+        # Spring Boot gửi @RequestParam — field name là "content"
+        user_input = (request.form.get("content")
+                      or request.form.get("msg") or "").strip()
+        conversation_id = (request.form.get("conversationId")
+                           or request.form.get("conversation_id") or "")
+        user_id = (request.form.get("userId")
+                   or request.form.get("user_id") or "")
+        image_file = request.files.get("image")
+    else:
+        data = request.json or {}
+        user_input = (data.get("content")
+                      or data.get("msg") or "").strip()
+        conversation_id = (data.get("conversationId")
+                           or data.get("conversation_id") or "")
+        user_id = (data.get("userId")
+                   or data.get("user_id") or "")
+        image_file = None
 
-    answer = rag_chatbot.get_rag_response(
+    # Cần ít nhất 1 trong 2: text hoặc ảnh
+    if not user_input and not image_file:
+        return jsonify({"error": "Cần có content hoặc ảnh X-quang"}), 400
+
+    # ── Đọc bytes ảnh (nếu có) ────────────────────────────────────────────────
+    image_bytes = None
+    image_url = None
+    if image_file:
+        image_bytes = image_file.read()
+        image_url = image_file.filename
+
+    # ── Gọi RAG ───────────────────────────────────────────────────────────────
+    result = rag_chatbot.get_rag_response(
         query=user_input,
         conversation_id=conversation_id,
         user_id=user_id,
+        image_bytes=image_bytes,
+        image_url=image_url,
     )
 
-    return jsonify({"answer": answer})
-
+    return jsonify({
+        "answer": result["answer"],
+        "xray_result": result.get("xray_result"),
+    })
 
 @app.route("/cache/stats", methods=["GET"])
 def cache_stats():
@@ -63,13 +107,18 @@ def health():
     return jsonify({"status": "ok"})
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return '''
+    return """
     <h2>Medical Chatbot API</h2>
     <p>App is running!</p>
-    <p>Use <code>/chat_chatbot</code> with POST method to interact with the chatbot.</p>
-    '''
+    <ul>
+      <li>POST <code>/chat_chatbot</code> — text query (JSON) hoặc text + X-ray image (multipart)</li>
+      <li>GET  <code>/cache/stats</code></li>
+      <li>POST <code>/train_new_files</code></li>
+    </ul>
+    """
+
 
 # ── Scheduler: tự train mỗi 6 tiếng ─────────────────────────────────────────
 

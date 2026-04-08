@@ -1,7 +1,9 @@
 package com.theanh1301.SpringBoot_Medical_News.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
@@ -27,6 +29,8 @@ public class FlaskRagClient {
                 .baseUrl(flaskUrl)
                 .build();
     }
+
+
 
     /**
      * Gọi POST /chat_chatbot trên Flask.
@@ -59,5 +63,31 @@ public class FlaskRagClient {
         }
 
         return "Xin lỗi, hệ thống đang bận. Vui lòng thử lại sau.";
+    }
+
+    public Map<String, Object> getAnswerWithImage(
+            String content,
+            String conversationId,
+            String userId,
+            MultipartFile image
+    ) {
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
+        if (content != null)
+            builder.part("content", content);
+
+        builder.part("conversationId", conversationId);
+        builder.part("userId", userId);
+
+        if (image != null && !image.isEmpty()) {
+            builder.part("image", image.getResource());
+        }
+
+        return webClient.post()
+                .uri("/chat_chatbot")
+                .bodyValue(builder.build())
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
     }
 }

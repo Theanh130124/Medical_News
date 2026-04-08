@@ -118,11 +118,15 @@ public class ChatServiceImpl implements ChatService {
         }
 
         // 2. Gọi Flask RAG — Flask sẽ tự lưu user + bot message về DB
-        String botAnswer = flaskRagClient.getAnswer(
+        Map<String, Object> ragResponse = flaskRagClient.getAnswerWithImage(
                 request.getContent(),
                 conversationId,
-                userId
+                userId,
+                request.getImage()
         );
+
+        String botAnswer = (String) ragResponse.get("answer");
+        Object xrayResult = ragResponse.get("xray_result");
 
         // 3. Trả về response cho FE
         // Dùng builder tạm — không save vào DB ở đây vì Flask đã lưu rồi
