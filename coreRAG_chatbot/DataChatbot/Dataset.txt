@@ -1,0 +1,152 @@
+Atelectasis (Xẹp phổi)
+Định nghĩa: Atelectasis là tình trạng mất thể tích phổi do xẹp một phần hoặc toàn bộ phế nang.
+Dịch tễ: Thường gặp sau phẫu thuật, bệnh nhân nằm lâu, hoặc có tắc nghẽn đường thở.
+Cơ chế bệnh sinh: Tắc nghẽn phế quản (dị vật, đờm, khối u) hoặc chèn ép từ bên ngoài (tràn dịch, tràn khí).
+Triệu chứng: Khó thở, thở nhanh, giảm oxy máu, có thể không triệu chứng nếu nhẹ.
+Chẩn đoán: Lâm sàng kết hợp X-quang hoặc CT.
+Dấu hiệu X-quang: Giảm thể tích phổi, kéo lệch trung thất về phía tổn thương, nâng cao cơ hoành, mờ vùng phổi.
+Phân biệt: Viêm phổi, tràn dịch màng phổi.
+Điều trị: Giải quyết nguyên nhân, vật lý trị liệu hô hấp, hút đờm.
+
+---
+
+Cardiomegaly (Tim to)
+Định nghĩa: Tăng kích thước tim, thường đánh giá qua chỉ số tim-ngực (CTR > 50% trên X-quang thẳng).
+Dịch tễ: Liên quan bệnh tim mạch mạn tính.
+Cơ chế bệnh sinh: Giãn buồng tim hoặc phì đại cơ tim do tăng áp lực hoặc thể tích.
+Triệu chứng: Khó thở, mệt, phù ngoại vi, hồi hộp.
+Chẩn đoán: X-quang, siêu âm tim là tiêu chuẩn chính.
+Dấu hiệu X-quang: Bóng tim to, thay đổi hình dạng tim.
+Phân biệt: Tràn dịch màng tim.
+Điều trị: Điều trị nguyên nhân (suy tim, tăng huyết áp).
+
+---
+
+Consolidation (Đông đặc phổi)
+Định nghĩa: Phế nang chứa đầy dịch, mủ, máu hoặc tế bào.
+Nguyên nhân: Viêm phổi, xuất huyết phế nang.
+Triệu chứng: Sốt, ho đờm, đau ngực, khó thở.
+Chẩn đoán: Lâm sàng + X-quang/CT.
+Dấu hiệu X-quang: Vùng mờ đậm, air bronchogram dương tính.
+Phân biệt: Xẹp phổi (có giảm thể tích), khối u.
+Điều trị: Kháng sinh nếu nhiễm khuẩn.
+
+---
+
+Edema (Phù phổi)
+Định nghĩa: Tích tụ dịch trong mô kẽ và phế nang.
+Nguyên nhân: Suy tim trái (phù phổi do tim), ARDS (không do tim).
+Cơ chế: Tăng áp lực mao mạch hoặc tăng tính thấm.
+Triệu chứng: Khó thở cấp, thở nhanh, ho bọt hồng.
+Chẩn đoán: X-quang, BNP, siêu âm tim.
+Dấu hiệu X-quang: Mờ lan tỏa hai bên, hình cánh bướm, đường Kerley B.
+Phân biệt: Viêm phổi lan tỏa.
+Điều trị: Lợi tiểu, oxy, xử lý nguyên nhân.
+
+---
+
+Effusion (Tràn dịch màng phổi)
+Định nghĩa: Tích tụ dịch trong khoang màng phổi.
+Nguyên nhân: Suy tim, nhiễm trùng, ung thư.
+Triệu chứng: Khó thở, đau ngực kiểu màng phổi.
+Chẩn đoán: X-quang, siêu âm, chọc dò dịch.
+Dấu hiệu X-quang: Mờ góc sườn hoành, đường cong Damoiseau.
+Phân biệt: Xẹp phổi, viêm phổi.
+Điều trị: Dẫn lưu, điều trị nguyên nhân.
+
+---
+
+Emphysema (Khí phế thũng)
+Định nghĩa: Giãn vĩnh viễn phế nang kèm phá hủy vách phế nang.
+Dịch tễ: Chủ yếu ở người hút thuốc.
+Cơ chế: Mất cân bằng protease-antiprotease.
+Triệu chứng: Khó thở mạn, lồng ngực hình thùng.
+Chẩn đoán: Hô hấp ký, CT.
+Dấu hiệu X-quang: Tăng sáng phổi, cơ hoành dẹt, giảm mạch máu.
+Phân biệt: Hen, viêm phế quản mạn.
+Điều trị: Ngưng hút thuốc, giãn phế quản.
+
+---
+
+Fibrosis (Xơ phổi)
+Định nghĩa: Xơ hóa nhu mô phổi gây giảm đàn hồi.
+Nguyên nhân: Bệnh tự miễn, nhiễm trùng, vô căn.
+Triệu chứng: Khó thở tăng dần, ho khan.
+Chẩn đoán: HRCT là tiêu chuẩn.
+Dấu hiệu X-quang: Mờ dạng lưới, tổ ong (honeycombing).
+Phân biệt: Phù phổi, viêm phổi mạn.
+Điều trị: Thuốc chống xơ, ghép phổi (nặng).
+
+---
+
+Hernia (Thoát vị hoành)
+Định nghĩa: Tạng bụng đi vào lồng ngực qua cơ hoành.
+Nguyên nhân: Bẩm sinh hoặc chấn thương.
+Triệu chứng: Khó thở, đau ngực, rối loạn tiêu hóa.
+Chẩn đoán: X-quang, CT.
+Dấu hiệu X-quang: Hơi hoặc mức nước-hơi trong lồng ngực.
+Điều trị: Phẫu thuật.
+
+---
+
+Infiltration (Thâm nhiễm phổi)
+Định nghĩa: Sự xâm nhập bất thường của dịch hoặc tế bào vào nhu mô phổi.
+Nguyên nhân: Nhiễm trùng, viêm, phù.
+Triệu chứng: Ho, sốt, khó thở.
+Dấu hiệu X-quang: Mờ không đồng nhất.
+Phân biệt: Đông đặc, xơ phổi.
+Điều trị: Tùy nguyên nhân.
+
+---
+
+Mass (Khối u phổi)
+Định nghĩa: Tổn thương >3 cm trong phổi.
+Nguyên nhân: Ung thư nguyên phát hoặc di căn.
+Triệu chứng: Ho kéo dài, ho ra máu, sụt cân.
+Chẩn đoán: CT, sinh thiết.
+Dấu hiệu X-quang: Khối tròn, bờ không đều.
+Phân biệt: Nodule, áp xe.
+Điều trị: Phẫu thuật, hóa trị.
+
+---
+
+Nodule (Nốt phổi)
+Định nghĩa: Tổn thương dạng nốt <3 cm.
+Nguyên nhân: Lao, u, viêm.
+Triệu chứng: Thường không triệu chứng.
+Chẩn đoán: CT theo dõi.
+Dấu hiệu X-quang: Nốt tròn nhỏ.
+Phân biệt: Khối u.
+Điều trị: Theo dõi hoặc sinh thiết.
+
+---
+
+Pleural Thickening (Dày màng phổi)
+Định nghĩa: Dày lên bất thường của màng phổi.
+Nguyên nhân: Viêm, nhiễm trùng, amiăng.
+Triệu chứng: Thường không rõ.
+Dấu hiệu X-quang: Dày màng phổi khu trú hoặc lan tỏa.
+Phân biệt: Tràn dịch.
+Điều trị: Điều trị nguyên nhân.
+
+---
+
+Pneumonia (Viêm phổi)
+Định nghĩa: Nhiễm trùng nhu mô phổi.
+Nguyên nhân: Vi khuẩn, virus, nấm.
+Triệu chứng: Sốt, ho, đờm, khó thở.
+Chẩn đoán: Lâm sàng + X-quang.
+Dấu hiệu X-quang: Đông đặc, air bronchogram.
+Phân biệt: Phù phổi.
+Điều trị: Kháng sinh, hỗ trợ.
+
+---
+
+Pneumothorax (Tràn khí màng phổi)
+Định nghĩa: Không khí trong khoang màng phổi gây xẹp phổi.
+Nguyên nhân: Tự phát, chấn thương.
+Triệu chứng: Đau ngực đột ngột, khó thở.
+Chẩn đoán: X-quang.
+Dấu hiệu X-quang: Vùng tăng sáng không có mạch máu, đường viền phổi xẹp.
+Phân biệt: Bóng khí lớn.
+Điều trị: Theo dõi hoặc dẫn lưu.

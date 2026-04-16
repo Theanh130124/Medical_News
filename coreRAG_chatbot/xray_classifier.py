@@ -27,46 +27,49 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ── Labels 15 bệnh NIH ChestX-ray ────────────────────────────────────────────
+# ── Labels 14 bệnh (bỏ No Finding) theo mapping model ─────────────────────────
+
 
 XRAY_LABELS = [
-    "No Finding",  # 0
-    "Atelectasis",  # 1
-    "Cardiomegaly",  # 2
-    "Effusion",  # 3
-    "Infiltration",  # 4
-    "Mass",  # 5
-    "Nodule",  # 6
-    "Pneumonia",  # 7
-    "Pneumothorax",  # 8
-    "Consolidation",  # 9
-    "Edema",  # 10
-    "Emphysema",  # 11
-    "Fibrosis",  # 12
-    "Pleural_Thickening",  # 13
-    "Hernia",  # 14
+    "No Finding",           # 0
+    "Atelectasis",          # 1
+    "Cardiomegaly",         # 2
+    "Effusion",             # 3
+    "Infiltration",         # 4
+    "Mass",                 # 5
+    "Nodule",               # 6
+    "Pneumonia",            # 7
+    "Pneumothorax",         # 8
+    "Consolidation",        # 9
+    "Edema",                # 10
+    "Emphysema",            # 11
+    "Fibrosis",             # 12
+    "Pleural_Thickening",   # 13
+    "Hernia",               # 14
 ]
 
+
 LABEL_VI = {
+    "No Finding": "Không phát hiện bất thường (No Finding)",
     "Atelectasis": "Xẹp phổi (Atelectasis)",
     "Cardiomegaly": "Tim to (Cardiomegaly)",
     "Consolidation": "Đông đặc phổi (Consolidation)",
     "Edema": "Phù phổi (Edema)",
     "Effusion": "Tràn dịch màng phổi (Effusion)",
-    "Emphysema": "Khí thũng phổi (Emphysema)",
+    "Emphysema": "Khí phế thũng (Emphysema)",
     "Fibrosis": "Xơ phổi (Fibrosis)",
-    "Hernia": "Thoát vị (Hernia)",
+    "Hernia": "Thoát vị hoành (Hernia)",
     "Infiltration": "Thâm nhiễm phổi (Infiltration)",
     "Mass": "Khối u phổi (Mass)",
-    "No Finding": "Không phát hiện bất thường",
     "Nodule": "Nốt phổi (Nodule)",
     "Pleural_Thickening": "Dày màng phổi (Pleural Thickening)",
     "Pneumonia": "Viêm phổi (Pneumonia)",
     "Pneumothorax": "Tràn khí màng phổi (Pneumothorax)",
 }
 
-HF_REPO_ID = os.getenv("XRAY_HF_REPO", "tta1301/xray-mae-vit-classifier")
-THRESHOLD = float(os.getenv("XRAY_THRESHOLD", "0.5"))
+# Model mới từ HuggingFace
+HF_REPO_ID = os.getenv("XRAY_HF_REPO", "tta1301/xray-vit-classifier-v3")
+THRESHOLD = float(os.getenv("XRAY_THRESHOLD", "0.7"))
 
 
 class _Block(nn.Module):
@@ -136,45 +139,34 @@ class ViT_Classifier(nn.Module):
 @lru_cache(maxsize=1)
 def _load_model() -> tuple:
     """
-    Download config + weights từ HuggingFace một lần duy nhất.
+    Download model từ HuggingFace một lần duy nhất.
     Trả về (model, device).
     """
     logger.info(f"[XRay] Đang tải model từ HuggingFace: {HF_REPO_ID}")
 
-    cfg_path = hf_hub_download(repo_id=HF_REPO_ID, filename="config.pth")
-    weight_path = hf_hub_download(repo_id=HF_REPO_ID, filename="pytorch_model.bin")
+    # Dùng transformers để load model đã push
+    from transformers import AutoImageProcessor, AutoModelForImageClassification
 
-    cfg = torch.load(cfg_path, map_location="cpu")
-    logger.info(f"[XRay] Config: {cfg}")
+    processor = AutoImageProcessor.from_pretrained(HF_REPO_ID)
+    model = AutoModelForImageClassification.from_pretrained(HF_REPO_ID)
 
-    model = ViT_Classifier(
-        image_size=cfg.get("image_size", 224),
-        patch_size=cfg.get("patch_size", 16),
-        emb_dim=cfg.get("emb_dim", 192),
-        num_layer=cfg.get("num_layer", 12),
-        num_head=cfg.get("num_head", 6),
-        num_classes=cfg.get("num_classes", 15),
-    )
-
-    state_dict = torch.load(weight_path, map_location="cpu")
-    model.load_state_dict(state_dict)
     model.eval()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
     logger.info(f"[XRay] Model đã sẵn sàng trên {device}")
-    return model, device
+    return model, device, processor
 
 
-# ── Transform
+# ── Transform (dùng mean/std của model ViT) ───────────────────────────────────
 
-_TRANSFORM = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],
-                         [0.229, 0.224, 0.225]),
-])
+def _get_transform(processor):
+    return transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=processor.image_mean, std=processor.image_std),
+    ])
 
 
 # ── Helper function để log đẹp ────────────────────────────────────────────────
@@ -200,7 +192,7 @@ def _log_prediction_result(result: Dict, image_size: int = None):
         logger.info(" PHÁT HIỆN BỆNH LÝ:")
         for en_name, vi_name in zip(result["findings"], result["findings_vi"]):
             score = result["scores"][en_name]
-            logger.info(f"   • {vi_name:30} | {en_name:20} | Độ tin cậy: {score:.2%}")
+            logger.info(f"   • {vi_name:35} | {en_name:20} | Độ tin cậy: {score:.2%}")
 
     logger.info("-" * 80)
     logger.info(" CHI TIẾT ĐIỂM SỐ CHO TẤT CẢ CÁC CLASS:")
@@ -209,7 +201,7 @@ def _log_prediction_result(result: Dict, image_size: int = None):
     sorted_scores = sorted(result["raw_scores"].items(), key=lambda x: x[1], reverse=True)
     for label, score in sorted_scores:
         vi_name = LABEL_VI.get(label, label)
-        marker = "✓" if score >= THRESHOLD and label != "No Finding" else " "
+        marker = "✓" if score >= THRESHOLD else " "
         logger.info(f"   [{marker}] {vi_name:35} | {label:20} | {score:.2%}")
 
     logger.info("=" * 80)
@@ -240,7 +232,7 @@ def classify_xray(image_bytes: bytes, threshold: float = THRESHOLD) -> Dict:
             "findings_vi":  ["Viêm phổi", "Tràn dịch màng phổi"],
             "scores":       {"Pneumonia": 0.82, ...},    # chỉ các class > threshold
             "no_finding":   False,
-            "raw_scores":   {"Atelectasis": 0.12, ...},  # tất cả 15 class
+            "raw_scores":   {"Atelectasis": 0.12, ...},  # tất cả 14 class
         }
     """
     logger.info(" Bắt đầu phân tích ảnh X-quang...")
@@ -252,16 +244,17 @@ def classify_xray(image_bytes: bytes, threshold: float = THRESHOLD) -> Dict:
         logger.error(f" Không thể đọc ảnh: {e}")
         raise ValueError(f"Không thể đọc ảnh: {e}")
 
-    model, device = _load_model()
+    model, device, processor = _load_model()
     logger.info(f"  Đang chạy trên device: {device}")
 
-    tensor = _TRANSFORM(img).unsqueeze(0).to(device)  # [1, 3, 224, 224]
+    transform = _get_transform(processor)
+    tensor = transform(img).unsqueeze(0).to(device)  # [1, 3, 224, 224]
     logger.info(f" Tensor shape: {tensor.shape}")
 
     with torch.no_grad():
-        logits = model(tensor)  # [1, 15]
-        probs = torch.sigmoid(logits).squeeze(0)  # [15]
-        logger.info(f" Raw logits: {logits.squeeze().tolist()}")
+        outputs = model(pixel_values=tensor)
+        logits = outputs.logits
+        probs = torch.sigmoid(logits).squeeze(0)  # [14]
         logger.info(f" Probabilities: {probs.tolist()}")
 
     scores_all: Dict[str, float] = {
@@ -271,19 +264,17 @@ def classify_xray(image_bytes: bytes, threshold: float = THRESHOLD) -> Dict:
 
     findings = [
         label for label, score in scores_all.items()
-        if score >= threshold and label != "No Finding"
+        if score >= threshold
     ]
 
-    # Nếu không tìm thấy bệnh nào thì xem xét No Finding
-    if not findings:
-        findings = ["No Finding"]
-        logger.info("  Không có bệnh lý nào vượt ngưỡng, đánh dấu là 'No Finding'")
+    # Nếu không tìm thấy bệnh nào thì coi như No Finding
+    no_finding = scores_all.get("No Finding", 0) >= threshold or len(findings) == 0
 
     result = {
         "findings": findings,
         "findings_vi": [LABEL_VI[f] for f in findings],
         "scores": {f: scores_all[f] for f in findings},
-        "no_finding": findings == ["No Finding"],
+        "no_finding": no_finding,
         "raw_scores": scores_all,
     }
 
